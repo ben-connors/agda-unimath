@@ -16,22 +16,14 @@ open import foundation.dependent-pair-types
 open import foundation.effective-maps-equivalence-relations
 open import foundation.equivalence-classes
 open import foundation.equivalence-relations
-open import foundation.existential-quantification
-open import foundation.fundamental-theorem-of-equivalence-relations
-open import foundation.logical-equivalences
-open import foundation.partitions
 open import foundation.propositional-truncations
-open import foundation.raising-universe-levels
 open import foundation.reflecting-maps-equivalence-relations
 open import foundation.set-quotients
-open import foundation.sigma-decompositions
-open import foundation.surjective-maps
 open import foundation.uniqueness-set-quotients
 open import foundation.universal-property-set-quotients
 open import foundation.universe-levels
 
 open import foundation-core.cartesian-product-types
-open import foundation-core.contractible-types
 open import foundation-core.coproduct-types
 open import foundation-core.equality-dependent-pair-types
 open import foundation-core.equivalences
