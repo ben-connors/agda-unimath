@@ -370,6 +370,22 @@ module _
       ( _)
       ( λ x → preserves-comp-functor-Precategory D E I _ _)
 
+  preserves-id-left-whisker-natural-transformation-Precategory :
+    (F : functor-Precategory C D)
+    (H : functor-Precategory D E) →
+    left-whisker-natural-transformation-Precategory F F
+      ( H)
+      ( id-natural-transformation-Precategory C D F) ＝
+    id-natural-transformation-Precategory C E
+      ( comp-functor-Precategory C D E H F)
+  preserves-id-left-whisker-natural-transformation-Precategory F H =
+    eq-htpy-hom-family-natural-transformation-Precategory C E
+      ( comp-functor-Precategory C D E H F)
+      ( comp-functor-Precategory C D E H F)
+      ( _)
+      ( _)
+      ( λ x → preserves-id-functor-Precategory D E H _)
+
   right-whisker-natural-transformation-Precategory :
     (F G : functor-Precategory C D)
     (α : natural-transformation-Precategory C D F G)
