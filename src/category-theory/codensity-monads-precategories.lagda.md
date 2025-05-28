@@ -310,7 +310,7 @@ the UP again.
       ( is-retraction-map-inv-is-equiv (is-kan-R R) _)
 ```
 
-Showing that multiplication is associative is similar.
+Showing that multiplication is associative is similar but longer.
 
 ```agda
   left-precomp-associative-mul-codensity-monad-Precategory :
@@ -339,45 +339,7 @@ Showing that multiplication is associative is similar.
             ( R)
             ( α))))
   left-precomp-associative-mul-codensity-monad-Precategory =
-    first ∙
-    second ∙
-    third ∙
-    fourth ∙
-    fifth ∙
-    sixth where
-
-    a : natural-transformation-Precategory C D RRRF F
-    a = comp-natural-transformation-Precategory C D RRRF RF F
-      ( α)
-      ( right-whisker-natural-transformation-Precategory D D C
-        ( RRR)
-        ( R)
-        ( comp-natural-transformation-Precategory D D RRR RR R
-          ( mul-codensity-monad-Precategory)
-          ( left-whisker-natural-transformation-Precategory D D D RR R
-            ( R)
-            ( mul-codensity-monad-Precategory)))
-        ( F))
-
-    b : natural-transformation-Precategory C D RRRF F
-    b = comp-natural-transformation-Precategory C D RRRF RF F
-      ( α)
-      ( comp-natural-transformation-Precategory C D RRRF RRF RF
-        ( right-whisker-natural-transformation-Precategory D D C
-          ( RR)
-          ( R)
-          ( mul-codensity-monad-Precategory)
-          ( F))
-        ( right-whisker-natural-transformation-Precategory D D C
-          ( RRR)
-          ( RR)
-          ( left-whisker-natural-transformation-Precategory D D D RR R
-            ( R)
-            ( mul-codensity-monad-Precategory))
-          ( F)))
-
-    first : a ＝ b
-    first = ap
+    ( ap
       ( λ x → comp-natural-transformation-Precategory C D RRRF RF F α x)
       ( preserves-comp-right-whisker-natural-transformation-Precategory D D C
         ( RRR)
@@ -387,51 +349,13 @@ Showing that multiplication is associative is similar.
         ( left-whisker-natural-transformation-Precategory D D D RR R
           ( R)
           ( mul-codensity-monad-Precategory))
-        ( F))
-
-    c : natural-transformation-Precategory C D RRRF F
-    c = comp-natural-transformation-Precategory C D RRRF RRF F
-      ( comp-natural-transformation-Precategory C D RRF RF F
-        ( α)
-        ( right-whisker-natural-transformation-Precategory D D C
-          ( RR)
-          ( R)
-          ( mul-codensity-monad-Precategory)
-          ( F)))
-      ( right-whisker-natural-transformation-Precategory D D C
-        ( RRR)
-        ( RR)
-        ( left-whisker-natural-transformation-Precategory D D D RR R
-          ( R)
-          ( mul-codensity-monad-Precategory))
-        ( F))
-
-    second : b ＝ c
-    second = inv
+        ( F))) ∙
+    ( inv
       ( associative-comp-natural-transformation-Precategory C D RRRF RRF RF F
         ( _)
         ( _)
-        ( _))
-
-    d : natural-transformation-Precategory C D RRRF F
-    d = comp-natural-transformation-Precategory C D RRRF RRF F
-      ( comp-natural-transformation-Precategory C D RRF RF F
-        ( α)
-        ( left-whisker-natural-transformation-Precategory C D D
-          ( RF)
-          ( F)
-          ( R)
-          ( α)))
-      ( right-whisker-natural-transformation-Precategory D D C
-        ( RRR)
-        ( RR)
-        ( left-whisker-natural-transformation-Precategory D D D RR R
-          ( R)
-          ( mul-codensity-monad-Precategory))
-        ( F))
-
-    third : c ＝ d
-    third = ap
+        ( _))) ∙
+    ( ap
       ( λ x →
         ( comp-natural-transformation-Precategory C D RRRF RRF F
           ( x)
@@ -442,52 +366,16 @@ Showing that multiplication is associative is similar.
               ( R)
               ( mul-codensity-monad-Precategory))
             ( F))))
-      ( compute-mul-codensity-monad-Precategory)
-
-    e : natural-transformation-Precategory C D RRRF F
-    e = comp-natural-transformation-Precategory C D RRRF RF F
-      ( α)
-      ( comp-natural-transformation-Precategory C D RRRF RRF RF
-        ( left-whisker-natural-transformation-Precategory C D D
-          ( RF)
-          ( F)
-          ( R)
-          ( α))
-        ( right-whisker-natural-transformation-Precategory D D C
-          ( RRR)
-          ( RR)
-          ( left-whisker-natural-transformation-Precategory D D D RR R
-            ( R)
-            ( mul-codensity-monad-Precategory))
-          ( F)))
-
-    fourth : d ＝ e
-    fourth = associative-comp-natural-transformation-Precategory C D
+      ( compute-mul-codensity-monad-Precategory)) ∙
+    ( associative-comp-natural-transformation-Precategory C D
       ( RRRF)
       ( RRF)
       ( RF)
       ( F)
       ( _)
       ( _)
-      ( _)
-
-    f : natural-transformation-Precategory C D RRRF F
-    f = comp-natural-transformation-Precategory C D RRRF RF F
-      ( α)
-      ( left-whisker-natural-transformation-Precategory C D D
-        ( RRF)
-        ( F)
-        ( R)
-        ( comp-natural-transformation-Precategory C D RRF RF F
-          ( α)
-          ( right-whisker-natural-transformation-Precategory D D C
-            ( RR)
-            ( R)
-            ( mul-codensity-monad-Precategory)
-            ( F))))
-
-    fifth : e ＝ f
-    fifth = ap
+      ( _)) ∙
+    ( ap
       ( λ x → comp-natural-transformation-Precategory C D RRRF RF F α x)
       ( inv
         ( preserves-comp-left-whisker-natural-transformation-Precategory C D D
@@ -500,25 +388,8 @@ Showing that multiplication is associative is similar.
             ( RR)
             ( R)
             ( mul-codensity-monad-Precategory)
-            ( F))))
-
-    g : natural-transformation-Precategory C D RRRF F
-    g = comp-natural-transformation-Precategory C D RRRF RF F
-      ( α)
-      ( left-whisker-natural-transformation-Precategory C D D
-        ( RRF)
-        ( F)
-        ( R)
-        ( comp-natural-transformation-Precategory C D RRF RF F
-          ( α)
-          ( left-whisker-natural-transformation-Precategory C D D
-            ( RF)
-            ( F)
-            ( R)
-            ( α))))
-
-    sixth : f ＝ g
-    sixth = ap
+            ( F))))) ∙
+    ( ap
       ( λ x → comp-natural-transformation-Precategory C D RRRF RF F
         ( α)
         ( left-whisker-natural-transformation-Precategory C D D
@@ -526,7 +397,7 @@ Showing that multiplication is associative is similar.
           ( F)
           ( R)
           ( x)))
-      ( compute-mul-codensity-monad-Precategory)
+      ( compute-mul-codensity-monad-Precategory))
 
   right-precomp-associative-mul-codensity-monad-Precategory :
     comp-natural-transformation-Precategory C D RRRF RF F
@@ -554,48 +425,7 @@ Showing that multiplication is associative is similar.
             ( R)
             ( α))))
   right-precomp-associative-mul-codensity-monad-Precategory =
-    first' ∙
-    second' ∙
-    third' ∙
-    fourth' ∙
-    fifth' ∙
-    sixth' ∙
-    seventh' ∙
-    eighth' ∙
-    ninth' where
-
-    a' : natural-transformation-Precategory C D RRRF F
-    a' = comp-natural-transformation-Precategory C D RRRF RF F
-      ( α)
-      ( right-whisker-natural-transformation-Precategory D D C
-        ( RRR)
-        ( R)
-        ( comp-natural-transformation-Precategory D D RRR RR R
-          ( mul-codensity-monad-Precategory)
-          ( right-whisker-natural-transformation-Precategory D D D RR R
-            ( mul-codensity-monad-Precategory)
-            ( R)))
-        ( F))
-
-    b' : natural-transformation-Precategory C D RRRF F
-    b' = comp-natural-transformation-Precategory C D RRRF RF F
-      ( α)
-      ( comp-natural-transformation-Precategory C D RRRF RRF RF
-        ( right-whisker-natural-transformation-Precategory D D C
-          ( RR)
-          ( R)
-          ( mul-codensity-monad-Precategory)
-          ( F))
-        ( right-whisker-natural-transformation-Precategory D D C
-          ( RRR)
-          ( RR)
-          ( right-whisker-natural-transformation-Precategory D D D RR R
-            ( mul-codensity-monad-Precategory)
-            ( R))
-          ( F)))
-
-    first' : a' ＝ b'
-    first' = ap
+    ( ap
       ( λ x → comp-natural-transformation-Precategory C D RRRF RF F α x)
       ( preserves-comp-right-whisker-natural-transformation-Precategory D D C
         ( RRR)
@@ -605,51 +435,13 @@ Showing that multiplication is associative is similar.
         ( right-whisker-natural-transformation-Precategory D D D RR R
           ( mul-codensity-monad-Precategory)
           ( R))
-        ( F))
-
-    c' : natural-transformation-Precategory C D RRRF F
-    c' = comp-natural-transformation-Precategory C D RRRF RRF F
-      ( comp-natural-transformation-Precategory C D RRF RF F
-        ( α)
-        ( right-whisker-natural-transformation-Precategory D D C
-          ( RR)
-          ( R)
-          ( mul-codensity-monad-Precategory)
-          ( F)))
-      ( right-whisker-natural-transformation-Precategory D D C
-        ( RRR)
-        ( RR)
-        ( right-whisker-natural-transformation-Precategory D D D RR R
-          ( mul-codensity-monad-Precategory)
-          ( R))
-        ( F))
-
-    second' : b' ＝ c'
-    second' = inv
+        ( F))) ∙
+    ( inv
       ( associative-comp-natural-transformation-Precategory C D RRRF RRF RF F
         ( _)
         ( _)
-        ( _))
-
-    d' : natural-transformation-Precategory C D RRRF F
-    d' = comp-natural-transformation-Precategory C D RRRF RRF F
-      ( comp-natural-transformation-Precategory C D RRF RF F
-        ( α)
-        ( left-whisker-natural-transformation-Precategory C D D
-          ( RF)
-          ( F)
-          ( R)
-          ( α)))
-      ( right-whisker-natural-transformation-Precategory D D C
-        ( RRR)
-        ( RR)
-        ( right-whisker-natural-transformation-Precategory D D D RR R
-          ( mul-codensity-monad-Precategory)
-          ( R))
-        ( F))
-
-    third' : c' ＝ d'
-    third' = ap
+        ( _))) ∙
+    ( ap
       ( λ x →
         ( comp-natural-transformation-Precategory C D RRRF RRF F
           ( x)
@@ -660,53 +452,12 @@ Showing that multiplication is associative is similar.
               ( mul-codensity-monad-Precategory)
               ( R))
             ( F))))
-      ( compute-mul-codensity-monad-Precategory)
-
-    e' : natural-transformation-Precategory C D RRRF F
-    e' = comp-natural-transformation-Precategory C D RRRF RF F
-      ( α)
-      ( comp-natural-transformation-Precategory C D RRRF RRF RF
-        ( left-whisker-natural-transformation-Precategory C D D
-          ( RF)
-          ( F)
-          ( R)
-          ( α))
-        ( right-whisker-natural-transformation-Precategory D D C
-          ( RRR)
-          ( RR)
-          ( right-whisker-natural-transformation-Precategory D D D RR R
-            ( mul-codensity-monad-Precategory)
-            ( R))
-          ( F)))
-
-    fourth' : d' ＝ e'
-    fourth' =
-      associative-comp-natural-transformation-Precategory C D RRRF RRF RF F
+      ( compute-mul-codensity-monad-Precategory)) ∙
+    ( associative-comp-natural-transformation-Precategory C D RRRF RRF RF F
         ( _)
         ( _)
-        ( _)
-
-    f' : natural-transformation-Precategory C D RRRF F
-    f' = comp-natural-transformation-Precategory C D RRRF RF F
-      ( α)
-      ( comp-natural-transformation-Precategory C D RRRF RRF RF
-        ( right-whisker-natural-transformation-Precategory D D C
-          ( RR)
-          ( R)
-          ( mul-codensity-monad-Precategory)
-          ( F))
-        ( left-whisker-natural-transformation-Precategory C D D
-          ( RRF)
-          ( RF)
-          ( R)
-          ( left-whisker-natural-transformation-Precategory C D D
-            ( RF)
-            ( F)
-            ( R)
-            ( α))))
-
-    fifth' : e' ＝ f'
-    fifth' = ap
+        ( _)) ∙
+    ( ap
       ( λ x → comp-natural-transformation-Precategory C D RRRF RF F α x)
       ( eq-htpy-hom-family-natural-transformation-Precategory C D RRRF RF
         ( _)
@@ -714,55 +465,13 @@ Showing that multiplication is associative is similar.
         ( λ x →
           naturality-natural-transformation-Precategory D D RR R
             ( mul-codensity-monad-Precategory)
-            ( _)))
-
-    g' : natural-transformation-Precategory C D RRRF F
-    g' = comp-natural-transformation-Precategory C D RRRF RRF F
-      ( comp-natural-transformation-Precategory C D RRF RF F
-        ( α)
-        ( right-whisker-natural-transformation-Precategory D D C
-          ( RR)
-          ( R)
-          ( mul-codensity-monad-Precategory)
-          ( F)))
-      ( left-whisker-natural-transformation-Precategory C D D
-        ( RRF)
-        ( RF)
-        ( R)
-        ( left-whisker-natural-transformation-Precategory C D D
-          ( RF)
-          ( F)
-          ( R)
-          ( α)))
-
-    sixth' : f' ＝ g'
-    sixth' = inv
+            ( _)))) ∙
+    ( inv
       ( associative-comp-natural-transformation-Precategory C D RRRF RRF RF F
         ( _)
         ( _)
-        ( _))
-
-    h' : natural-transformation-Precategory C D RRRF F
-    h' = comp-natural-transformation-Precategory C D RRRF RRF F
-      ( comp-natural-transformation-Precategory C D RRF RF F
-        ( α)
-        ( left-whisker-natural-transformation-Precategory C D D
-          ( RF)
-          ( F)
-          ( R)
-          ( α)))
-      ( left-whisker-natural-transformation-Precategory C D D
-        ( RRF)
-        ( RF)
-        ( R)
-        ( left-whisker-natural-transformation-Precategory C D D
-          ( RF)
-          ( F)
-          ( R)
-          ( α)))
-
-    seventh' : g' ＝ h'
-    seventh' = ap
+        ( _))) ∙
+    ( ap
       ( λ x →
         ( comp-natural-transformation-Precategory C D RRRF RRF F
           ( x)
@@ -775,54 +484,16 @@ Showing that multiplication is associative is similar.
               ( F)
               ( R)
               ( α)))))
-      ( compute-mul-codensity-monad-Precategory)
-
-    i' : natural-transformation-Precategory C D RRRF F
-    i' = comp-natural-transformation-Precategory C D RRRF RF F
-      ( α)
-      ( comp-natural-transformation-Precategory C D RRRF RRF RF
-        ( left-whisker-natural-transformation-Precategory C D D
-          ( RF)
-          ( F)
-          ( R)
-          ( α))
-        ( left-whisker-natural-transformation-Precategory C D D
-          ( RRF)
-          ( RF)
-          ( R)
-          ( left-whisker-natural-transformation-Precategory C D D
-            ( RF)
-            ( F)
-            ( R)
-            ( α))))
-
-    eighth' : h' ＝ i'
-    eighth' = associative-comp-natural-transformation-Precategory C D
+      ( compute-mul-codensity-monad-Precategory)) ∙
+    ( associative-comp-natural-transformation-Precategory C D
       ( RRRF)
       ( RRF)
       ( RF)
       ( F)
       ( _)
       ( _)
-      ( _)
-
-    j' : natural-transformation-Precategory C D RRRF F
-    j' = comp-natural-transformation-Precategory C D RRRF RF F
-      ( α)
-      ( left-whisker-natural-transformation-Precategory C D D
-        ( RRF)
-        ( F)
-        ( R)
-        ( comp-natural-transformation-Precategory C D RRF RF F
-          ( α)
-          ( left-whisker-natural-transformation-Precategory C D D
-            ( RF)
-            ( F)
-            ( R)
-            ( α))))
-
-    ninth' : i' ＝ j'
-    ninth' = ap
+      ( _)) ∙
+    ( ap
       ( λ x → comp-natural-transformation-Precategory C D RRRF RF F α x)
       ( inv
         ( preserves-comp-left-whisker-natural-transformation-Precategory C D D
@@ -835,7 +506,7 @@ Showing that multiplication is associative is similar.
             ( RF)
             ( F)
             ( R)
-            ( α))))
+            ( α)))))
 
   abstract
     associative-mul-codensity-monad-Precategory :
