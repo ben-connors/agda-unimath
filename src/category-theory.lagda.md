@@ -16,6 +16,7 @@ module category-theory where
 open import category-theory.adjunctions-large-categories public
 open import category-theory.adjunctions-large-precategories public
 open import category-theory.adjunctions-precategories public
+open import category-theory.algebras-monads-precategories public
 open import category-theory.anafunctors-categories public
 open import category-theory.anafunctors-precategories public
 open import category-theory.augmented-simplex-category public
@@ -46,7 +47,6 @@ open import category-theory.dependent-products-of-large-precategories public
 open import category-theory.dependent-products-of-precategories public
 open import category-theory.discrete-categories public
 open import category-theory.displayed-precategories public
-open import category-theory.eilenberg-moore-precategory public
 open import category-theory.embedding-maps-precategories public
 open import category-theory.embeddings-precategories public
 open import category-theory.endomorphisms-in-categories public
@@ -62,6 +62,7 @@ open import category-theory.exponential-objects-precategories public
 open import category-theory.extensions-of-functors-precategories public
 open import category-theory.faithful-functors-precategories public
 open import category-theory.faithful-maps-precategories public
+open import category-theory.free-algebras-monads-precategories public
 open import category-theory.full-functors-precategories public
 open import category-theory.full-large-subcategories public
 open import category-theory.full-large-subprecategories public
@@ -95,7 +96,6 @@ open import category-theory.isomorphisms-in-large-categories public
 open import category-theory.isomorphisms-in-large-precategories public
 open import category-theory.isomorphisms-in-precategories public
 open import category-theory.isomorphisms-in-subprecategories public
-open import category-theory.kleisli-precategory public
 open import category-theory.large-categories public
 open import category-theory.large-function-categories public
 open import category-theory.large-function-precategories public
