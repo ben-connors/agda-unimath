@@ -14,6 +14,7 @@ open import foundation.action-on-identifications-binary-functions
 open import foundation.action-on-identifications-functions
 open import foundation.contractible-types
 open import foundation.dependent-pair-types
+open import foundation.transport-along-identifications
 open import foundation.equivalences
 open import foundation.functoriality-dependent-pair-types
 open import foundation.identity-types
@@ -782,4 +783,42 @@ module _
           ( eq-iso-Category C g)))) ∙
     ( is-retraction-eq-iso-Category C
       ( eq-iso-Category C f ∙ eq-iso-Category C g))
+
+  compute-left-tr-iso-eq-Category :
+    {x y z : obj-Category C}
+    (p : y ＝ z) (f : hom-Category C x y) →
+    tr _ p f ＝
+    comp-hom-Category C (hom-iso-Category C (iso-eq-Category C y z p)) f
+  compute-left-tr-iso-eq-Category refl f =
+    inv (left-unit-law-comp-hom-Category C f)
+
+  compute-left-tr-eq-iso-Category :
+    {x y z : obj-Category C}
+    (g : iso-Category C y z) (f : hom-Category C x y) →
+    tr _ (eq-iso-Category C g) f ＝
+    comp-hom-Category C (hom-iso-Category C g) f
+  compute-left-tr-eq-iso-Category g f =
+    ( compute-left-tr-iso-eq-Category (eq-iso-Category C g) f) ∙
+    ( ap
+      ( λ x → comp-hom-Category C (hom-iso-Category C x) f)
+      ( is-section-eq-iso-Category C g))
+
+  compute-right-tr-iso-eq-Category :
+    {x y z : obj-Category C}
+    (f : hom-Category C x y) (p : x ＝ z) →
+    tr _ p f ＝
+    comp-hom-Category C f (hom-inv-iso-Category C (iso-eq-Category C x z p))
+  compute-right-tr-iso-eq-Category f refl =
+    inv (right-unit-law-comp-hom-Category C f)
+
+  compute-right-tr-eq-iso-Category :
+    {x y z : obj-Category C}
+    (g : hom-Category C y z) (f : iso-Category C y x) →
+    tr _ (eq-iso-Category C f) g ＝
+    comp-hom-Category C g (hom-inv-iso-Category C f)
+  compute-right-tr-eq-iso-Category g f =
+    ( compute-right-tr-iso-eq-Category g (eq-iso-Category C f)) ∙
+    ( ap
+      ( λ x → comp-hom-Category C g (hom-inv-iso-Category C x))
+      ( is-section-eq-iso-Category C f))
 ```

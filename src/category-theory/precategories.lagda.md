@@ -258,6 +258,24 @@ obj-total-hom-Precategory :
   total-hom-Precategory C → obj-Precategory C × obj-Precategory C
 obj-total-hom-Precategory C =
   obj-total-hom-Nonunital-Precategory (nonunital-precategory-Precategory C)
+
+dom-total-hom-Precategory :
+  {l1 l2 : Level} (C : Precategory l1 l2) →
+  total-hom-Precategory C → obj-Precategory C
+dom-total-hom-Precategory C f = pr1 (obj-total-hom-Precategory C f)
+
+cod-total-hom-Precategory :
+  {l1 l2 : Level} (C : Precategory l1 l2) →
+  total-hom-Precategory C → obj-Precategory C
+cod-total-hom-Precategory C f = pr2 (obj-total-hom-Precategory C f)
+
+mor-total-hom-Precategory :
+  {l1 l2 : Level} (C : Precategory l1 l2) →
+  (f : total-hom-Precategory C) →
+  hom-Precategory C
+    ( dom-total-hom-Precategory C f)
+    ( cod-total-hom-Precategory C f)
+mor-total-hom-Precategory C f = pr2 (pr2 f)
 ```
 
 ### Equalities induce morphisms
