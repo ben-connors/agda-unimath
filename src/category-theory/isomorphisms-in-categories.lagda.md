@@ -795,7 +795,7 @@ module _
   compute-left-tr-eq-iso-Category :
     {x y z : obj-Category C}
     (g : iso-Category C y z) (f : hom-Category C x y) →
-    tr _ (eq-iso-Category C g) f ＝
+    tr (hom-Category C x) (eq-iso-Category C g) f ＝
     comp-hom-Category C (hom-iso-Category C g) f
   compute-left-tr-eq-iso-Category g f =
     ( compute-left-tr-iso-eq-Category (eq-iso-Category C g) f) ∙
@@ -814,7 +814,7 @@ module _
   compute-right-tr-eq-iso-Category :
     {x y z : obj-Category C}
     (g : hom-Category C y z) (f : iso-Category C y x) →
-    tr _ (eq-iso-Category C f) g ＝
+    tr (λ w → hom-Category C w z) (eq-iso-Category C f) g ＝
     comp-hom-Category C g (hom-inv-iso-Category C f)
   compute-right-tr-eq-iso-Category g f =
     ( compute-right-tr-iso-eq-Category g (eq-iso-Category C f)) ∙

@@ -124,3 +124,19 @@ module _
   eq-natural-isomorphism-functor-Category F G =
     map-inv-equiv (extensionality-functor-Category F G)
 ```
+
+### The evaluation functor
+
+```agda
+module _
+  {l1 l2 l3 l4 : Level}
+  (C : Category l1 l2)
+  (D : Category l3 l4)
+  where
+
+  ev-functor-Category :
+    (c : obj-Category C) →
+    functor-Category (functor-category-Category C D) D
+  ev-functor-Category =
+    ev-functor-Precategory (precategory-Category C) (precategory-Category D)
+```
