@@ -61,15 +61,15 @@ is-prop-coherence-square-hom-Precategory :
 is-prop-coherence-square-hom-Precategory C {x} {y} {z} {w}
   top left right bottom = is-set-hom-Precategory C x w _ _
 
-comp-coherence-square-hom-Precategory :
+pasting-horizontal-coherence-square-hom-Precategory :
   {l1 l2 : Level} (C : Precategory l1 l2)
   {x y z w a b : obj-Precategory C}
   (topleft : hom-Precategory C x y)
+  (topright : hom-Precategory C y a)
   (left : hom-Precategory C x z)
   (middle : hom-Precategory C y w)
-  (bottomleft : hom-Precategory C z w)
-  (topright : hom-Precategory C y a)
   (right : hom-Precategory C a b)
+  (bottomleft : hom-Precategory C z w)
   (bottomright : hom-Precategory C w b) →
   coherence-square-hom-Precategory C topleft left middle bottomleft →
   coherence-square-hom-Precategory C topright middle right bottomright →
@@ -78,8 +78,8 @@ comp-coherence-square-hom-Precategory :
     ( left)
     ( right)
     ( comp-hom-Precategory C bottomright bottomleft)
-comp-coherence-square-hom-Precategory C
-  topleft left middle bottomleft topright right bottomright commleft commright =
+pasting-horizontal-coherence-square-hom-Precategory C
+  topleft topright left middle right bottomleft bottomright commleft commright =
   ( associative-comp-hom-Precategory C _ _ _) ∙
   ( ap (postcomp-hom-Precategory C bottomright _) commleft) ∙
   ( inv (associative-comp-hom-Precategory C _ _ _)) ∙

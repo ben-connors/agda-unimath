@@ -36,7 +36,7 @@ Let `C` and `D` be two [precategories](category-theory.precategories.md). Two
 - for each pair of objects `X` in `C` and `Y` in `D`, there is an
   [equivalence](foundation-core.equivalences.md)
   `ϕ X Y : hom (L X) Y ≃ hom X (R Y)` such that
-- for every pair of morhpisms `f : X₂ → X₁` and `g : Y₁ → Y₂` the following
+- for every pair of morphisms `f : X₂ → X₁` and `g : Y₁ → Y₂` the following
   square commutes:
 
 ```text
@@ -158,34 +158,27 @@ module _
   (D : Precategory l3 l4)
   (L : functor-Precategory C D)
   (R : functor-Precategory D C)
+  (let LR = comp-functor-Precategory D C D L R)
+  (let RL = comp-functor-Precategory C D C R L)
+  (let idC = id-functor-Precategory C)
+  (let idD = id-functor-Precategory D)
   where
-
-  private
-    LR = comp-functor-Precategory D C D L R
-    RL = comp-functor-Precategory C D C R L
-    idC = id-functor-Precategory C
-    idD = id-functor-Precategory D
 
   module _
     (η : natural-transformation-Precategory C C idC RL)
     (ε : natural-transformation-Precategory D D LR idD)
+    (let η₀ = hom-family-natural-transformation-Precategory C C idC RL η)
+    (let ε₀ = hom-family-natural-transformation-Precategory D D LR idD ε)
+    (let L₀ = obj-functor-Precategory C D L)
+    (let L₁ = hom-functor-Precategory C D L)
+    (let R₀ = obj-functor-Precategory D C R)
+    (let R₁ = hom-functor-Precategory D C R)
     where
-
-    private
-      η₀ = hom-family-natural-transformation-Precategory C C idC RL η
-      ε₀ = hom-family-natural-transformation-Precategory D D LR idD ε
-      L₀ = obj-functor-Precategory C D L
-      L₁ = hom-functor-Precategory C D L
-      R₀ = obj-functor-Precategory D C R
-      R₁ = hom-functor-Precategory D C R
 
     has-left-triangle-identity-Precategory : UU (l1 ⊔ l4)
     has-left-triangle-identity-Precategory =
       (x : obj-Precategory C) →
-      ( comp-hom-Precategory D
-        ( ε₀ (L₀ x))
-        ( L₁ (η₀ x))) ＝
-      ( id-hom-Precategory D)
+      comp-hom-Precategory D (ε₀ (L₀ x)) (L₁ (η₀ x)) ＝ id-hom-Precategory D
 
     has-right-triangle-identity-Precategory : UU (l2 ⊔ l3)
     has-right-triangle-identity-Precategory =

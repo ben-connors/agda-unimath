@@ -1,12 +1,13 @@
-# The Free-algebras precategory of a monad
+# The precategory of free algebras of a monad
 
 ```agda
-module category-theory.free-algebras-monads-precategories where
+module category-theory.precategory-of-free-algebras-monads-on-precategories where
 ```
 
 <details><summary>Imports</summary>
 
 ```agda
+open import category-theory.algebras-monads-on-precategories
 open import category-theory.functors-precategories
 open import category-theory.monads-on-precategories
 open import category-theory.precategories
@@ -44,14 +45,11 @@ composition recovers the original monad.
 module _
   {l1 l2 : Level} {C : Precategory l1 l2}
   (T : monad-Precategory C)
+  (let μ = hom-mul-monad-Precategory C T)
+  (let η = hom-unit-monad-Precategory C T)
+  (let T₀ = obj-endofunctor-monad-Precategory C T)
+  (let T₁ = hom-endofunctor-monad-Precategory C T)
   where
-
-  private
-    Tf = endofunctor-monad-Precategory C T
-    μ = hom-mul-monad-Precategory C T
-    η = hom-unit-monad-Precategory C T
-    T₀ = obj-endofunctor-monad-Precategory C T
-    T₁ = hom-endofunctor-monad-Precategory C T
 
   obj-free-algebras-monad-Precategory : UU l1
   obj-free-algebras-monad-Precategory = obj-Precategory C
@@ -95,9 +93,9 @@ module _
   associative-comp-hom-free-algebras-monad-Precategory h g f =
     ap
       ( precomp-hom-Precategory C f _)
-      ( (ap
+      ( ( ap
           ( postcomp-hom-Precategory C (μ _) _)
-          ( (preserves-comp-endofunctor-monad-Precategory C T _ g) ∙
+          ( ( preserves-comp-endofunctor-monad-Precategory C T _ g) ∙
             ( ap
               ( precomp-hom-Precategory C (T₁ g) _)
               ( preserves-comp-endofunctor-monad-Precategory C T _ _)) ∙
@@ -109,8 +107,8 @@ module _
         ( associative-comp-hom-Precategory C _ _ _) ∙
         ( ap
           ( postcomp-hom-Precategory C (μ _) _)
-          ( (inv (associative-comp-hom-Precategory C _ _ _)) ∙
-            (ap
+          ( ( inv (associative-comp-hom-Precategory C _ _ _)) ∙
+            ( ap
               ( precomp-hom-Precategory C (T₁ g) _)
               ( inv (naturality-mul-monad-Precategory C T h))) ∙
             ( associative-comp-hom-Precategory C _ _ _))) ∙
@@ -158,7 +156,13 @@ module _
       ( associative-comp-hom-free-algebras-monad-Precategory)
       ( left-unit-law-comp-hom-free-algebras-monad-Precategory)
       ( right-unit-law-comp-hom-free-algebras-monad-Precategory)
+```
 
+## Properties
+
+### Free functor from the underlying category
+
+```agda
   obj-functor-to-free-algebras-monad-Precategory :
     (obj-Precategory C) → obj-free-algebras-monad-Precategory
   obj-functor-to-free-algebras-monad-Precategory = id
@@ -206,8 +210,8 @@ module _
             ( associative-comp-hom-Precategory C _ _ _) ∙
             ( ap
               ( postcomp-hom-Precategory C (μ z) _)
-              ( (inv
-                  (preserves-comp-endofunctor-monad-Precategory C T
+              ( ( inv
+                  ( preserves-comp-endofunctor-monad-Precategory C T
                     (η z) g)) ∙
                 ( ap
                   ( T₁)
@@ -221,7 +225,11 @@ module _
     ( hom-functor-to-free-algebras-monad-Precategory) ,
     ( preserves-comp-functor-to-free-algebras-monad-Precategory) ,
     ( preserves-id-functor-to-free-algebras-monad-Precategory)
+```
 
+### Forgetful functor to the underlying category
+
+```agda
   obj-functor-from-free-algebras-monad-Precategory :
     obj-free-algebras-monad-Precategory → obj-Precategory C
   obj-functor-from-free-algebras-monad-Precategory = T₀
