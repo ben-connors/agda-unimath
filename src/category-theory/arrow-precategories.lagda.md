@@ -582,4 +582,53 @@ module _
     is-category-arrow-precategory-is-category-Precategory
       ( precategory-Category C)
       ( is-category-Category C)
+
+  obj-arrow-Category : UU (l1 ⊔ l2)
+  obj-arrow-Category = obj-arrow-Precategory (precategory-Category C)
+
+  hom-arrow-Category : (f g : obj-arrow-Category) → UU l2
+  hom-arrow-Category = hom-arrow-Precategory (precategory-Category C)
+
+  dom-obj-arrow-Category : obj-arrow-Category → obj-Category C
+  dom-obj-arrow-Category = pr1 ∘ pr1
+
+  cod-obj-arrow-Category : obj-arrow-Category → obj-Category C
+  cod-obj-arrow-Category = pr2 ∘ pr1
+
+  mor-obj-arrow-Category : (f : obj-arrow-Category) →
+    hom-Category C
+      ( dom-obj-arrow-Category f)
+      ( cod-obj-arrow-Category f)
+  mor-obj-arrow-Category = pr2
+
+  dom-hom-arrow-Category : {f g : obj-arrow-Category}
+    (u : hom-arrow-Category f g) →
+    hom-Category C
+      ( dom-obj-arrow-Category f)
+      ( dom-obj-arrow-Category g)
+  dom-hom-arrow-Category u = pr1 (pr1 u)
+
+  cod-hom-arrow-Category : {f g : obj-arrow-Category}
+    (u : hom-arrow-Category f g) →
+    hom-Category C
+      ( cod-obj-arrow-Category f)
+      ( cod-obj-arrow-Category g)
+  cod-hom-arrow-Category u = pr2 (pr1 u)
+
+  square-hom-arrow-Category : {f g : obj-arrow-Category}
+    (u : hom-arrow-Category f g) →
+    coherence-square-hom-Precategory (precategory-Category C)
+      ( dom-hom-arrow-Category u)
+      ( mor-obj-arrow-Category f)
+      ( mor-obj-arrow-Category g)
+      ( cod-hom-arrow-Category u)
+  square-hom-arrow-Category u = pr2 u
+
+  eq-hom-arrow-Category :
+    (f g : obj-arrow-Category)
+    (u v : hom-arrow-Category f g) →
+    dom-hom-arrow-Category u ＝ dom-hom-arrow-Category v →
+    cod-hom-arrow-Category u ＝ cod-hom-arrow-Category v →
+    u ＝ v
+  eq-hom-arrow-Category = eq-hom-arrow-Precategory (precategory-Category C)
 ```
