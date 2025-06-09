@@ -12,6 +12,7 @@ open import category-theory.precategories
 
 open import foundation.action-on-identifications-functions
 open import foundation.identity-types
+open import foundation.propositions
 open import foundation.universe-levels
 ```
 
@@ -49,6 +50,16 @@ coherence-square-hom-Precategory :
   UU l2
 coherence-square-hom-Precategory C =
   coherence-square-hom-Set-Magmoid (set-magmoid-Precategory C)
+
+is-prop-coherence-square-hom-Precategory :
+  {l1 l2 : Level} (C : Precategory l1 l2) {x y z w : obj-Precategory C}
+  (top : hom-Precategory C x y)
+  (left : hom-Precategory C x z)
+  (right : hom-Precategory C y w)
+  (bottom : hom-Precategory C z w) →
+  is-prop (coherence-square-hom-Precategory C top left right bottom)
+is-prop-coherence-square-hom-Precategory C {x} {y} {z} {w}
+  top left right bottom = is-set-hom-Precategory C x w _ _
 
 pasting-horizontal-coherence-square-hom-Precategory :
   {l1 l2 : Level} (C : Precategory l1 l2)
