@@ -249,3 +249,50 @@ module _
   eq-htpy-left-extension-Precategory R S =
     map-inv-equiv (equiv-htpy-eq-left-extension-Precategory R S)
 ```
+
+### Self-extensions
+
+In the case of extending a functor along itself, we have distinguished right
+extensions: the identity map gives a right extension (with the identity natural
+transformation) and we can iterate any right extension `R` to get a right
+extension `R²`.
+
+```agda
+module _
+  {l1 l2 l3 l4 : Level}
+  (C : Precategory l1 l2) (D : Precategory l3 l4)
+  (F : functor-Precategory C D)
+  where
+
+  id-left-extension-Precategory : left-extension-Precategory C D D F F
+  pr1 id-left-extension-Precategory = id-functor-Precategory D
+  pr2 id-left-extension-Precategory =
+    id-natural-transformation-Precategory C D F
+
+  double-left-extension-Precategory :
+    (L : left-extension-Precategory C D D F F) →
+    left-extension-Precategory C D D F F
+  pr1 (double-left-extension-Precategory L) =
+    comp-functor-Precategory D D D
+      ( extension-left-extension-Precategory C D D F F L)
+      ( extension-left-extension-Precategory C D D F F L)
+  pr2 (double-left-extension-Precategory L) =
+    comp-natural-transformation-Precategory C D
+      ( F)
+      (comp-functor-Precategory C D D
+        ( extension-left-extension-Precategory C D D F F L)
+        ( F))
+      ( comp-functor-Precategory C D D
+        ( comp-functor-Precategory D D D
+          ( extension-left-extension-Precategory C D D F F L)
+          ( extension-left-extension-Precategory C D D F F L))
+        ( F))
+      ( left-whisker-natural-transformation-Precategory C D D
+        ( F)
+        (comp-functor-Precategory C D D
+          ( extension-left-extension-Precategory C D D F F L)
+          ( F))
+        ( extension-left-extension-Precategory C D D F F L)
+        ( natural-transformation-left-extension-Precategory C D D F F L))
+      ( natural-transformation-left-extension-Precategory C D D F F L)
+```
