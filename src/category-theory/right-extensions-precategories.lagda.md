@@ -1,4 +1,4 @@
-# Right extensions in precategories
+[#](#) Right extensions in precategories
 
 ```agda
 module category-theory.right-extensions-precategories where
@@ -296,3 +296,8 @@ module _
         ( extension-right-extension-Precategory C D D F F R)
         ( natural-transformation-right-extension-Precategory C D D F F R))
 ```
+
+## See also
+
+- [Left extensions](category-theory.left-extensions-precategories.md) for the
+  dual concept.

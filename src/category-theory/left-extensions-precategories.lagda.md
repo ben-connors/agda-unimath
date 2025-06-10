@@ -61,7 +61,7 @@ of a [functor](category-theory.functors-precategories.md) `F : C → D` between
          G
 ```
 
-We note that this is not a standard definition, but it inspired by the notion of
+We note that this is not a standard definition, but is inspired by the notion of
 a [left Kan extension](category-theory.left-kan-extensions-precategories.md).
 
 ## Definition
@@ -296,3 +296,8 @@ module _
         ( natural-transformation-left-extension-Precategory C D D F F L))
       ( natural-transformation-left-extension-Precategory C D D F F L)
 ```
+
+## See also
+
+- [Right extensions](category-theory.right-extensions-precategories.md) for the
+  dual concept.
