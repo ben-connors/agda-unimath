@@ -149,6 +149,35 @@ module _
         ( pr1)
         ( pr2 (pr2 (pr2 (pr2 (pr2 (t x y z f g)))) w' p₁' p₂' α) (h' , α₁ , α₂))
 
+  preserves-precomp-morphism-into-pullback-obj-Precategory :
+    (w' : obj-Precategory C)
+    (p₁' : hom-Precategory C w' y)
+    (p₂' : hom-Precategory C w' z)
+    (α : comp-hom-Precategory C f p₁' ＝ comp-hom-Precategory C g p₂')
+    {w'' : obj-Precategory C}
+    (h : hom-Precategory C w'' w') →
+    comp-hom-Precategory C
+      ( morphism-into-pullback-obj-Precategory w' p₁' p₂' α)
+      ( h) ＝
+    morphism-into-pullback-obj-Precategory w''
+      ( comp-hom-Precategory C p₁' h)
+      ( comp-hom-Precategory C p₂' h)
+      ( ( inv (associative-comp-hom-Precategory C _ _ _)) ∙
+        ( ap (precomp-hom-Precategory C h _) α) ∙
+        ( associative-comp-hom-Precategory C _ _ _))
+  preserves-precomp-morphism-into-pullback-obj-Precategory
+    w' p₁' p₂' α {w''} h =
+      inv
+        ( is-unique-morphism-into-pullback-obj-Precategory w'' _ _ _ _
+          ( ( inv (associative-comp-hom-Precategory C _ _ _)) ∙
+            ( ap
+              ( precomp-hom-Precategory C h _)
+              ( comm-morphism-into-pr1-pullback-obj-Precategory _ _ _ _)))
+          ( ( inv (associative-comp-hom-Precategory C _ _ _)) ∙
+            ( ap
+              ( precomp-hom-Precategory C h _)
+              ( comm-morphism-into-pr2-pullback-obj-Precategory _ _ _ _))))
+
 module _
   {l1 l2 : Level} (C : Precategory l1 l2)
   (x y z : obj-Precategory C)

@@ -147,6 +147,27 @@ module _
       is-unique-morphism-into-pullback-obj-Precategory (opposite-Precategory C)
         t x y z f g w' i₁' i₂' α
 
+  preserves-postcomp-morphism-from-pushout-obj-Precategory :
+    (w' : obj-Precategory C)
+    (i₁' : hom-Precategory C y w')
+    (i₂' : hom-Precategory C z w')
+    (α : comp-hom-Precategory C i₁' f ＝ comp-hom-Precategory C i₂' g)
+    {w'' : obj-Precategory C}
+    (h : hom-Precategory C w' w'') →
+    comp-hom-Precategory C
+      ( h)
+      ( morphism-from-pushout-obj-Precategory w' i₁' i₂' α) ＝
+    morphism-from-pushout-obj-Precategory w''
+      ( comp-hom-Precategory C h i₁')
+      ( comp-hom-Precategory C h i₂')
+      ( ( inv
+          ( associative-comp-hom-Precategory (opposite-Precategory C) _ _ _)) ∙
+        ( ap (postcomp-hom-Precategory C h _) α) ∙
+        ( associative-comp-hom-Precategory (opposite-Precategory C) _ _ _))
+  preserves-postcomp-morphism-from-pushout-obj-Precategory =
+    preserves-precomp-morphism-into-pullback-obj-Precategory
+      ( opposite-Precategory C) t x y z f g
+
 module _
   {l1 l2 : Level} (C : Precategory l1 l2)
   (x y z : obj-Precategory C)
