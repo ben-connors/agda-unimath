@@ -81,31 +81,31 @@ module _
 
 module _
   {l1 l2 : Level} (C : Precategory l1 l2)
-  (t : has-all-pushout-obj-Precategory C)
   (x y z : obj-Precategory C)
   (f : hom-Precategory C x y)
   (g : hom-Precategory C x z)
+  (t : pushout-obj-Precategory C x y z f g)
   where
 
   object-pushout-obj-Precategory : obj-Precategory C
   object-pushout-obj-Precategory =
-    object-pullback-obj-Precategory (opposite-Precategory C) t x y z f g
+    object-pullback-obj-Precategory (opposite-Precategory C) x y z f g t
 
   inl-pushout-obj-Precategory :
     hom-Precategory C y object-pushout-obj-Precategory
   inl-pushout-obj-Precategory =
-    pr1-pullback-obj-Precategory (opposite-Precategory C) t x y z f g
+    pr1-pullback-obj-Precategory (opposite-Precategory C) x y z f g t
 
   inr-pushout-obj-Precategory :
     hom-Precategory C z object-pushout-obj-Precategory
   inr-pushout-obj-Precategory =
-    pr2-pullback-obj-Precategory (opposite-Precategory C) t x y z f g
+    pr2-pullback-obj-Precategory (opposite-Precategory C) x y z f g t
 
   comm-pushout-obj-Precategory :
     comp-hom-Precategory C inl-pushout-obj-Precategory f ＝
     comp-hom-Precategory C inr-pushout-obj-Precategory g
   comm-pushout-obj-Precategory =
-    comm-pullback-obj-Precategory (opposite-Precategory C) t x y z f g
+    comm-pullback-obj-Precategory (opposite-Precategory C) x y z f g t
 
   module _
     (w' : obj-Precategory C)
@@ -118,7 +118,7 @@ module _
       hom-Precategory C object-pushout-obj-Precategory w'
     morphism-from-pushout-obj-Precategory =
       morphism-into-pullback-obj-Precategory (opposite-Precategory C)
-        t x y z f g w' i₁' i₂' α
+        x y z f g t w' i₁' i₂' α
 
     comm-morphism-from-inl-pushout-obj-Precategory :
       comp-hom-Precategory C
@@ -127,7 +127,7 @@ module _
       i₁'
     comm-morphism-from-inl-pushout-obj-Precategory =
       comm-morphism-into-pr1-pullback-obj-Precategory (opposite-Precategory C)
-        t x y z f g w' i₁' i₂' α
+        x y z f g t w' i₁' i₂' α
 
     comm-morphism-from-inr-pushout-obj-Precategory :
       comp-hom-Precategory C
@@ -136,7 +136,7 @@ module _
       i₂'
     comm-morphism-from-inr-pushout-obj-Precategory =
       comm-morphism-into-pr2-pullback-obj-Precategory (opposite-Precategory C)
-        t x y z f g w' i₁' i₂' α
+        x y z f g t w' i₁' i₂' α
 
     is-unique-morphism-from-pushout-obj-Precategory :
       (h' : hom-Precategory C object-pushout-obj-Precategory w') →
@@ -145,7 +145,24 @@ module _
       morphism-from-pushout-obj-Precategory ＝ h'
     is-unique-morphism-from-pushout-obj-Precategory =
       is-unique-morphism-into-pullback-obj-Precategory (opposite-Precategory C)
-        t x y z f g w' i₁' i₂' α
+        x y z f g t w' i₁' i₂' α
+
+  postcomp-comm-pushout-obj-Precategory :
+    (w' : obj-Precategory C)
+    (i₁' : hom-Precategory C y w')
+    (i₂' : hom-Precategory C z w')
+    (α : comp-hom-Precategory C i₁' f ＝ comp-hom-Precategory C i₂' g)
+    {w'' : obj-Precategory C}
+    (h : hom-Precategory C w' w'') →
+    comp-hom-Precategory C
+      ( comp-hom-Precategory C h i₁')
+      ( f) ＝
+    comp-hom-Precategory C
+      ( comp-hom-Precategory C h i₂')
+      ( g)
+  postcomp-comm-pushout-obj-Precategory =
+    precomp-comm-pullback-obj-Precategory (opposite-Precategory C)
+      x y z f g t
 
   preserves-postcomp-morphism-from-pushout-obj-Precategory :
     (w' : obj-Precategory C)
@@ -160,13 +177,11 @@ module _
     morphism-from-pushout-obj-Precategory w''
       ( comp-hom-Precategory C h i₁')
       ( comp-hom-Precategory C h i₂')
-      ( ( inv
-          ( associative-comp-hom-Precategory (opposite-Precategory C) _ _ _)) ∙
-        ( ap (postcomp-hom-Precategory C h _) α) ∙
-        ( associative-comp-hom-Precategory (opposite-Precategory C) _ _ _))
+      ( postcomp-comm-pushout-obj-Precategory w' i₁' i₂' α h)
+
   preserves-postcomp-morphism-from-pushout-obj-Precategory =
     preserves-precomp-morphism-into-pullback-obj-Precategory
-      ( opposite-Precategory C) t x y z f g
+      ( opposite-Precategory C) x y z f g t
 
 module _
   {l1 l2 : Level} (C : Precategory l1 l2)

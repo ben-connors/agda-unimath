@@ -72,15 +72,16 @@ module _
   (let εtop = λ f → dom-hom-arrow-Precategory C (pr1 ε f))
   (let εbot = λ f → cod-hom-arrow-Precategory C (pr1 ε f))
   (let εcomm = λ f → square-hom-arrow-Precategory C (pr1 ε f))
+  (let tp = λ f → t _ _ _ (Lmor f) (εtop f))
   where
 
   obj-id-dom-comonad-Precategory : obj-Precategory C1 → obj-Precategory C1
   pr1 (pr1 (obj-id-dom-comonad-Precategory f)) =
     dom-obj-arrow-Precategory C f
   pr2 (pr1 (obj-id-dom-comonad-Precategory f)) =
-    object-pushout-obj-Precategory C t _ _ _ (Lmor f) (εtop f)
+    object-pushout-obj-Precategory C _ _ _ (Lmor f) (εtop f) (tp f)
   pr2 (obj-id-dom-comonad-Precategory f) =
-    inr-pushout-obj-Precategory C t _ _ _ (Lmor f) (εtop f)
+    inr-pushout-obj-Precategory C _ _ _ (Lmor f) (εtop f) (tp f)
 
   hom-family-right-id-dom-comonad-Precategory :
     (f : obj-Precategory C1) →
@@ -88,14 +89,14 @@ module _
   pr1 (pr1 (hom-family-right-id-dom-comonad-Precategory f)) =
     id-hom-Precategory C
   pr2 (pr1 (hom-family-right-id-dom-comonad-Precategory f)) =
-    morphism-from-pushout-obj-Precategory C t _ _ _ (Lmor f) (εtop f)
+    morphism-from-pushout-obj-Precategory C _ _ _ (Lmor f) (εtop f) (tp f)
       ( cod-obj-arrow-Precategory C f)
       ( εbot f)
       ( pr2 f)
       ( εcomm f)
   pr2 (hom-family-right-id-dom-comonad-Precategory f) =
     ( comm-morphism-from-inr-pushout-obj-Precategory
-        C t _ _ _ (Lmor f) (εtop f) _ _ _ _) ∙
+        C _ _ _ (Lmor f) (εtop f) (tp f) _ _ _ _) ∙
     ( inv (right-unit-law-comp-hom-Precategory C _))
 
   hom-family-left-id-dom-comonad-Precategory :
@@ -104,10 +105,49 @@ module _
   pr1 (pr1 (hom-family-left-id-dom-comonad-Precategory f)) =
     εtop f
   pr2 (pr1 (hom-family-left-id-dom-comonad-Precategory f)) =
-    inl-pushout-obj-Precategory C t _ _ _ (Lmor f) (εtop f)
+    inl-pushout-obj-Precategory C _ _ _ (Lmor f) (εtop f) (tp f)
   pr2 (hom-family-left-id-dom-comonad-Precategory f) =
-    comm-pushout-obj-Precategory C t _ _ _ (Lmor f) (εtop f)
+    comm-pushout-obj-Precategory C _ _ _ (Lmor f) (εtop f) (tp f)
 
+  private module Dummy6 where
+    abstract
+      comm-bottom-hom-id-dom-comonad-Precategory :
+        (f g : obj-Precategory C1)
+        (u : hom-Precategory C1 f g) →
+        comp-hom-Precategory C
+          ( comp-hom-Precategory C
+            ( cod-hom-arrow-Precategory C (hom-family-left-id-dom-comonad-Precategory g))
+            ( cod-hom-arrow-Precategory C (L₁ u)))
+          ( Lmor f) ＝
+        comp-hom-Precategory C
+          ( comp-hom-Precategory C
+            ( mor-obj-arrow-Precategory C (obj-id-dom-comonad-Precategory g))
+            ( dom-hom-arrow-Precategory C u))
+          ( εtop f)
+      comm-bottom-hom-id-dom-comonad-Precategory f g u =
+        ( associative-comp-hom-Precategory C _ _ _) ∙
+        ( ap
+          ( λ x →
+            comp-hom-Precategory C
+              ( cod-hom-arrow-Precategory C
+                ( hom-family-left-id-dom-comonad-Precategory g))
+              ( x))
+          ( square-hom-arrow-Precategory C (L₁ u))) ∙
+        ( inv (associative-comp-hom-Precategory C _ _ _)) ∙
+        ( ap
+          ( precomp-hom-Precategory C (dom-hom-arrow-Precategory C (L₁ u)) _)
+          ( comm-pushout-obj-Precategory C _ _ _ (Lmor g) (εtop g) (tp g))) ∙
+        ( associative-comp-hom-Precategory C _ _ _ ) ∙
+        ( ap
+          ( postcomp-hom-Precategory C
+            ( mor-obj-arrow-Precategory C
+              ( obj-id-dom-comonad-Precategory g))
+              ( _))
+          ( ap (dom-hom-arrow-Precategory C)
+            ( inv (pr2 ε u)))) ∙
+        ( inv (associative-comp-hom-Precategory C _ _ _))
+  open Dummy6 public
+    
   -- Agda slows down a lot if `f` and `g` are implicit
   hom-id-dom-comonad-Precategory :
     (f g : obj-Precategory C1) →
@@ -118,7 +158,7 @@ module _
   pr1 (pr1 (hom-id-dom-comonad-Precategory f g u)) =
     dom-hom-arrow-Precategory C u
   pr2 (pr1 (hom-id-dom-comonad-Precategory f g u)) =
-    morphism-from-pushout-obj-Precategory C t _ _ _ (Lmor f) (εtop f)
+    morphism-from-pushout-obj-Precategory C _ _ _ (Lmor f) (εtop f) (tp f)
       ( cod-obj-arrow-Precategory C (obj-id-dom-comonad-Precategory g))
       ( comp-hom-Precategory C
         ( cod-hom-arrow-Precategory C
@@ -127,105 +167,74 @@ module _
       ( comp-hom-Precategory C
         ( mor-obj-arrow-Precategory C (obj-id-dom-comonad-Precategory g))
         ( dom-hom-arrow-Precategory C u))
-      rest
-    where
-      abstract
-        rest : 
-          comp-hom-Precategory C
-          (pr1 (pr1 (pr2 (pr2 C))) (pr2 (pr1 (hom-family-left-id-dom-comonad-Precategory g)))
-           (pr2 (pr1 (pr1 (pr2 L) u))))
-          (pr2 (pr1 L f))
-          ＝
-          comp-hom-Precategory C
-          (pr1 (pr1 (pr2 (pr2 C))) (pr2 (obj-id-dom-comonad-Precategory g)) (pr1 (pr1 u)))
-          (pr1 (pr1 (pr1 ε f)))
-        rest = ( ( associative-comp-hom-Precategory C _ _ _) ∙
-          ( ap
-            ( λ x →
-              comp-hom-Precategory C
-                ( cod-hom-arrow-Precategory C
-                  ( hom-family-left-id-dom-comonad-Precategory g))
-                ( x))
-            ( square-hom-arrow-Precategory C (L₁ u))) ∙
-          ( inv (associative-comp-hom-Precategory C _ _ _)) ∙
-          ( ap
-            ( precomp-hom-Precategory C (dom-hom-arrow-Precategory C (L₁ u)) _)
-            ( comm-pushout-obj-Precategory C t _ _ _ (Lmor g) (εtop g))) ∙
-          ( associative-comp-hom-Precategory C _ _ _ ) ∙
-          ( ap
-            ( postcomp-hom-Precategory C
-              ( mor-obj-arrow-Precategory C
-                ( obj-id-dom-comonad-Precategory g))
-                ( _))
-            ( ap (dom-hom-arrow-Precategory C)
-              ( inv (pr2 ε u)))) ∙
-          ( inv (associative-comp-hom-Precategory C _ _ _)))
+      ( comm-bottom-hom-id-dom-comonad-Precategory f g u)
   pr2 (hom-id-dom-comonad-Precategory f g u) =
-    comm-morphism-from-inr-pushout-obj-Precategory C t _ _ _ _ _ _ _ _ _
+    comm-morphism-from-inr-pushout-obj-Precategory C _ _ _ _ _ (tp f) _ _ _ _
 
-  abstract
-    preserves-id-id-dom-comonad-Precategory :
-      (f : obj-Precategory C1) →
-      hom-id-dom-comonad-Precategory f f (id-hom-Precategory C1) ＝
-      id-hom-Precategory C1
-    preserves-id-id-dom-comonad-Precategory f =
-      eq-hom-arrow-Precategory C _ _ _ _
-        refl
-        ( is-unique-morphism-from-pushout-obj-Precategory C t _ _ _ (Lmor f)
-          ( εtop f) _ _ _ _ (id-hom-Precategory C)
-          ( ( left-unit-law-comp-hom-Precategory C _) ∙
-            ( inv
-              ( ( ap
-                  ( λ x →
-                    comp-hom-Precategory C _ (cod-hom-arrow-Precategory C x))
-                  ( preserves-id-functor-Precategory C1 C1 L _)) ∙
-                ( right-unit-law-comp-hom-Precategory C _))))
-          ( ( left-unit-law-comp-hom-Precategory C _) ∙
-            ( inv (right-unit-law-comp-hom-Precategory C _) )))
-
-  abstract
-    preserves-comp-id-dom-comonad-Precategory :
-      (f g h : obj-Precategory C1) →
-      (v : hom-Precategory C1 g h) →
-      (u : hom-Precategory C1 f g) →
-      hom-id-dom-comonad-Precategory f h (comp-hom-Precategory C1 v u) ＝
-      comp-hom-Precategory C1
-        ( hom-id-dom-comonad-Precategory g h v)
-        ( hom-id-dom-comonad-Precategory f g u)
-    preserves-comp-id-dom-comonad-Precategory f g h v u =
-      eq-hom-arrow-Precategory C _ _ _ _
-        refl
-        ( is-unique-morphism-from-pushout-obj-Precategory C t _ _ _ (Lmor f)
-          ( εtop f) _ _ _ _
-          ( cod-hom-arrow-Precategory C
-            ( comp-hom-Precategory C1
-              ( hom-id-dom-comonad-Precategory g h v)
-              ( hom-id-dom-comonad-Precategory f g u)))
-          ( ( associative-comp-hom-Precategory C _ _ _) ∙
-            ( ap
-              ( postcomp-hom-Precategory C _ _)
-              ( comm-morphism-from-inl-pushout-obj-Precategory
-                  C t _ _ _ (Lmor f) (εtop f) _ _ _ _)) ∙
-            ( inv (associative-comp-hom-Precategory C _ _ _)) ∙
-            ( ap
-              ( precomp-hom-Precategory C _ _)
-              ( comm-morphism-from-inl-pushout-obj-Precategory
-                  C t _ _ _ (Lmor g) (εtop g) _ _ _ _)) ∙
-            ( associative-comp-hom-Precategory C _ _ _) ∙
-            ( ap
-              ( λ x → comp-hom-Precategory C _ (cod-hom-arrow-Precategory C x))
-              ( inv (preserves-comp-functor-Precategory C1 C1 L _ _))))
-          ( ( associative-comp-hom-Precategory C _ _ _) ∙
-            ( ap
-              ( postcomp-hom-Precategory C _ _)
-              ( comm-morphism-from-inr-pushout-obj-Precategory
-                  C t _ _ _ (Lmor f) (εtop f) _ _ _ _)) ∙
-            ( inv (associative-comp-hom-Precategory C _ _ _)) ∙
-            ( ap
-              ( precomp-hom-Precategory C _ _)
-              ( comm-morphism-from-inr-pushout-obj-Precategory
-                  C t _ _ _ (Lmor g) (εtop g) _ _ _ _)) ∙
-            ( associative-comp-hom-Precategory C _ _ _)))
+  private module Dummy1 where
+    abstract
+      preserves-id-id-dom-comonad-Precategory :
+        (f : obj-Precategory C1) →
+        hom-id-dom-comonad-Precategory f f (id-hom-Precategory C1) ＝
+        id-hom-Precategory C1
+      preserves-id-id-dom-comonad-Precategory f =
+        eq-hom-arrow-Precategory C _ _ _ _
+          refl
+          ( is-unique-morphism-from-pushout-obj-Precategory C _ _ _ (Lmor f)
+            ( εtop f) (tp f) _ _ _ _ (id-hom-Precategory C)
+            ( ( left-unit-law-comp-hom-Precategory C _) ∙
+              ( inv
+                ( ( ap
+                    ( λ x →
+                      comp-hom-Precategory C _ (cod-hom-arrow-Precategory C x))
+                    ( preserves-id-functor-Precategory C1 C1 L _)) ∙
+                  ( right-unit-law-comp-hom-Precategory C _))))
+            ( ( left-unit-law-comp-hom-Precategory C _) ∙
+              ( inv (right-unit-law-comp-hom-Precategory C _) )))
+  
+      preserves-comp-id-dom-comonad-Precategory :
+        (f g h : obj-Precategory C1) →
+        (v : hom-Precategory C1 g h) →
+        (u : hom-Precategory C1 f g) →
+        hom-id-dom-comonad-Precategory f h (comp-hom-Precategory C1 v u) ＝
+        comp-hom-Precategory C1
+          ( hom-id-dom-comonad-Precategory g h v)
+          ( hom-id-dom-comonad-Precategory f g u)
+      preserves-comp-id-dom-comonad-Precategory f g h v u =
+        eq-hom-arrow-Precategory C _ _ _ _
+          refl
+          ( is-unique-morphism-from-pushout-obj-Precategory C _ _ _ (Lmor f)
+            ( εtop f) (tp f) _ _ _ _
+            ( cod-hom-arrow-Precategory C
+              ( comp-hom-Precategory C1
+                ( hom-id-dom-comonad-Precategory g h v)
+                ( hom-id-dom-comonad-Precategory f g u)))
+            ( ( associative-comp-hom-Precategory C _ _ _) ∙
+              ( ap
+                ( postcomp-hom-Precategory C _ _)
+                ( comm-morphism-from-inl-pushout-obj-Precategory
+                    C _ _ _ (Lmor f) (εtop f) (tp f) _ _ _ _)) ∙
+              ( inv (associative-comp-hom-Precategory C _ _ _)) ∙
+              ( ap
+                ( precomp-hom-Precategory C _ _)
+                ( comm-morphism-from-inl-pushout-obj-Precategory
+                    C _ _ _ (Lmor g) (εtop g) (tp g) _ _ _ _)) ∙
+              ( associative-comp-hom-Precategory C _ _ _) ∙
+              ( ap
+                ( λ x → comp-hom-Precategory C _ (cod-hom-arrow-Precategory C x))
+                ( inv (preserves-comp-functor-Precategory C1 C1 L _ _))))
+            ( ( associative-comp-hom-Precategory C _ _ _) ∙
+              ( ap
+                ( postcomp-hom-Precategory C _ _)
+                ( comm-morphism-from-inr-pushout-obj-Precategory
+                    C _ _ _ (Lmor f) (εtop f) (tp f) _ _ _ _)) ∙
+              ( inv (associative-comp-hom-Precategory C _ _ _)) ∙
+              ( ap
+                ( precomp-hom-Precategory C _ _)
+                ( comm-morphism-from-inr-pushout-obj-Precategory
+                    C _ _ _ (Lmor g) (εtop g) (tp g) _ _ _ _)) ∙
+              ( associative-comp-hom-Precategory C _ _ _)))
+  open Dummy1 public
 
   id-dom-comonad-Precategory : functor-Precategory C1 C1
   pr1 id-dom-comonad-Precategory =
@@ -237,15 +246,108 @@ module _
   pr2 (pr2 (pr2 id-dom-comonad-Precategory)) =
     preserves-id-id-dom-comonad-Precategory 
 
-  abstract
-    naturality-left-id-dom-comonad-Precategory :
-      is-natural-transformation-Precategory C1 C1 L id-dom-comonad-Precategory
-        hom-family-left-id-dom-comonad-Precategory
-    naturality-left-id-dom-comonad-Precategory {f} {g} u =
-      eq-hom-arrow-Precategory C _ _ _ _
-        ( ap (dom-hom-arrow-Precategory C) ((pr2 ε) u))
-        ( comm-morphism-from-inl-pushout-obj-Precategory
-            C t _ _ _ (Lmor f) (εtop f) _ _ _ _)
+  private module Dummy2 where
+    abstract
+      naturality-left-id-dom-comonad-Precategory :
+        is-natural-transformation-Precategory C1 C1 L id-dom-comonad-Precategory
+          hom-family-left-id-dom-comonad-Precategory
+      naturality-left-id-dom-comonad-Precategory {f} {g} u =
+        eq-hom-arrow-Precategory C _ _ _ _
+          ( ap (dom-hom-arrow-Precategory C) ((pr2 ε) u))
+          ( comm-morphism-from-inl-pushout-obj-Precategory
+              C _ _ _ (Lmor f) (εtop f) (tp f) _ _ _ _)
+  
+      naturality-right-id-dom-comonad-Precategory :
+        is-natural-transformation-Precategory C1 C1
+          ( id-dom-comonad-Precategory)
+          ( id-functor-Precategory C1)
+          ( hom-family-right-id-dom-comonad-Precategory)
+      naturality-right-id-dom-comonad-Precategory {f} {g} u =
+        eq-hom-arrow-Precategory C _ _ _ _
+          ( ( right-unit-law-comp-hom-Precategory C _) ∙
+            ( inv (left-unit-law-comp-hom-Precategory C _)))
+          ( ( inv left) ∙
+            ( right))
+          where
+    
+          pushout-map :
+            hom-Precategory C
+              ( cod-obj-arrow-Precategory C (obj-id-dom-comonad-Precategory f))
+              ( cod-obj-arrow-Precategory C g)
+          pushout-map =
+            morphism-from-pushout-obj-Precategory C _ _ _ (Lmor f) (εtop f) (tp f)
+              ( cod-obj-arrow-Precategory C g)
+              ( comp-hom-Precategory C
+                ( cod-hom-arrow-Precategory C u)
+                ( cod-hom-arrow-Precategory C (pr1 ε f)))
+              ( comp-hom-Precategory C
+                ( cod-hom-arrow-Precategory C u)
+                ( mor-obj-arrow-Precategory C f))
+              ( ( associative-comp-hom-Precategory C _ _ _) ∙
+                ( ap
+                  ( postcomp-hom-Precategory C (cod-hom-arrow-Precategory C u) _)
+                  ( pr2 (pr1 ε f))) ∙
+                ( inv (associative-comp-hom-Precategory C _ _ _)))
+    
+          left :
+            pushout-map ＝
+            comp-hom-Precategory C
+              ( cod-hom-arrow-Precategory C u)
+              ( cod-hom-arrow-Precategory C
+                ( hom-family-right-id-dom-comonad-Precategory f))
+          left =
+            is-unique-morphism-from-pushout-obj-Precategory
+              C _ _ _ (Lmor f) (εtop f) (tp f) _ _ _ _ _
+              ( ( associative-comp-hom-Precategory C _ _ _) ∙
+                ( ap
+                  ( postcomp-hom-Precategory C (cod-hom-arrow-Precategory C u) _)
+                  ( comm-morphism-from-inl-pushout-obj-Precategory
+                      C _ _ _ (Lmor f) (εtop f) (tp f) _ _ _ _)))
+              ( ( associative-comp-hom-Precategory C _ _ _) ∙
+                ( ap
+                  ( postcomp-hom-Precategory C (cod-hom-arrow-Precategory C u) _)
+                  ( comm-morphism-from-inr-pushout-obj-Precategory
+                      C _ _ _ (Lmor f) (εtop f) (tp f) _ _ _ _)))
+          right :
+            pushout-map ＝
+            comp-hom-Precategory C
+              ( cod-hom-arrow-Precategory C
+                ( hom-family-right-id-dom-comonad-Precategory g))
+              ( cod-hom-arrow-Precategory C
+                ( hom-id-dom-comonad-Precategory f g u))
+          right =
+            is-unique-morphism-from-pushout-obj-Precategory
+              C _ _ _ (Lmor f) (εtop f) (tp f) _ _ _ _ _
+              ( ( associative-comp-hom-Precategory C _ _ _) ∙
+                ( ap
+                  ( postcomp-hom-Precategory C
+                    ( cod-hom-arrow-Precategory C
+                      ( hom-family-right-id-dom-comonad-Precategory g))
+                    ( _))
+                  ( comm-morphism-from-inl-pushout-obj-Precategory
+                      C _ _ _ _ _ (tp f) _ _ _ _)) ∙
+                ( inv ( associative-comp-hom-Precategory C _ _ _)) ∙
+                ( ap
+                  ( precomp-hom-Precategory C
+                    ( cod-hom-arrow-Precategory C (L₁ u))
+                    ( _))
+                  ( comm-morphism-from-inl-pushout-obj-Precategory
+                      C _ _ _ _ _ (tp g)  _ _ _ _)) ∙
+                ( inv (ap (cod-hom-arrow-Precategory C) (pr2 ε u))))
+              ( ( associative-comp-hom-Precategory C _ _ _) ∙
+                ( ap
+                  ( postcomp-hom-Precategory C
+                    ( cod-hom-arrow-Precategory C
+                      ( hom-family-right-id-dom-comonad-Precategory g))
+                    ( _))
+                  ( comm-morphism-from-inr-pushout-obj-Precategory
+                      C _ _ _ _ _ (tp f) _ _ _ _)) ∙
+                ( inv (associative-comp-hom-Precategory C _ _ _)) ∙
+                ( ap (precomp-hom-Precategory C (dom-hom-arrow-Precategory C u) _)
+                  ( comm-morphism-from-inr-pushout-obj-Precategory
+                      C _ _ _ _ _ (tp g) _ _ _ _)) ∙
+                ( inv (square-hom-arrow-Precategory C u)))
+  open Dummy2 public
 
   left-id-dom-comonad-Precategory :
     natural-transformation-Precategory C1 C1 L id-dom-comonad-Precategory
@@ -253,98 +355,6 @@ module _
     hom-family-left-id-dom-comonad-Precategory
   pr2 left-id-dom-comonad-Precategory =
     naturality-left-id-dom-comonad-Precategory
-
-  abstract
-    naturality-right-id-dom-comonad-Precategory :
-      is-natural-transformation-Precategory C1 C1
-        ( id-dom-comonad-Precategory)
-        ( id-functor-Precategory C1)
-        ( hom-family-right-id-dom-comonad-Precategory)
-    naturality-right-id-dom-comonad-Precategory {f} {g} u =
-      eq-hom-arrow-Precategory C _ _ _ _
-        ( ( right-unit-law-comp-hom-Precategory C _) ∙
-          ( inv (left-unit-law-comp-hom-Precategory C _)))
-        ( ( inv left) ∙
-          ( right))
-        where
-  
-        pushout-map :
-          hom-Precategory C
-            ( cod-obj-arrow-Precategory C (obj-id-dom-comonad-Precategory f))
-            ( cod-obj-arrow-Precategory C g)
-        pushout-map =
-          morphism-from-pushout-obj-Precategory C t _ _ _ (Lmor f) (εtop f)
-            ( cod-obj-arrow-Precategory C g)
-            ( comp-hom-Precategory C
-              ( cod-hom-arrow-Precategory C u)
-              ( cod-hom-arrow-Precategory C (pr1 ε f)))
-            ( comp-hom-Precategory C
-              ( cod-hom-arrow-Precategory C u)
-              ( mor-obj-arrow-Precategory C f))
-            ( ( associative-comp-hom-Precategory C _ _ _) ∙
-              ( ap
-                ( postcomp-hom-Precategory C (cod-hom-arrow-Precategory C u) _)
-                ( pr2 (pr1 ε f))) ∙
-              ( inv (associative-comp-hom-Precategory C _ _ _)))
-  
-        left :
-          pushout-map ＝
-          comp-hom-Precategory C
-            ( cod-hom-arrow-Precategory C u)
-            ( cod-hom-arrow-Precategory C
-              ( hom-family-right-id-dom-comonad-Precategory f))
-        left =
-          is-unique-morphism-from-pushout-obj-Precategory
-            C t _ _ _ (Lmor f) (εtop f) _ _ _ _ _
-            ( ( associative-comp-hom-Precategory C _ _ _) ∙
-              ( ap
-                ( postcomp-hom-Precategory C (cod-hom-arrow-Precategory C u) _)
-                ( comm-morphism-from-inl-pushout-obj-Precategory
-                    C t _ _ _ (Lmor f) (εtop f) _ _ _ _)))
-            ( ( associative-comp-hom-Precategory C _ _ _) ∙
-              ( ap
-                ( postcomp-hom-Precategory C (cod-hom-arrow-Precategory C u) _)
-                ( comm-morphism-from-inr-pushout-obj-Precategory
-                    C t _ _ _ (Lmor f) (εtop f) _ _ _ _)))
-        right :
-          pushout-map ＝
-          comp-hom-Precategory C
-            ( cod-hom-arrow-Precategory C
-              ( hom-family-right-id-dom-comonad-Precategory g))
-            ( cod-hom-arrow-Precategory C
-              ( hom-id-dom-comonad-Precategory f g u))
-        right =
-          is-unique-morphism-from-pushout-obj-Precategory
-            C t _ _ _ (Lmor f) (εtop f) _ _ _ _ _
-            ( ( associative-comp-hom-Precategory C _ _ _) ∙
-              ( ap
-                ( postcomp-hom-Precategory C
-                  ( cod-hom-arrow-Precategory C
-                    ( hom-family-right-id-dom-comonad-Precategory g))
-                  ( _))
-                ( comm-morphism-from-inl-pushout-obj-Precategory
-                    C t _ _ _ _ _ _ _ _ _)) ∙
-              ( inv ( associative-comp-hom-Precategory C _ _ _)) ∙
-              ( ap
-                ( precomp-hom-Precategory C
-                  ( cod-hom-arrow-Precategory C (L₁ u))
-                  ( _))
-                ( comm-morphism-from-inl-pushout-obj-Precategory
-                    C t _ _ _ _ _ _ _ _ _)) ∙
-              ( inv (ap (cod-hom-arrow-Precategory C) (pr2 ε u))))
-            ( ( associative-comp-hom-Precategory C _ _ _) ∙
-              ( ap
-                ( postcomp-hom-Precategory C
-                  ( cod-hom-arrow-Precategory C
-                    ( hom-family-right-id-dom-comonad-Precategory g))
-                  ( _))
-                ( comm-morphism-from-inr-pushout-obj-Precategory
-                    C t _ _ _ _ _ _ _ _ _)) ∙
-              ( inv (associative-comp-hom-Precategory C _ _ _)) ∙
-              ( ap (precomp-hom-Precategory C (dom-hom-arrow-Precategory C u) _)
-                ( comm-morphism-from-inr-pushout-obj-Precategory
-                    C t _ _ _ _ _ _ _ _ _)) ∙
-              ( inv (square-hom-arrow-Precategory C u)))
         
   right-id-dom-comonad-Precategory :
     natural-transformation-Precategory C1 C1
@@ -373,7 +383,7 @@ module _
         eq-hom-arrow-Precategory C _ _ _ _
           ( left-unit-law-comp-hom-Precategory C _)
           ( comm-morphism-from-inl-pushout-obj-Precategory
-              C t _ _ _ (Lmor f) (εtop f) _ _ _ _ ))
+              C _ _ _ (Lmor f) (εtop f) (tp f) _ _ _ _ ))
 
   module _
     (let LL = comp-functor-Precategory C1 C1 C1 L L)
@@ -395,49 +405,51 @@ module _
     (let βL = right-whisker-natural-transformation-Precategory C1 C1 C1 L M β L)
     where
     
-    abstract
-      δ₀-pushout-comm :
-        (f : obj-Precategory C1) →
-        comp-hom-Precategory C
-          ( comp-hom-Precategory C
-            ( cod-hom-arrow-Precategory C (M₁ _ _ (pr1 β f)))
+    private module Dummy4 where
+      abstract
+        δ₀-pushout-comm :
+          (f : obj-Precategory C1) →
+          comp-hom-Precategory C
             ( comp-hom-Precategory C
-              ( cod-hom-arrow-Precategory C (pr1 β (L₀ f)))
-              ( cod-hom-arrow-Precategory C (ν₀ f))))
-          ( Lmor f) ＝
-        comp-hom-Precategory C
-          ( mor-obj-arrow-Precategory C (M₀ (M₀ f)))
-          ( εtop f)
-      δ₀-pushout-comm f =
-        ( pasting-horizontal-coherence-square-hom-Precategory C
-          ( _)
-          ( dom-hom-arrow-Precategory C (M₁ _ _ (pr1 β f)))
-          ( mor-obj-arrow-Precategory C (L₀ f))
-          ( mor-obj-arrow-Precategory C (M₀ (L₀ f)))
-          ( mor-obj-arrow-Precategory C (M₀ (M₀ f)))
-          ( _)
-          ( cod-hom-arrow-Precategory C (M₁ _ _ (pr1 β f)))
+              ( cod-hom-arrow-Precategory C (M₁ _ _ (pr1 β f)))
+              ( comp-hom-Precategory C
+                ( cod-hom-arrow-Precategory C (pr1 β (L₀ f)))
+                ( cod-hom-arrow-Precategory C (ν₀ f))))
+            ( Lmor f) ＝
+          comp-hom-Precategory C
+            ( mor-obj-arrow-Precategory C (M₀ (M₀ f)))
+            ( εtop f)
+        δ₀-pushout-comm f =
           ( pasting-horizontal-coherence-square-hom-Precategory C
-            ( dom-hom-arrow-Precategory C (pr1 ν f))
-            ( dom-hom-arrow-Precategory C (pr1 β (L₀ f)))
+            ( _)
+            ( dom-hom-arrow-Precategory C (M₁ _ _ (pr1 β f)))
             ( mor-obj-arrow-Precategory C (L₀ f))
-            ( mor-obj-arrow-Precategory C (L₀ (L₀ f)))
             ( mor-obj-arrow-Precategory C (M₀ (L₀ f)))
-            ( cod-hom-arrow-Precategory C (pr1 ν f))
-            ( cod-hom-arrow-Precategory C (pr1 β (L₀ f)))
-            ( square-hom-arrow-Precategory C (pr1 ν f))
-            ( square-hom-arrow-Precategory C (pr1 β (L₀ f))))
-          ( square-hom-arrow-Precategory C (M₁ _ _ (pr1 β f)))) ∙
-        ( inv (associative-comp-hom-Precategory C _ _ _)) ∙
-        ( ap (postcomp-hom-Precategory C _ _)
-          ( ap (λ x → dom-hom-arrow-Precategory C (pr1 x f)) Lright)) ∙
-        ( right-unit-law-comp-hom-Precategory C _)
+            ( mor-obj-arrow-Precategory C (M₀ (M₀ f)))
+            ( _)
+            ( cod-hom-arrow-Precategory C (M₁ _ _ (pr1 β f)))
+            ( pasting-horizontal-coherence-square-hom-Precategory C
+              ( dom-hom-arrow-Precategory C (pr1 ν f))
+              ( dom-hom-arrow-Precategory C (pr1 β (L₀ f)))
+              ( mor-obj-arrow-Precategory C (L₀ f))
+              ( mor-obj-arrow-Precategory C (L₀ (L₀ f)))
+              ( mor-obj-arrow-Precategory C (M₀ (L₀ f)))
+              ( cod-hom-arrow-Precategory C (pr1 ν f))
+              ( cod-hom-arrow-Precategory C (pr1 β (L₀ f)))
+              ( square-hom-arrow-Precategory C (pr1 ν f))
+              ( square-hom-arrow-Precategory C (pr1 β (L₀ f))))
+            ( square-hom-arrow-Precategory C (M₁ _ _ (pr1 β f)))) ∙
+          ( inv (associative-comp-hom-Precategory C _ _ _)) ∙
+          ( ap (postcomp-hom-Precategory C _ _)
+            ( ap (λ x → dom-hom-arrow-Precategory C (pr1 x f)) Lright)) ∙
+          ( right-unit-law-comp-hom-Precategory C _)
+    open Dummy4 public
 
     δ₀ : (f : obj-Precategory C1) →
       hom-Precategory C1 (M₀ f) (M₀ (M₀ f))
     pr1 (pr1 (δ₀ f)) = id-hom-Precategory C
     pr2 (pr1 (δ₀ f)) =
-      morphism-from-pushout-obj-Precategory C t _ _ _ (Lmor f) (εtop f) _
+      morphism-from-pushout-obj-Precategory C _ _ _ (Lmor f) (εtop f) (tp f) _
         ( comp-hom-Precategory C
           ( cod-hom-arrow-Precategory C (M₁ _ _ (pr1 β f)))
           ( comp-hom-Precategory C
@@ -446,102 +458,107 @@ module _
         ( mor-obj-arrow-Precategory C (M₀ (M₀ f)))
         ( δ₀-pushout-comm f)
     pr2 (δ₀ f) =
-      ( comm-morphism-from-inr-pushout-obj-Precategory C t _ _ _ _ _ _ _ _ _) ∙
+      ( comm-morphism-from-inr-pushout-obj-Precategory C _ _ _ _ _ (tp f) _ _ _ _) ∙
       ( inv (right-unit-law-comp-hom-Precategory C _))
 
-    abstract
-      δ₀c : (f : obj-Precategory C1) →
-        comp-hom-Precategory C1 (δ₀ f) (pr1 β f) ＝
-        comp-hom-Precategory C1
-          ( comp-hom-Precategory C1
-            ( M₁ _ _ (pr1 β f))
-            ( pr1 β (L₀ f)))
-          ( ν₀ f)
-      δ₀c f =
-        eq-hom-arrow-Precategory C _ _ _ _
-          ( ( left-unit-law-comp-hom-Precategory C _ ) ∙
-            ( inv
-              ( ( associative-comp-hom-Precategory C _ _ _) ∙
-                ( ap
-                  ( λ x → comp-hom-Precategory C (dha (pr1 β f)) (dha (pr1 x f)))
-                  ( Lright)) ∙
-                ( right-unit-law-comp-hom-Precategory C _))))
-          ( ( comm-morphism-from-inl-pushout-obj-Precategory C t _ _ _ _ _ _ _ _ (δ₀-pushout-comm f)) ∙
-            ( inv (associative-comp-hom-Precategory C _ _ _)))
+    private module Dummy3 where
+      abstract
+        δ₀c : (f : obj-Precategory C1) →
+          comp-hom-Precategory C1 (δ₀ f) (pr1 β f) ＝
+          comp-hom-Precategory C1
+            ( comp-hom-Precategory C1
+              ( M₁ _ _ (pr1 β f))
+              ( pr1 β (L₀ f)))
+            ( ν₀ f)
+        δ₀c f =
+          eq-hom-arrow-Precategory C _ _ _ _
+            ( ( left-unit-law-comp-hom-Precategory C _ ) ∙
+              ( inv
+                ( ( associative-comp-hom-Precategory C _ _ _) ∙
+                  ( ap
+                    ( λ x → comp-hom-Precategory C (dha (pr1 β f)) (dha (pr1 x f)))
+                    ( Lright)) ∙
+                  ( right-unit-law-comp-hom-Precategory C _))))
+            ( ( comm-morphism-from-inl-pushout-obj-Precategory C _ _ _ _ _ (tp f) _ _ _ (δ₀-pushout-comm f)) ∙
+              ( inv (associative-comp-hom-Precategory C _ _ _)))
+  
+        δ₀c' : (f : obj-Precategory C1) →
+          comp-hom-Precategory C (cha (δ₀ f)) (pr2 (M₀ f)) ＝
+          pr2 (M₀ (M₀ f))
+        δ₀c' f =
+          comm-morphism-from-inr-pushout-obj-Precategory C _ _ _ _ _ (tp f) _ _ _ (δ₀-pushout-comm f)
+    open Dummy3 public
 
-      δ₀c' : (f : obj-Precategory C1) →
-        comp-hom-Precategory C (cha (δ₀ f)) (pr2 (M₀ f)) ＝
-        pr2 (M₀ (M₀ f))
-      δ₀c' f =
-        comm-morphism-from-inr-pushout-obj-Precategory C t _ _ _ _ _ _ _ _ (δ₀-pushout-comm f)
-
-    right1b :
-      {f g : obj-Precategory C1} (u : hom-Precategory C1 f g) →
-      comp-hom-Precategory C1
-        ( comp-hom-Precategory C1
-          (δ₀ g)
-          (M₁ f g u))
-        ( pr1 β f) ＝
-      comp-hom-Precategory C1
-        ( M₁ (M₀ f) (M₀ g) (M₁ f g u))
-        ( comp-hom-Precategory C1
-          ( M₁ (L₀ f) (M₀ f) (pr1 β f))
-          ( comp-hom-Precategory C1
-            ( pr1 β (L₀ f))
-            ( ν₀ f)))
-    right1b {f} {g} u = 
-      ( associative-comp-hom-Precategory C1 (δ₀ g) (M₁ f g u) (pr1 β f)) ∙
-      ( ap
-        ( comp-hom-Precategory C1 (δ₀ g))
-        ( pr2 β u)) ∙ 
-      ( inv (associative-comp-hom-Precategory C1 (δ₀ g) (pr1 β g) (L₁ u))) ∙
-      ( ap
-        ( precomp-hom-Precategory C1 (L₁ u) _)
-        ( δ₀c g)) ∙
-      ( associative-comp-hom-Precategory C1
-        ( comp-hom-Precategory C1 (M₁ (L₀ g) (M₀ g) (pr1 β g)) (pr1 β (L₀ g)))
-        ( pr1 ν g)
-        ( L₁ u)) ∙
-      ( ap
-        ( comp-hom-Precategory C1
-          ( comp-hom-Precategory C1 (pr1 Mβ g) (pr1 βL g)))
-        ( inv (pr2 ν u))) ∙
-      ( inv
-        ( associative-comp-hom-Precategory C1
-          ( comp-hom-Precategory C1 (M₁ (L₀ g) (M₀ g) (pr1 β g)) (pr1 β (L₀ g)))
-          ( L₁ (L₁ u))
-          ( pr1 ν f))) ∙
-      ( ap
-        ( precomp-hom-Precategory C1 (pr1 ν f) _)
-        ( ( associative-comp-hom-Precategory C1
-            ( M₁ (L₀ g) (M₀ g) (pr1 β g))
-            ( pr1 β (L₀ g))
-            ( L₁ (L₁ u))) ∙
+    private module Dummy5 where
+      abstract
+        right1b :
+          {f g : obj-Precategory C1} (u : hom-Precategory C1 f g) →
+          comp-hom-Precategory C1
+            ( comp-hom-Precategory C1
+              (δ₀ g)
+              (M₁ f g u))
+            ( pr1 β f) ＝
+          comp-hom-Precategory C1
+            ( M₁ (M₀ f) (M₀ g) (M₁ f g u))
+            ( comp-hom-Precategory C1
+              ( M₁ (L₀ f) (M₀ f) (pr1 β f))
+              ( comp-hom-Precategory C1
+                ( pr1 β (L₀ f))
+                ( ν₀ f)))
+        right1b {f} {g} u = 
+          ( associative-comp-hom-Precategory C1 (δ₀ g) (M₁ f g u) (pr1 β f)) ∙
           ( ap
-            ( comp-hom-Precategory C1 (pr1 Mβ g))
-            ( inv (pr2 βL u))) ∙
+            ( comp-hom-Precategory C1 (δ₀ g))
+            ( pr2 β u)) ∙ 
+          ( inv (associative-comp-hom-Precategory C1 (δ₀ g) (pr1 β g) (L₁ u))) ∙
+          ( ap
+            ( precomp-hom-Precategory C1 (L₁ u) _)
+            ( δ₀c g)) ∙
+          ( associative-comp-hom-Precategory C1
+            ( comp-hom-Precategory C1 (M₁ (L₀ g) (M₀ g) (pr1 β g)) (pr1 β (L₀ g)))
+            ( pr1 ν g)
+            ( L₁ u)) ∙
+          ( ap
+            ( comp-hom-Precategory C1
+              ( comp-hom-Precategory C1 (pr1 Mβ g) (pr1 βL g)))
+            ( inv (pr2 ν u))) ∙
           ( inv
             ( associative-comp-hom-Precategory C1
-              ( pr1 Mβ g)
-              ( M₁ (L₀ f) (L₀ g) (L₁ u))
-              ( pr1 β (L₀ f)))) ∙
+              ( comp-hom-Precategory C1 (M₁ (L₀ g) (M₀ g) (pr1 β g)) (pr1 β (L₀ g)))
+              ( L₁ (L₁ u))
+              ( pr1 ν f))) ∙
           ( ap
-            ( precomp-hom-Precategory C1 (pr1 βL f) _)
-            ( inv (pr2 Mβ u))) ∙
+            ( precomp-hom-Precategory C1 (pr1 ν f) _)
+            ( ( associative-comp-hom-Precategory C1
+                ( M₁ (L₀ g) (M₀ g) (pr1 β g))
+                ( pr1 β (L₀ g))
+                ( L₁ (L₁ u))) ∙
+              ( ap
+                ( comp-hom-Precategory C1 (pr1 Mβ g))
+                ( inv (pr2 βL u))) ∙
+              ( inv
+                ( associative-comp-hom-Precategory C1
+                  ( pr1 Mβ g)
+                  ( M₁ (L₀ f) (L₀ g) (L₁ u))
+                  ( pr1 β (L₀ f)))) ∙
+              ( ap
+                ( precomp-hom-Precategory C1 (pr1 βL f) _)
+                ( inv (pr2 Mβ u))) ∙
+              ( associative-comp-hom-Precategory C1
+                ( M₁ (M₀ f) (M₀ g) (M₁ f g u))
+                ( pr1 Mβ f)
+                ( pr1 β (L₀ f))))) ∙
           ( associative-comp-hom-Precategory C1
             ( M₁ (M₀ f) (M₀ g) (M₁ f g u))
-            ( pr1 Mβ f)
-            ( pr1 β (L₀ f))))) ∙
-      ( associative-comp-hom-Precategory C1
-        ( M₁ (M₀ f) (M₀ g) (M₁ f g u))
-        ( comp-hom-Precategory C1 (pr1 Mβ f) (pr1 β (L₀ f)))
-        ( pr1 ν f)) ∙ 
-      ( ap
-        ( comp-hom-Precategory C1 (M₁ (M₀ f) (M₀ g) (M₁ f g u)))
-        ( associative-comp-hom-Precategory C1
-          ( pr1 Mβ f)
-          ( pr1 β (L₀ f))
-          ( pr1 ν f)))
+            ( comp-hom-Precategory C1 (pr1 Mβ f) (pr1 β (L₀ f)))
+            ( pr1 ν f)) ∙ 
+          ( ap
+            ( comp-hom-Precategory C1 (M₁ (M₀ f) (M₀ g) (M₁ f g u)))
+            ( associative-comp-hom-Precategory C1
+              ( pr1 Mβ f)
+              ( pr1 β (L₀ f))
+              ( pr1 ν f)))
+    open Dummy5 public
 
     nδ : 
       is-natural-transformation-Precategory C1 C1 M MM δ₀
@@ -549,8 +566,8 @@ module _
       eq-hom-arrow-Precategory C _ _ _ _
         ( ( right-unit-law-comp-hom-Precategory C _) ∙
           ( inv (left-unit-law-comp-hom-Precategory C _)))
-        ( ( preserves-postcomp-morphism-from-pushout-obj-Precategory C t _ _ _
-             _ _ _
+        ( ( preserves-postcomp-morphism-from-pushout-obj-Precategory C _ _ _
+             _ _ (tp f) _
              ( comp-hom-Precategory C
                ( cod-hom-arrow-Precategory C (M₁ _ _ (pr1 β f)))
                ( comp-hom-Precategory C
@@ -578,9 +595,9 @@ module _
             ( δ₀c' g)) ∙
           ( inv (pr2 (M₁ (M₀ f) (M₀ g) (M₁ f g u))))
     
-        right = is-unique-morphism-from-pushout-obj-Precategory C t _ _ _
+        right = is-unique-morphism-from-pushout-obj-Precategory C _ _ _
           ( Lmor f)
-          ( εtop f)
+          ( εtop f) (tp f)
           _ _ _ _
           ( comp-hom-Precategory C
             ( cod-hom-arrow-Precategory C (δ₀ g))
