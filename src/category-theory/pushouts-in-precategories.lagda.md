@@ -147,6 +147,27 @@ module _
       is-unique-morphism-into-pullback-obj-Precategory (opposite-Precategory C)
         x y z f g t w' i₁' i₂' α
 
+  is-unique-pair-morphism-from-pushout-obj-Precategory :
+    {w : obj-Precategory C}
+    (h k : hom-Precategory C object-pushout-obj-Precategory w) →
+    comp-hom-Precategory C h inl-pushout-obj-Precategory ＝
+    comp-hom-Precategory C k inl-pushout-obj-Precategory →
+    comp-hom-Precategory C h inr-pushout-obj-Precategory ＝
+    comp-hom-Precategory C k inr-pushout-obj-Precategory →
+    h ＝ k
+  is-unique-pair-morphism-from-pushout-obj-Precategory =
+    is-unique-pair-morphism-into-pullback-obj-Precategory
+      (opposite-Precategory C) x y z f g t
+
+  is-id-morphism-from-pushout-obj-Precategory :
+    (h : hom-Precategory C object-pushout-obj-Precategory object-pushout-obj-Precategory) →
+    comp-hom-Precategory C h inl-pushout-obj-Precategory ＝ inl-pushout-obj-Precategory →
+    comp-hom-Precategory C h inr-pushout-obj-Precategory ＝ inr-pushout-obj-Precategory →
+    h ＝ id-hom-Precategory C
+  is-id-morphism-from-pushout-obj-Precategory =
+    is-id-morphism-into-pullback-obj-Precategory (opposite-Precategory C)
+      x y z f g t
+
   postcomp-comm-pushout-obj-Precategory :
     (w' : obj-Precategory C)
     (i₁' : hom-Precategory C y w')

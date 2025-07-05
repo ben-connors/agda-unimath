@@ -149,6 +149,70 @@ module _
         ( pr1)
         ( pr2 (pr2 (pr2 (pr2 (pr2 t))) w' p₁' p₂' α) (h' , α₁ , α₂))
 
+  is-unique-pair-morphism-into-pullback-obj-Precategory :
+    {w : obj-Precategory C}
+    (h k : hom-Precategory C w object-pullback-obj-Precategory) →
+    comp-hom-Precategory C pr1-pullback-obj-Precategory h ＝
+    comp-hom-Precategory C pr1-pullback-obj-Precategory k →
+    comp-hom-Precategory C pr2-pullback-obj-Precategory h ＝
+    comp-hom-Precategory C pr2-pullback-obj-Precategory k →
+    h ＝ k
+  is-unique-pair-morphism-into-pullback-obj-Precategory {w} h k l r =
+    ( inv
+      ( is-unique-morphism-into-pullback-obj-Precategory
+        ( w)
+        ( comp-hom-Precategory C pr1-pullback-obj-Precategory k)
+        ( comp-hom-Precategory C pr2-pullback-obj-Precategory k)
+        ( comm)
+        ( h)
+        ( l)
+        ( r))) ∙
+    ( is-unique-morphism-into-pullback-obj-Precategory
+      ( w)
+      ( comp-hom-Precategory C pr1-pullback-obj-Precategory k)
+      ( comp-hom-Precategory C pr2-pullback-obj-Precategory k)
+      ( comm)
+      ( k)
+      ( refl)
+      ( refl))
+    where
+
+    comm :
+      comp-hom-Precategory C
+        f
+        ( comp-hom-Precategory C pr1-pullback-obj-Precategory k) ＝
+      comp-hom-Precategory C
+        g
+        ( comp-hom-Precategory C pr2-pullback-obj-Precategory k)
+    comm =
+      ( inv (associative-comp-hom-Precategory C _ _ _)) ∙
+      ( ap (precomp-hom-Precategory C k _) comm-pullback-obj-Precategory) ∙
+      ( associative-comp-hom-Precategory C _ _ _)
+
+  is-id-morphism-into-pullback-obj-Precategory :
+    (h : hom-Precategory C object-pullback-obj-Precategory object-pullback-obj-Precategory) →
+    comp-hom-Precategory C pr1-pullback-obj-Precategory h ＝ pr1-pullback-obj-Precategory →
+    comp-hom-Precategory C pr2-pullback-obj-Precategory h ＝ pr2-pullback-obj-Precategory →
+    h ＝ id-hom-Precategory C
+  is-id-morphism-into-pullback-obj-Precategory h l r =
+    ( inv
+      ( is-unique-morphism-into-pullback-obj-Precategory
+        ( object-pullback-obj-Precategory)
+        ( pr1-pullback-obj-Precategory)
+        ( pr2-pullback-obj-Precategory)
+        ( comm-pullback-obj-Precategory)
+        ( h)
+        ( l)
+        ( r))) ∙
+    ( is-unique-morphism-into-pullback-obj-Precategory
+      ( object-pullback-obj-Precategory)
+      ( pr1-pullback-obj-Precategory)
+      ( pr2-pullback-obj-Precategory)
+      ( comm-pullback-obj-Precategory)
+      ( id-hom-Precategory C)
+      ( right-unit-law-comp-hom-Precategory C _)
+      ( right-unit-law-comp-hom-Precategory C _))
+
   precomp-comm-pullback-obj-Precategory :
     (w' : obj-Precategory C)
     (p₁' : hom-Precategory C w' y)
