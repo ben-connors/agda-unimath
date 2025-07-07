@@ -1,7 +1,7 @@
-# Density factorization systems in categories
+# The identity-on-domain factorization of a comonad
 
 ```agda
-module category-theory.density-factorization-systems-categories where
+module category-theory.id-dom-comonad-precategories where
 ```
 
 <details><summary>Imports</summary>
@@ -52,7 +52,9 @@ open import foundation-core.transport-along-identifications
 
 </details>
 
-## Every comonad on an arrow category factors through one which is the identity on the domain
+## Idea
+
+Every comonad on an arrow category factors through one which is the identity on the domain
 
 We first show this for copointed functors: given an arbitrary copointed functor `(L : C1 → C1, ε : L ⇒ id)`, we get a second copointed functor `(M, α)` and `β : L ⇒ M` such that `ε = α ∘ β`, each component of `β` is a pushout square, and `dom ∘ L = id` judgementally on objects.
 
@@ -727,8 +729,8 @@ module _
                   ( inv (pr2 (M₁ (M₀ f) (M₀ g) (M₁ f g u)))))))
     open Dummy5 public
 
-    δ : natural-transformation-Precategory C1 C1 M MM
-    δ = δ₀ , nδ
+    comul-id-dom-comonad-Precategory : natural-transformation-Precategory C1 C1 M MM
+    comul-id-dom-comonad-Precategory = δ₀ , nδ
 
     private module ComonadLaws where
       abstract
@@ -859,11 +861,12 @@ module _
 
         associativity-law-id-dom-comonad-Precategory :
           comp-natural-transformation-Precategory C1 C1 M MM MMM
-            ( left-whisker-natural-transformation-Precategory C1 C1 C1 M MM M δ)
-            δ ＝
+            ( left-whisker-natural-transformation-Precategory C1 C1 C1 M MM M
+              comul-id-dom-comonad-Precategory)
+            comul-id-dom-comonad-Precategory ＝
           comp-natural-transformation-Precategory C1 C1 M MM MMM
-            ( right-whisker-natural-transformation-Precategory C1 C1 C1 M MM δ M)
-            δ
+            ( right-whisker-natural-transformation-Precategory C1 C1 C1 M MM comul-id-dom-comonad-Precategory M)
+            comul-id-dom-comonad-Precategory
         associativity-law-id-dom-comonad-Precategory =
           eq-htpy-hom-family-natural-transformation-Precategory C1 C1 M MMM _ _
             ( hom-family-associativity-law-id-dom-comonad-Precategory)
@@ -925,7 +928,7 @@ module _
             ( right-unit-law-comp-hom-Precategory C1 _)
     
         left-counit-law-id-dom-comonad-Precategory :
-          comp-natural-transformation-Precategory C1 C1 M MM M Mα δ ＝
+          comp-natural-transformation-Precategory C1 C1 M MM M Mα comul-id-dom-comonad-Precategory ＝
           id-natural-transformation-Precategory C1 C1 M
         left-counit-law-id-dom-comonad-Precategory =
           eq-htpy-hom-family-natural-transformation-Precategory C1 C1 M M _ _
@@ -995,7 +998,9 @@ module _
               ( right-unit-law-comp-hom-Precategory C1 _)
 
         right-counit-law-id-dom-comonad-Precategory :
-          comp-natural-transformation-Precategory C1 C1 M MM M αM δ ＝
+          comp-natural-transformation-Precategory C1 C1 M MM M
+            ( αM)
+            ( comul-id-dom-comonad-Precategory) ＝
           id-natural-transformation-Precategory C1 C1 M
         right-counit-law-id-dom-comonad-Precategory =
           eq-htpy-hom-family-natural-transformation-Precategory C1 C1 M M _ _
@@ -1004,8 +1009,8 @@ module _
 
     id-dom-comonad-Precategory : comonad-Precategory C1
     id-dom-comonad-Precategory =
-      ( M , α) ,
-      δ ,
+      ( M , right-id-dom-comonad-Precategory) ,
+      comul-id-dom-comonad-Precategory ,
       associativity-law-id-dom-comonad-Precategory ,
       left-counit-law-id-dom-comonad-Precategory ,
       right-counit-law-id-dom-comonad-Precategory
