@@ -154,7 +154,7 @@ module _
 
 ## Properties
 
-### Characterization of equality left extensions of functors between precategories
+### Characterization of equality between left extensions of functors between precategories
 
 ```agda
   coherence-htpy-left-extension-Precategory :
@@ -252,10 +252,10 @@ module _
 
 ### Self-extensions
 
-In the case of extending a functor along itself, we have distinguished right
-extensions: the identity map gives a right extension (with the identity natural
-transformation) and we can iterate any right extension `R` to get a right
-extension `R²`.
+In the case of extending a functor along itself, we have distinguished left
+extensions: the identity map gives a left extension (with the identity natural
+transformation) and we can iterate any left extension `L` to get a left
+extension `L²`.
 
 ```agda
 module _
@@ -269,17 +269,17 @@ module _
   pr2 id-left-extension-Precategory =
     id-natural-transformation-Precategory C D F
 
-  double-left-extension-Precategory :
+  square-left-extension-Precategory :
     (L : left-extension-Precategory C D D F F) →
     left-extension-Precategory C D D F F
-  pr1 (double-left-extension-Precategory L) =
+  pr1 (square-left-extension-Precategory L) =
     comp-functor-Precategory D D D
       ( extension-left-extension-Precategory C D D F F L)
       ( extension-left-extension-Precategory C D D F F L)
-  pr2 (double-left-extension-Precategory L) =
+  pr2 (square-left-extension-Precategory L) =
     comp-natural-transformation-Precategory C D
       ( F)
-      (comp-functor-Precategory C D D
+      ( comp-functor-Precategory C D D
         ( extension-left-extension-Precategory C D D F F L)
         ( F))
       ( comp-functor-Precategory C D D
@@ -289,7 +289,7 @@ module _
         ( F))
       ( left-whisker-natural-transformation-Precategory C D D
         ( F)
-        (comp-functor-Precategory C D D
+        ( comp-functor-Precategory C D D
           ( extension-left-extension-Precategory C D D F F L)
           ( F))
         ( extension-left-extension-Precategory C D D F F L)

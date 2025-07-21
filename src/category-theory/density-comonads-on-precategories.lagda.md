@@ -1,4 +1,4 @@
-# Density comonads in precategories
+# Density comonads on precategories
 
 ```agda
 module category-theory.density-comonads-on-precategories where
@@ -8,12 +8,12 @@ module category-theory.density-comonads-on-precategories where
 
 ```agda
 open import category-theory.coalgebras-comonads-on-precategories
-open import category-theory.functors-precategories
 open import category-theory.comonads-on-precategories
-open import category-theory.natural-transformations-functors-precategories
-open import category-theory.precategories
+open import category-theory.functors-precategories
 open import category-theory.left-extensions-precategories
 open import category-theory.left-kan-extensions-precategories
+open import category-theory.natural-transformations-functors-precategories
+open import category-theory.precategories
 
 open import foundation.action-on-identifications-functions
 open import foundation.dependent-pair-types
@@ -26,25 +26,26 @@ open import foundation.universe-levels
 
 ## Idea
 
-Given an arbitrary functor `F : C → D`, any [left Kan
+Given an arbitrary [functor](category-theory.functors-precategories.md)
+`F : C → D`, any [left Kan
 extension](category-theory.left-kan-extensions-precategories.md] `L` of `F`
-along itself `F` has a canonical
-[comonad](category-theory.comonads-on-precategories.md] structure, called the
+along itself has a canonical
+[comonad](category-theory.comonads-on-precategories.md) structure, called the
 {{#concept "density comonad" Agda=density-comonad-Precategory}} of `L`.
 
 ## Comonad structure
 
-The counit and comultiplication of the density comonads follow from the "existence"
-part of the universal property of the right Kan extension. We use two right
-extensions: the identity map on `D` trivially gives a right extension of `D`
-along itself, and `L²` gives an extension by whiskering and composing the
+The counit and comultiplication of the density comonads follow from the
+"existence" part of the universal property of the right Kan extension. We use
+two right extensions: the identity map on `D` trivially gives a right extension
+of `D` along itself, and `L²` gives an extension by whiskering and composing the
 natural transformation. By the universal property of `L`, these give natural
 transformations `η : id ⇒ L` and `μ : L² ⇒ L`, respectively. From their
 definition via the universal property, we have two computation rules for these
 natural transformations (where ∙ is whiskering):
 
 1. `α ∘ (η ∙ F) ＝ id_F`; and
-2. `α ∘ (μ ∙ F) = α ∘ (L ∙ α)`.
+2. `α ∘ (μ ∙ F) ＝ α ∘ (L ∙ α)`.
 
 ```agda
 module _
@@ -88,7 +89,7 @@ module _
     map-inv-is-equiv
       ( KL (comp-functor-Precategory D D D L L))
       ( pr2
-        ( double-left-extension-Precategory C D F
+        ( square-left-extension-Precategory C D F
           ( left-extension-left-kan-extension-Precategory C D D F F Lk)))
 
   abstract
@@ -113,19 +114,11 @@ module _
 
 ## Comonad laws
 
-Comonad laws follow from the "uniqueness" part of the right Kan extension.
+Comonad laws follow from the "uniqueness" part of the right Kan extension. See
+[codensity monads](category-theory.codensity-monads-on-precategories.md) for an
+explanation of the (dual) proofs.
 
 ### Left counit law
-
-For the left counit law, if `α : L∘F ⇒ F` is the right Kan extension natural
-transformation, we show that the composite
-
-```text
-     (Lμ)F     μF     α
-  L∘F  ⇒  L²∘F ⇒  L∘F  ⇒  L
-```
-
-is equal to `α`; by uniqueness, `μF ∘ LμF = id`.
 
 ```agda
 module _
@@ -238,20 +231,6 @@ module _
 
 ### Right counit law
 
-The right counit law is similar; we show that the composite is `α` via:
-
-```text
-      ηLF     μF      α
-   LF  ⇒  L²F  ⇒  LF  ⇒  F
- α ⇓   Lα ⇓              ∥
-   F   ⇒  LF      ⇒      F
-      ηF          α
-```
-
-The right square (triangle) commutes by "uniqueness" of the right Kan UP; the
-left square commutes by naturality of `η`. The bottom composite is then `id` by
-the UP again.
-
 ```agda
 module _
   {l1 l2 l3 l4 : Level}
@@ -283,16 +262,14 @@ module _
       ( _)
       ( _)) ∙
     ( ap
-      ( λ x →
-        ( comp-natural-transformation-Precategory C D F LLF LF
-          ( right-whisker-natural-transformation-Precategory D D C LL L
-            ( right-whisker-natural-transformation-Precategory D D D
-              ( L)
-              ( id-functor-Precategory D)
-              ( counit-density-comonad-Precategory C D F Lk)
-              ( L))
-            ( F))
-          ( x)))
+      ( comp-natural-transformation-Precategory C D F LLF LF
+        ( right-whisker-natural-transformation-Precategory D D C LL L
+          ( right-whisker-natural-transformation-Precategory D D D
+            ( L)
+            ( id-functor-Precategory D)
+            ( counit-density-comonad-Precategory C D F Lk)
+            ( L))
+          ( F)))
       ( is-section-map-inv-is-equiv
         ( KL (comp-functor-Precategory D D D L L)) _)) ∙
     ( inv
@@ -315,8 +292,7 @@ module _
       ( _)
       ( _)) ∙
     ( ap
-      ( λ x →
-        ( comp-natural-transformation-Precategory C D F F LF α x))
+      ( comp-natural-transformation-Precategory C D F F LF α)
       ( compute-counit-density-comonad-Precategory C D F Lk)) ∙
     right-unit-law-comp-natural-transformation-Precategory C D F LF α
 
@@ -346,8 +322,6 @@ module _
 
 ### Comultiplication is associative
 
-Showing that comultiplication is associative is similar but longer.
-
 ```agda
 module _
   {l1 l2 l3 l4 : Level}
@@ -375,7 +349,7 @@ module _
             ( comul-density-comonad-Precategory C D F Lk))
           ( comul-density-comonad-Precategory C D F Lk))
         ( F))
-      ( α) ＝ 
+      ( α) ＝
     comp-natural-transformation-Precategory C D F LF LLLF
       ( left-whisker-natural-transformation-Precategory C D D
         ( F)
@@ -406,16 +380,14 @@ module _
       ( _)
       ( _)) ∙
     ( ap
-      ( λ x →
-        ( comp-natural-transformation-Precategory C D F LLF LLLF
-          ( right-whisker-natural-transformation-Precategory D D C
-            ( LL)
-            ( LLL)
-            ( left-whisker-natural-transformation-Precategory D D D L LL
-              ( L)
-              ( comul-density-comonad-Precategory C D F Lk))
-            ( F))
-          ( x)))
+      ( comp-natural-transformation-Precategory C D F LLF LLLF
+        ( right-whisker-natural-transformation-Precategory D D C
+          ( LL)
+          ( LLL)
+          ( left-whisker-natural-transformation-Precategory D D D L LL
+            ( L)
+            ( comul-density-comonad-Precategory C D F Lk))
+            ( F)))
       ( compute-comul-density-comonad-Precategory C D F Lk)) ∙
     ( inv
       ( associative-comp-natural-transformation-Precategory C D F LF LLF LLLF
@@ -488,16 +460,14 @@ module _
       ( _)
       ( _)) ∙
     ( ap
-      ( λ x →
-        ( comp-natural-transformation-Precategory C D F LLF LLLF
-          ( right-whisker-natural-transformation-Precategory D D C
-            ( LL)
-            ( LLL)
-            ( right-whisker-natural-transformation-Precategory D D D L LL
-              ( comul-density-comonad-Precategory C D F Lk)
-              ( L))
-            ( F))
-          ( x)))
+      ( comp-natural-transformation-Precategory C D F LLF LLLF
+        ( right-whisker-natural-transformation-Precategory D D C
+          ( LL)
+          ( LLL)
+          ( right-whisker-natural-transformation-Precategory D D D L LL
+            ( comul-density-comonad-Precategory C D F Lk)
+            ( L))
+          ( F)))
       ( compute-comul-density-comonad-Precategory C D F Lk)) ∙
     ( inv
       ( associative-comp-natural-transformation-Precategory C D F LF LLF LLLF
@@ -532,7 +502,7 @@ module _
               ( α)))
           ( x)))
       ( compute-comul-density-comonad-Precategory C D F Lk)) ∙
-    ( inv 
+    ( inv
       ( associative-comp-natural-transformation-Precategory C D F LF LLF LLLF
         ( _)
         ( _)
@@ -592,3 +562,8 @@ module _
       ( ( left-counit-law-comul-density-comonad-Precategory C D F Lk) ,
         ( right-counit-law-comul-density-comonad-Precategory C D F Lk)))
 ```
+
+## See also
+
+- [Codensity monads](category-theory.codensity-monads-on-precategories.md) for
+  the dual concept

@@ -15,16 +15,6 @@ open import category-theory.left-kan-extensions-precategories
 open import category-theory.natural-transformations-functors-precategories
 open import category-theory.precategories
 open import category-theory.terminal-category
-open import category-theory.coequalizers-precategories
-
-open import foundation.action-on-identifications-functions
-open import foundation.uniqueness-quantification
-open import foundation.set-truncations
-open import foundation.dependent-pair-types
-open import foundation.equality-dependent-pair-types
-open import foundation.sets
-open import category-theory.commuting-triangles-of-morphisms-in-precategories
-open import foundation.homotopies
 
 open import foundation.dependent-pair-types
 open import foundation.equivalences
@@ -38,8 +28,8 @@ open import foundation.propositions
 open import foundation.transport-along-identifications
 open import foundation.unit-type
 open import foundation.universe-levels
-open import foundation.truncations
-open import foundation-core.contractible-types
+
+open import foundation-core.homotopies
 ```
 
 </details>
@@ -51,8 +41,8 @@ A
 of a [functor](category-theory.functors-precategories.md) `F` between
 [precategories](category-theory.precategories.md) is a colimiting
 [cocone](category-theory.cocones-precategories.md) under `F`. That is, a cocone
-`τ` such that `cocone-map-Precategory C D F τ d` is an equivalence for all
-`d : obj-Precategory D`.
+`τ` such that `cocone-map-Precategory C D F τ d` is an
+[equivalence](foundation-core.equivalences.md) for all `d : obj-Precategory D`.
 
 Equivalently, the colimit of `F` is a
 [left kan extension](category-theory.left-kan-extensions-precategories.md) of
@@ -65,7 +55,7 @@ colimiting cocones as our official one.
 If a colimit exists, we call the vertex of the colimiting cocone the **vertex**
 of the colimit.
 
-## Definition
+## Definitions
 
 ### Colimiting cocones
 
@@ -75,16 +65,16 @@ module _
   (F : functor-Precategory C D)
   where
 
-  is-colimiting-cocone-Precategory :
+  is-colimit-cocone-Precategory :
     cocone-Precategory C D F → UU (l1 ⊔ l2 ⊔ l3 ⊔ l4)
-  is-colimiting-cocone-Precategory τ =
+  is-colimit-cocone-Precategory τ =
     (d : obj-Precategory D) →
     is-equiv (cocone-map-Precategory C D F τ d)
 
   colimit-Precategory : UU (l1 ⊔ l2 ⊔ l3 ⊔ l4)
   colimit-Precategory =
     Σ ( cocone-Precategory C D F)
-      ( is-colimiting-cocone-Precategory)
+      ( is-colimit-cocone-Precategory)
 
   cocone-colimit-Precategory :
     colimit-Precategory →
@@ -97,10 +87,10 @@ module _
   vertex-colimit-Precategory τ =
     vertex-cocone-Precategory C D F (cocone-colimit-Precategory τ)
 
-  is-colimiting-colimit-Precategory :
+  is-colimit-colimit-Precategory :
     (τ : colimit-Precategory) →
-    is-colimiting-cocone-Precategory (cocone-colimit-Precategory τ)
-  is-colimiting-colimit-Precategory = pr2
+    is-colimit-cocone-Precategory (cocone-colimit-Precategory τ)
+  is-colimit-colimit-Precategory = pr2
 
   hom-cocone-colimit-Precategory :
     (τ : colimit-Precategory) →
@@ -110,7 +100,7 @@ module _
       ( vertex-cocone-Precategory C D F φ)
   hom-cocone-colimit-Precategory τ φ =
     map-inv-is-equiv
-      ( is-colimiting-colimit-Precategory τ
+      ( is-colimit-colimit-Precategory τ
         ( vertex-cocone-Precategory C D F φ))
       ( natural-transformation-cocone-Precategory C D F φ)
 ```
@@ -165,18 +155,18 @@ module _
   (F : functor-Precategory C D)
   where
 
-  is-prop-is-colimiting-cocone-Precategory :
+  is-prop-is-colimit-cocone-Precategory :
     (τ : cocone-Precategory C D F) →
-    is-prop (is-colimiting-cocone-Precategory C D F τ)
-  is-prop-is-colimiting-cocone-Precategory τ =
-    is-prop-Π λ φ → is-property-is-equiv _
+    is-prop (is-colimit-cocone-Precategory C D F τ)
+  is-prop-is-colimit-cocone-Precategory τ =
+    is-prop-Π (λ φ → is-property-is-equiv _)
 
   is-prop-is-colimit-Precategory' :
     ( R : left-extension-Precategory C terminal-Precategory D
       (terminal-functor-Precategory C) F) →
     is-prop (is-colimit-left-extension-Precategory C D F R)
   is-prop-is-colimit-Precategory' R =
-    is-prop-Π λ K → is-property-is-equiv _
+    is-prop-Π (λ K → is-property-is-equiv _)
 ```
 
 ### Colimiting cocones are equivalent to colimits
@@ -187,13 +177,14 @@ module _
   (F : functor-Precategory C D)
   where
 
-  equiv-is-left-kan-extension-is-colimiting-Precategory :
+  equiv-is-left-kan-extension-is-colimit-Precategory :
     (τ : cocone-Precategory C D F) →
-    is-colimiting-cocone-Precategory C D F τ ≃
-      is-left-kan-extension-Precategory C terminal-Precategory D
-      (terminal-functor-Precategory C) F
-      (map-equiv (equiv-left-extension-cocone-Precategory C D F) τ)
-  equiv-is-left-kan-extension-is-colimiting-Precategory τ =
+    is-colimit-cocone-Precategory C D F τ ≃
+    is-left-kan-extension-Precategory C terminal-Precategory D
+      ( terminal-functor-Precategory C)
+      ( F)
+      ( map-equiv (equiv-left-extension-cocone-Precategory C D F) τ)
+  equiv-is-left-kan-extension-is-colimit-Precategory τ =
     equiv-Π _
       ( equiv-point-Precategory D)
       ( λ x →
@@ -202,23 +193,41 @@ module _
           ( is-property-is-equiv _)
           ( λ e →
             is-equiv-left-factor
-            ( induced-left-extension-map x)
-            ( natural-transformation-constant-functor-Precategory
-              terminal-Precategory D)
-            ( tr is-equiv (inv (lemma τ x)) e)
-            ( is-equiv-natural-transformation-constant-functor-Precategory
-              D _ _))
+              ( induced-left-extension-map x)
+              ( natural-transformation-constant-functor-Precategory
+                ( terminal-Precategory)
+                ( D))
+              ( tr is-equiv (inv (lemma τ x)) e)
+              ( is-equiv-natural-transformation-constant-functor-Precategory
+                ( D)
+                ( _)
+                ( _)))
           ( λ e →
             tr is-equiv (lemma τ x)
               ( is-equiv-comp
                 ( induced-left-extension-map x)
                 ( natural-transformation-constant-functor-Precategory
-                  terminal-Precategory D)
+                  ( terminal-Precategory)
+                  ( D))
                 ( is-equiv-natural-transformation-constant-functor-Precategory
-                  D _ _)
+                  ( D)
+                  ( _)
+                  ( _))
                 ( e))))
     where
-      induced-left-extension-map = λ x →
+      induced-left-extension-map :
+        ( x : obj-Precategory D) →
+        natural-transformation-Precategory terminal-Precategory D
+          ( extension-left-extension-Precategory C terminal-Precategory D
+            ( terminal-functor-Precategory C)
+            ( F)
+            ( map-equiv (equiv-left-extension-cocone-Precategory C D F) τ))
+          ( constant-functor-Precategory terminal-Precategory D x) →
+        natural-transformation-Precategory C D F
+          ( comp-functor-Precategory C terminal-Precategory D
+            ( constant-functor-Precategory terminal-Precategory D x)
+            ( terminal-functor-Precategory C))
+      induced-left-extension-map x =
         left-extension-map-Precategory C terminal-Precategory D
           ( terminal-functor-Precategory C) ( F)
           ( map-equiv (equiv-left-extension-cocone-Precategory C D F) τ)
@@ -226,23 +235,24 @@ module _
       lemma :
         ( τ : cocone-Precategory C D F)
         ( x : obj-Precategory D) →
-          ( left-extension-map-Precategory C terminal-Precategory D
-            ( terminal-functor-Precategory C) F
-            ( map-equiv (equiv-left-extension-cocone-Precategory C D F) τ)
-            ( constant-functor-Precategory terminal-Precategory D x)) ∘
-          ( natural-transformation-constant-functor-Precategory
-            terminal-Precategory D) ＝
+        ( left-extension-map-Precategory C terminal-Precategory D
+          ( terminal-functor-Precategory C) F
+          ( map-equiv (equiv-left-extension-cocone-Precategory C D F) τ)
+          ( constant-functor-Precategory terminal-Precategory D x)) ∘
+        ( natural-transformation-constant-functor-Precategory
+          terminal-Precategory D) ＝
         ( cocone-map-Precategory C D F τ x)
       lemma τ x =
-        eq-htpy λ f →
-          eq-htpy-hom-family-natural-transformation-Precategory C D
-            ( F)
-            ( comp-functor-Precategory C terminal-Precategory D
-              ( point-Precategory D x)
-              ( terminal-functor-Precategory C))
-            ( _)
-            ( _)
-            ( λ g → refl)
+        eq-htpy
+          ( λ f →
+            eq-htpy-hom-family-natural-transformation-Precategory C D
+              ( F)
+              ( comp-functor-Precategory C terminal-Precategory D
+                ( point-Precategory D x)
+                ( terminal-functor-Precategory C))
+              ( _)
+              ( _)
+              ( refl-htpy))
 
   equiv-colimit-colimit'-Precategory :
     colimit-Precategory C D F ≃ colimit-Precategory' C D F
@@ -251,7 +261,7 @@ module _
       ( is-left-kan-extension-Precategory C terminal-Precategory D
         ( terminal-functor-Precategory C) F)
       ( equiv-left-extension-cocone-Precategory C D F)
-      ( λ τ → equiv-is-left-kan-extension-is-colimiting-Precategory τ)
+      ( λ τ → equiv-is-left-kan-extension-is-colimit-Precategory τ)
 
   colimit-colimit'-Precategory :
     colimit-Precategory C D F → colimit-Precategory' C D F
@@ -264,103 +274,6 @@ module _
     map-inv-equiv equiv-colimit-colimit'-Precategory
 ```
 
-## Coproducts (MOVE ME)
+## See also
 
-```agda
-module _
-  {l1 l2 : Level} (C : Precategory l1 l2)
-  where
-
-  module _
-    {l : Level}
-    {A : UU l}
-    (f : A → obj-Precategory C)
-    where
-
-    is-indexed-coproduct-obj-Precategory :
-      (w : obj-Precategory C)
-      (i : (a : A) → hom-Precategory C (f a) w) →
-      UU (l1 ⊔ l2 ⊔ l)
-    is-indexed-coproduct-obj-Precategory w i =
-      (w' : obj-Precategory C)
-      (j : (a : A) → hom-Precategory C (f a) w') →
-      uniquely-exists-structure
-        ( hom-Precategory C w w')
-        ( λ h →
-          (a : A) → comp-hom-Precategory C h (i a) ＝ j a)
-
-    indexed-coproduct-obj-Precategory : UU (l1 ⊔ l2 ⊔ l)
-    indexed-coproduct-obj-Precategory =
-      Σ ( obj-Precategory C)
-        ( λ w →
-          Σ ( (a : A) → hom-Precategory C (f a) w)
-            ( λ i →
-              is-indexed-coproduct-obj-Precategory w i))
-
-    module _
-      (c : indexed-coproduct-obj-Precategory)
-      where
-
-      obj-indexed-coproduct-obj-Precategory : obj-Precategory C
-      obj-indexed-coproduct-obj-Precategory = pr1 c
-
-      iota-indexed-coproduct-obj-Precategory :
-        (a : A) → hom-Precategory C (f a) obj-indexed-coproduct-obj-Precategory
-      iota-indexed-coproduct-obj-Precategory = pr1 (pr2 c)
-
-      module _
-        (w' : obj-Precategory C)
-        (j : (a : A) → hom-Precategory C (f a) w')
-        where
-
-        mor-from-indexed-coproduct-obj-Precategory :
-          hom-Precategory C obj-indexed-coproduct-obj-Precategory w'
-        mor-from-indexed-coproduct-obj-Precategory =
-          pr1 (pr1 (pr2 (pr2 c) w' j))
-
-        compute-mor-from-indexed-coproduct-obj-Precategory :
-          (a : A) →
-          comp-hom-Precategory C
-            ( mor-from-indexed-coproduct-obj-Precategory)
-            ( iota-indexed-coproduct-obj-Precategory a) ＝
-          j a
-        compute-mor-from-indexed-coproduct-obj-Precategory =
-          pr2 (pr1 (pr2 (pr2 c) w' j))
-
-        is-unique-mor-from-indexed-coproduct-obj-Precategory :
-          (j' : hom-Precategory C obj-indexed-coproduct-obj-Precategory w')
-          (α : (a : A) → comp-hom-Precategory C j' (iota-indexed-coproduct-obj-Precategory a) ＝ j a) →
-          mor-from-indexed-coproduct-obj-Precategory ＝ j'
-        is-unique-mor-from-indexed-coproduct-obj-Precategory j' α =
-          ap pr1 (pr2 (pr2 (pr2 c) w' j) (j' , α))
-
-      module _
-        (w' : obj-Precategory C)
-        (j : (a : A) → hom-Precategory C (f a) w')
-        {w'' : obj-Precategory C}
-        (h : hom-Precategory C w' w'')
-        where
-
-        postcomp-mor-from-indexed-coproduct-obj-Precategory :
-          mor-from-indexed-coproduct-obj-Precategory
-            ( w'')
-            ( λ a → comp-hom-Precategory C h (j a)) ＝
-          comp-hom-Precategory C
-            ( h)
-            ( mor-from-indexed-coproduct-obj-Precategory w' j)
-        postcomp-mor-from-indexed-coproduct-obj-Precategory =
-          is-unique-mor-from-indexed-coproduct-obj-Precategory _ _ _
-            ( λ a →
-              ( associative-comp-hom-Precategory C _ _ _) ∙
-              ( ap (comp-hom-Precategory C h )
-                ( compute-mor-from-indexed-coproduct-obj-Precategory w' j a)))
-
-has-all-indexed-coproduct-obj-Precategory :
-  {l1 l2 : Level} (C : Precategory l1 l2)
-  (l : Level) →
-  UU (l1 ⊔ l2 ⊔ lsuc l)
-has-all-indexed-coproduct-obj-Precategory C l =
-  (A : UU l)
-  (f : A → obj-Precategory C) →
-  indexed-coproduct-obj-Precategory C f
-```
+- [Limits](category-theory.limits-precategories.md) for the dual concept.

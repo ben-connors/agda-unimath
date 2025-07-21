@@ -51,14 +51,15 @@ open import foundation.universe-levels
 A
 {{#concept "cocone" Disambiguation="under a functor between precategories" Agda=cocone-Precategory}}
 under a [functor](category-theory.functors-precategories.md) `F` between
-[precategories](category-theory.precategories.md) is a
+[precategories](category-theory.precategories.md) is an object `d` of the
+codomain together with a
 [natural transformation](category-theory.natural-transformations-functors-precategories.md)
-from a [constant functor](category-theory.constant-functors.md) to `F`.
+from `F` to the [constant functor](category-theory.constant-functors.md) at `d`.
 
 In this context, we usually think of (and refer to) the functor `F` as a
 **diagram** in its codomain, A cocone under such diagram then corresponds to an
 element `d`, called the **vertex** of the cocone, equipped with components
-`d → F x` satisfying the naturality condition.
+`F x → d` satisfying the naturality condition.
 
 For example, if `F` corresponds to the diagram `F x → F y`, then a cocone under
 `F` corresponds to a commuting triangle as below.
@@ -165,16 +166,16 @@ module _
   pr1 (cocone-map-Precategory τ d f) x =
     comp-hom-Precategory D f (component-cocone-Precategory τ x)
   pr2 (cocone-map-Precategory τ d f) h =
-    left-unit-law-comp-hom-Precategory D _ ∙
-    ap
+    ( left-unit-law-comp-hom-Precategory D _) ∙
+    ( ap
       ( λ g → comp-hom-Precategory D f g)
-      ( naturality-cocone-Precategory τ h) ∙
-    inv (associative-comp-hom-Precategory D _ _ _)
+      ( naturality-cocone-Precategory τ h)) ∙
+    ( inv (associative-comp-hom-Precategory D _ _ _))
 ```
 
 ## Properties
 
-### Characterization of equality of cocones over functors between precategories
+### Characterization of equality of cocones
 
 ```agda
   coherence-htpy-cocone-Precategory :
@@ -268,35 +269,45 @@ module _
   equiv-left-extension-cocone-Precategory :
     cocone-Precategory ≃
     left-extension-Precategory C terminal-Precategory D
-      (terminal-functor-Precategory C) F
+      ( terminal-functor-Precategory C)
+      ( F)
   equiv-left-extension-cocone-Precategory =
     equiv-Σ-equiv-base
-    ( λ K → natural-transformation-Precategory C D
-      ( F)
-      ( comp-functor-Precategory C terminal-Precategory D
-        ( K)
-        ( terminal-functor-Precategory C)))
-    ( equiv-point-Precategory D)
+      ( λ K →
+        natural-transformation-Precategory C D
+          ( F)
+          ( comp-functor-Precategory C terminal-Precategory D
+            ( K)
+            ( terminal-functor-Precategory C)))
+      ( equiv-point-Precategory D)
 
   left-extension-cocone-Precategory :
     cocone-Precategory →
     left-extension-Precategory C terminal-Precategory D
-      (terminal-functor-Precategory C) F
+      ( terminal-functor-Precategory C)
+      ( F)
   left-extension-cocone-Precategory =
     map-equiv equiv-left-extension-cocone-Precategory
 
   cocone-left-extension-Precategory :
     left-extension-Precategory C terminal-Precategory D
-      (terminal-functor-Precategory C) F →
+      ( terminal-functor-Precategory C)
+      ( F) →
     cocone-Precategory
   cocone-left-extension-Precategory =
     map-inv-equiv equiv-left-extension-cocone-Precategory
 
   vertex-left-extension-Precategory :
     left-extension-Precategory C terminal-Precategory D
-      (terminal-functor-Precategory C) F →
+      ( terminal-functor-Precategory C)
+      ( F) →
     obj-Precategory D
   vertex-left-extension-Precategory R =
     vertex-cocone-Precategory
       ( cocone-left-extension-Precategory R)
 ```
+
+## See also
+
+- [Colimits](category-theory.colimits-precategories.md) for universal cocones.
+- [Cones](category-theory.cones-precategories.md) for the dual concept.

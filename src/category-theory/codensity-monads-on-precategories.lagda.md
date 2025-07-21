@@ -1,4 +1,4 @@
-# Codensity monads in precategories
+# Codensity monads on precategories
 
 ```agda
 module category-theory.codensity-monads-on-precategories where
@@ -26,11 +26,13 @@ open import foundation.universe-levels
 
 ## Idea
 
-Given an arbitrary functor `F : C → D`, any [right Kan
-extension](category-theory.right-kan-extensions-precategories.md] `R` of `F`
-along itself `F` has a canonical
-[monad](category-theory.monads-on-precategories.md] structure, called the
-{{#concept "codensity monad" Agda=codensity-monad-Precategory}} of `R`.
+Given an arbitrary [functor](category-theory.functors-precategories.md)
+`F : C → D`, any
+[right Kan extension](category-theory.right-kan-extensions-precategories.md) `R`
+of `F` along itself has a canonical
+[monad](category-theory.monads-on-precategories.md) structure, called the
+{{#concept "codensity monad" Agda=codensity-monad-Precategory WD="codensity monad" WDID=Q97359844}}
+of `R`.
 
 ## Monad structure
 
@@ -44,7 +46,7 @@ definition via the universal property, we have two computation rules for these
 natural transformations (where ∙ is whiskering):
 
 1. `α ∘ (η ∙ F) ＝ id_F`; and
-2. `α ∘ (μ ∙ F) = α ∘ (R ∙ α)`.
+2. `α ∘ (μ ∙ F) ＝ α ∘ (R ∙ α)`.
 
 ```agda
 module _
@@ -88,7 +90,7 @@ module _
     map-inv-is-equiv
       ( KR (comp-functor-Precategory D D D R R))
       ( pr2
-        ( double-right-extension-Precategory C D F
+        ( square-right-extension-Precategory C D F
           ( right-extension-right-kan-extension-Precategory C D D F F Rk)))
 
   abstract
@@ -121,8 +123,8 @@ For the left unit law, if `α : R∘F ⇒ F` is the right Kan extension natural
 transformation, we show that the composite
 
 ```text
-     (Rμ)F     μF     α
-  R∘F  ⇒  R²∘F ⇒  R∘F  ⇒  R
+      (Rη)F        μF       α
+  R∘F ═════>  R²∘F ══>  R∘F ═> R
 ```
 
 is equal to `α`; by uniqueness, `μF ∘ RμF = id`.
@@ -175,10 +177,7 @@ module _
       ( _)
       ( _)) ∙
     ( ap
-      ( λ x →
-        ( comp-natural-transformation-Precategory C D RF RF F
-          ( α)
-          ( x)))
+      ( comp-natural-transformation-Precategory C D RF RF F α)
       ( inv
         ( preserves-comp-left-whisker-natural-transformation-Precategory
           ( C)
@@ -203,10 +202,7 @@ module _
             ( x))))
       ( compute-unit-codensity-monad-Precategory C D F Rk)) ∙
     ( ap
-      ( λ x →
-        ( comp-natural-transformation-Precategory C D RF RF F
-          ( α)
-          ( x)))
+      ( comp-natural-transformation-Precategory C D RF RF F α)
       ( preserves-id-left-whisker-natural-transformation-Precategory C D D
         ( F)
         ( R))) ∙
@@ -241,10 +237,12 @@ module _
 The right unit law is similar; we show that the composite is `α` via:
 
 ```text
-      ηRF     μF      α
-   RF  ⇒  R²F  ⇒  RF  ⇒  F
- α ⇓   Rα ⇓              ∥
-   F   ⇒  RF      ⇒      F
+      ηRF      μF     α
+   RF ═══> R²F ══> RF ══> F
+   ║        ║             ║
+ α ║     Rα ║             ║
+   ∨        ∨             ║
+   F ════> RF ══════════> F
       ηF          α
 ```
 
@@ -301,7 +299,7 @@ module _
       ( _)
       ( _)) ∙
     ( ap
-      ( λ x → comp-natural-transformation-Precategory C D RF RF F α x)
+      ( comp-natural-transformation-Precategory C D RF RF F α)
       ( eq-htpy-hom-family-natural-transformation-Precategory C D RF RF _ _
         ( λ x →
           ( naturality-natural-transformation-Precategory D D
@@ -391,7 +389,7 @@ module _
             ( α))))
   left-precomp-associative-mul-codensity-monad-Precategory =
     ( ap
-      ( λ x → comp-natural-transformation-Precategory C D RRRF RF F α x)
+      ( comp-natural-transformation-Precategory C D RRRF RF F α)
       ( preserves-comp-right-whisker-natural-transformation-Precategory D D C
         ( RRR)
         ( RR)
@@ -427,7 +425,7 @@ module _
       ( _)
       ( _)) ∙
     ( ap
-      ( λ x → comp-natural-transformation-Precategory C D RRRF RF F α x)
+      ( comp-natural-transformation-Precategory C D RRRF RF F α)
       ( inv
         ( preserves-comp-left-whisker-natural-transformation-Precategory C D D
           ( RRF)
@@ -477,7 +475,7 @@ module _
             ( α))))
   right-precomp-associative-mul-codensity-monad-Precategory =
     ( ap
-      ( λ x → comp-natural-transformation-Precategory C D RRRF RF F α x)
+      ( comp-natural-transformation-Precategory C D RRRF RF F α)
       ( preserves-comp-right-whisker-natural-transformation-Precategory D D C
         ( RRR)
         ( RR)
@@ -509,7 +507,7 @@ module _
         ( _)
         ( _)) ∙
     ( ap
-      ( λ x → comp-natural-transformation-Precategory C D RRRF RF F α x)
+      ( comp-natural-transformation-Precategory C D RRRF RF F α)
       ( eq-htpy-hom-family-natural-transformation-Precategory C D RRRF RF
         ( _)
         ( _)
@@ -545,7 +543,7 @@ module _
       ( _)
       ( _)) ∙
     ( ap
-      ( λ x → comp-natural-transformation-Precategory C D RRRF RF F α x)
+      ( comp-natural-transformation-Precategory C D RRRF RF F α)
       ( inv
         ( preserves-comp-left-whisker-natural-transformation-Precategory C D D
           ( RRF)
@@ -599,3 +597,13 @@ module _
       ( ( left-unit-law-mul-codensity-monad-Precategory C D F Rk) ,
         ( right-unit-law-mul-codensity-monad-Precategory C D F Rk)))
 ```
+
+## See also
+
+- [Density comonads](category-theory.density-comonads-on-precategories.md) for
+  the dual concept
+
+## External links
+
+- [Codensity monad](https://ncatlab.org/nlab/show/codensity+monad) at $n$Lab
+- [Codensity monad](https://en.wikipedia.org/wiki/Codensity_monad) at Wikipedia
