@@ -1,4 +1,4 @@
-[#](#) Right extensions in precategories
+# Right extensions in precategories
 
 ```agda
 module category-theory.right-extensions-precategories where

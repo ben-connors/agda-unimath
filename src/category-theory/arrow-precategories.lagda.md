@@ -271,6 +271,32 @@ module _
 
 ## Properties
 
+### Projections
+
+```agda
+module _
+  {l1 l2 : Level} (C : Precategory l1 l2)
+  where
+
+  cod-functor-arrow-Precategory :
+    functor-Precategory (arrow-Precategory C) C
+  cod-functor-arrow-Precategory =
+    cod-obj-arrow-Precategory C ,
+    cod-hom-arrow-Precategory C ,
+    ( λ g f → refl) ,
+    refl-htpy
+
+  dom-functor-arrow-Precategory :
+    functor-Precategory (arrow-Precategory C) C
+  dom-functor-arrow-Precategory =
+    dom-obj-arrow-Precategory C ,
+    dom-hom-arrow-Precategory C ,
+    ( λ g f → refl) ,
+    refl-htpy
+```
+
+### Equivalence with functors out of representing arrow category
+
 We can go between the two definitions:
 
 TODO: There is most of the data of a pair of functors here.
@@ -577,6 +603,8 @@ module _
           ( equiv-iso-eq-arrow-Precategory f g)
           ( compute-iso-eq-arrow-Precategory f g)
 ```
+
+## The arrow category
 
 ```
 module _

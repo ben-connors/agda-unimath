@@ -12,6 +12,8 @@ open import category-theory.precategories
 
 open import foundation.action-on-identifications-functions
 open import foundation.identity-types
+open import foundation.cartesian-product-types
+open import foundation.dependent-pair-types
 open import foundation.propositions
 open import foundation.universe-levels
 ```
@@ -85,4 +87,33 @@ pasting-horizontal-coherence-square-hom-Precategory C
   ( inv (associative-comp-hom-Precategory C _ _ _)) ∙
   ( ap (precomp-hom-Precategory C topleft _) commright) ∙
   ( associative-comp-hom-Precategory C _ _ _)
+```
+
+```agda
+is-lift-coherence-square-hom-Precategory :
+  {l1 l2 : Level} (C : Precategory l1 l2) {x y z w : obj-Precategory C}
+  (top : hom-Precategory C x y)
+  (left : hom-Precategory C x z)
+  (right : hom-Precategory C y w)
+  (bottom : hom-Precategory C z w)
+  (sq : coherence-square-hom-Precategory C top left right bottom)
+  (middle : hom-Precategory C z y) →
+  UU l2
+is-lift-coherence-square-hom-Precategory C top left right bottom sq middle =
+  ( comp-hom-Precategory C middle left ＝ top) ×
+  ( comp-hom-Precategory C right middle ＝ bottom)
+
+has-lift-coherence-square-hom-Precategory :
+  {l1 l2 : Level} (C : Precategory l1 l2) {x y z w : obj-Precategory C}
+  (top : hom-Precategory C x y)
+  (left : hom-Precategory C x z)
+  (right : hom-Precategory C y w)
+  (bottom : hom-Precategory C z w)
+  (sq : coherence-square-hom-Precategory C top left right bottom) →
+  UU l2
+has-lift-coherence-square-hom-Precategory
+  C {x} {y} {z} {w} top left right bottom sq =
+    Σ ( hom-Precategory C z y)
+      ( λ middle →
+        is-lift-coherence-square-hom-Precategory C top left right bottom sq middle)
 ```

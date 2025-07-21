@@ -9,6 +9,7 @@ module foundation.category-of-sets where
 ```agda
 open import category-theory.categories
 open import category-theory.complete-precategories
+open import category-theory.cocomplete-precategories
 open import category-theory.cones-precategories
 open import category-theory.constant-functors
 open import category-theory.functors-precategories
@@ -16,6 +17,8 @@ open import category-theory.isomorphisms-in-large-precategories
 open import category-theory.large-categories
 open import category-theory.large-precategories
 open import category-theory.limits-precategories
+open import category-theory.colimits-precategories
+open import category-theory.coequalizers-precategories
 open import category-theory.natural-transformations-functors-precategories
 open import category-theory.precategories
 open import category-theory.right-extensions-precategories
@@ -33,9 +36,11 @@ open import foundation.identity-types
 open import foundation.isomorphisms-of-sets
 open import foundation.multivariable-homotopies
 open import foundation.raising-universe-levels
+open import foundation.propositions
 open import foundation.retractions
 open import foundation.sections
 open import foundation.sets
+open import foundation.set-truncations
 open import foundation.strictly-involutive-identity-types
 open import foundation.unit-type
 open import foundation.universe-levels
@@ -258,6 +263,69 @@ is-complete-Set-Precategory :
   is-complete-Precategory l1 l2 (Set-Precategory (l1 ⊔ l2))
 is-complete-Set-Precategory l1 l2 C F = limit-Set-Precategory C F
 ```
+
+### The small precategory of sets has all coproducts
+
+```agda
+module _ 
+  (l1 l2 : Level)
+  {A : UU l1}
+  (f : A → obj-Precategory (Set-Precategory (l1 ⊔ l2)))
+  where
+
+  set-indexed-coproduct-obj : Set (l1 ⊔ l2)
+  set-indexed-coproduct-obj = trunc-Set (Σ A (type-Set ∘ f))
+
+  iota-set-indexed-coproduct-obj :
+    (a : A) → hom-Precategory (Set-Precategory (l1 ⊔ l2)) (f a) set-indexed-coproduct-obj
+  iota-set-indexed-coproduct-obj a x = unit-trunc-Set (a , x)
+
+  is-coproduct-set-indexed-coproduct-obj :
+    is-indexed-coproduct-obj-Precategory (Set-Precategory (l1 ⊔ l2)) f
+      set-indexed-coproduct-obj
+      iota-set-indexed-coproduct-obj
+  pr1 (pr1 (is-coproduct-set-indexed-coproduct-obj w' j)) =
+    map-universal-property-trunc-Set w' (rec-Σ j)
+  pr2 (pr1 (is-coproduct-set-indexed-coproduct-obj w' j)) a =
+    eq-htpy (λ x → triangle-universal-property-trunc-Set w' (rec-Σ j) (a , x))
+  pr2 (is-coproduct-set-indexed-coproduct-obj w' j) (j' , H) =
+    eq-pair-Σ
+      ( ( ap (map-universal-property-trunc-Set w')
+          ( eq-htpy (λ x → htpy-eq (inv (H (pr1 x))) (pr2 x)))) ∙
+        ( ap pr1
+          ( eq-is-contr'
+            ( universal-property-trunc-Set _ w' (λ z → j (pr1 z) (pr2 z)))
+            ( map-universal-property-trunc-Set w' (j' ∘ unit-trunc-Set) ,
+              ( λ x →
+                ( triangle-universal-property-trunc-Set w'
+                  ( j' ∘ unit-trunc-Set) x) ∙
+                ( htpy-eq (H (pr1 x)) (pr2 x))))
+            (j' , λ x → htpy-eq (H (pr1 x)) (pr2 x)))))
+      ( eq-is-prop
+        ( is-prop-Π
+          ( λ a → is-set-hom-Precategory (Set-Precategory (l1 ⊔ l2)) (f a) w' _ _)))
+
+has-all-indexed-coproduct-obj-Set-Precategory  :
+  (l1 l2 : Level) →
+  has-all-indexed-coproduct-obj-Precategory (Set-Precategory (l1 ⊔ l2)) l1
+pr1 (has-all-indexed-coproduct-obj-Set-Precategory l1 l2 A f) =
+  set-indexed-coproduct-obj l1 l2 f
+pr1 (pr2 (has-all-indexed-coproduct-obj-Set-Precategory l1 l2 A f)) =
+  iota-set-indexed-coproduct-obj l1 l2 f
+pr2 (pr2 (has-all-indexed-coproduct-obj-Set-Precategory l1 l2 A f)) =
+  is-coproduct-set-indexed-coproduct-obj l1 l2 f
+```
+
+### The small precategory of sets has all coequalizers
+
+```agda
+has-all-coequalizer-obj-Set-Precategory :
+  {l : Level} →
+  has-all-coequalizer-obj-Precategory (Set-Precategory l)
+pr1 (has-all-coequalizer-obj-Set-Precategory f g) = ?
+pr2 (has-all-coequalizer-obj-Set-Precategory f g) = ?
+```
+
 
 ## Comments
 

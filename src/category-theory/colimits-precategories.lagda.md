@@ -20,6 +20,8 @@ open import category-theory.coequalizers-precategories
 open import foundation.action-on-identifications-functions
 open import foundation.uniqueness-quantification
 open import foundation.set-truncations
+open import foundation.dependent-pair-types
+open import foundation.equality-dependent-pair-types
 open import foundation.sets
 open import category-theory.commuting-triangles-of-morphisms-in-precategories
 open import foundation.homotopies
@@ -36,6 +38,8 @@ open import foundation.propositions
 open import foundation.transport-along-identifications
 open import foundation.unit-type
 open import foundation.universe-levels
+open import foundation.truncations
+open import foundation-core.contractible-types
 ```
 
 </details>
@@ -269,303 +273,94 @@ module _
 
   module _
     {l : Level}
-    (A : Set l)
-    (let At = type-Set A)
-    (f : At → obj-Precategory C)
+    {A : UU l}
+    (f : A → obj-Precategory C)
     where
 
-    is-coproduct-set-obj-Precategory :
+    is-indexed-coproduct-obj-Precategory :
       (w : obj-Precategory C)
-      (i : (a : At) → hom-Precategory C (f a) w) →
+      (i : (a : A) → hom-Precategory C (f a) w) →
       UU (l1 ⊔ l2 ⊔ l)
-    is-coproduct-set-obj-Precategory w i =
+    is-indexed-coproduct-obj-Precategory w i =
       (w' : obj-Precategory C)
-      (j : (a : At) → hom-Precategory C (f a) w') →
+      (j : (a : A) → hom-Precategory C (f a) w') →
       uniquely-exists-structure
         ( hom-Precategory C w w')
         ( λ h →
-          (a : At) → comp-hom-Precategory C h (i a) ＝ j a)
+          (a : A) → comp-hom-Precategory C h (i a) ＝ j a)
 
-    coproduct-set-obj-Precategory : UU (l1 ⊔ l2 ⊔ l)
-    coproduct-set-obj-Precategory =
+    indexed-coproduct-obj-Precategory : UU (l1 ⊔ l2 ⊔ l)
+    indexed-coproduct-obj-Precategory =
       Σ ( obj-Precategory C)
         ( λ w →
-          Σ ( (a : At) → hom-Precategory C (f a) w)
+          Σ ( (a : A) → hom-Precategory C (f a) w)
             ( λ i →
-              is-coproduct-set-obj-Precategory w i))
+              is-indexed-coproduct-obj-Precategory w i))
 
     module _
-      (c : coproduct-set-obj-Precategory)
+      (c : indexed-coproduct-obj-Precategory)
       where
 
-      obj-coproduct-set-obj-Precategory : obj-Precategory C
-      obj-coproduct-set-obj-Precategory = pr1 c
+      obj-indexed-coproduct-obj-Precategory : obj-Precategory C
+      obj-indexed-coproduct-obj-Precategory = pr1 c
 
-      iota-coproduct-set-obj-Precategory :
-        (a : At) → hom-Precategory C (f a) obj-coproduct-set-obj-Precategory
-      iota-coproduct-set-obj-Precategory = pr1 (pr2 c)
+      iota-indexed-coproduct-obj-Precategory :
+        (a : A) → hom-Precategory C (f a) obj-indexed-coproduct-obj-Precategory
+      iota-indexed-coproduct-obj-Precategory = pr1 (pr2 c)
 
       module _
         (w' : obj-Precategory C)
-        (j : (a : At) → hom-Precategory C (f a) w')
+        (j : (a : A) → hom-Precategory C (f a) w')
         where
 
-        mor-from-coproduct-set-obj-Precategory :
-          hom-Precategory C obj-coproduct-set-obj-Precategory w'
-        mor-from-coproduct-set-obj-Precategory =
+        mor-from-indexed-coproduct-obj-Precategory :
+          hom-Precategory C obj-indexed-coproduct-obj-Precategory w'
+        mor-from-indexed-coproduct-obj-Precategory =
           pr1 (pr1 (pr2 (pr2 c) w' j))
 
-        compute-mor-from-coproduct-set-obj-Precategory :
-          (a : At) →
+        compute-mor-from-indexed-coproduct-obj-Precategory :
+          (a : A) →
           comp-hom-Precategory C
-            ( mor-from-coproduct-set-obj-Precategory)
-            ( iota-coproduct-set-obj-Precategory a) ＝
+            ( mor-from-indexed-coproduct-obj-Precategory)
+            ( iota-indexed-coproduct-obj-Precategory a) ＝
           j a
-        compute-mor-from-coproduct-set-obj-Precategory =
+        compute-mor-from-indexed-coproduct-obj-Precategory =
           pr2 (pr1 (pr2 (pr2 c) w' j))
 
-        is-unique-mor-from-coproduct-set-obj-Precategory :
-          (j' : hom-Precategory C obj-coproduct-set-obj-Precategory w')
-          (α : (a : At) → comp-hom-Precategory C j' (iota-coproduct-set-obj-Precategory a) ＝ j a) →
-          mor-from-coproduct-set-obj-Precategory ＝ j'
-        is-unique-mor-from-coproduct-set-obj-Precategory j' α =
+        is-unique-mor-from-indexed-coproduct-obj-Precategory :
+          (j' : hom-Precategory C obj-indexed-coproduct-obj-Precategory w')
+          (α : (a : A) → comp-hom-Precategory C j' (iota-indexed-coproduct-obj-Precategory a) ＝ j a) →
+          mor-from-indexed-coproduct-obj-Precategory ＝ j'
+        is-unique-mor-from-indexed-coproduct-obj-Precategory j' α =
           ap pr1 (pr2 (pr2 (pr2 c) w' j) (j' , α))
 
       module _
         (w' : obj-Precategory C)
-        (j : (a : At) → hom-Precategory C (f a) w')
+        (j : (a : A) → hom-Precategory C (f a) w')
         {w'' : obj-Precategory C}
         (h : hom-Precategory C w' w'')
         where
 
-        postcomp-mor-from-coproduct-set-obj-Precategory :
-          mor-from-coproduct-set-obj-Precategory
+        postcomp-mor-from-indexed-coproduct-obj-Precategory :
+          mor-from-indexed-coproduct-obj-Precategory
             ( w'')
             ( λ a → comp-hom-Precategory C h (j a)) ＝
           comp-hom-Precategory C
             ( h)
-            ( mor-from-coproduct-set-obj-Precategory w' j)
-        postcomp-mor-from-coproduct-set-obj-Precategory =
-          is-unique-mor-from-coproduct-set-obj-Precategory _ _ _
+            ( mor-from-indexed-coproduct-obj-Precategory w' j)
+        postcomp-mor-from-indexed-coproduct-obj-Precategory =
+          is-unique-mor-from-indexed-coproduct-obj-Precategory _ _ _
             ( λ a →
               ( associative-comp-hom-Precategory C _ _ _) ∙
               ( ap (comp-hom-Precategory C h )
-                ( compute-mor-from-coproduct-set-obj-Precategory w' j a)))
+                ( compute-mor-from-indexed-coproduct-obj-Precategory w' j a)))
 
-has-all-coproduct-set-obj-Precategory :
+has-all-indexed-coproduct-obj-Precategory :
   {l1 l2 : Level} (C : Precategory l1 l2)
   (l : Level) →
   UU (l1 ⊔ l2 ⊔ lsuc l)
-has-all-coproduct-set-obj-Precategory C l =
-  (A : Set l)
-  (f : type-Set A → obj-Precategory C) →
-  coproduct-set-obj-Precategory C A f
-```
-
-## Colimits from coequalizers and coproducts (MOVE ME)
-
-We can construct colimits of functors when the codomain category has coproducts and coequalizers. Specifically, we require the existence of two coproducts for a functor `F : J → C`:
-
-1. `⨆_{j : Ob J} Fj`; and
-2. `⨆_{f : i → j ∈ J} Fi`.
-
-For simplicity, we ask that `C` is instead closed under set-indexed coproducts, in which case the colimit exists whenever the objects of `J` form a set. In univalent categories this limits us to domains which are [gaunt categories](category-theory.gaunt-categories.md).
-
-```agda
-module _
-  {l1 l2 : Level} (C : Precategory l1 l2)
-  (q : has-all-coequalizer-obj-Precategory C)
-  {l : Level}
-  (i : has-all-coproduct-set-obj-Precategory C l)
-  (J : Precategory l l)
-  (is-set-J : is-set (obj-Precategory J))
-  (let Js = (obj-Precategory J , is-set-J))
-  (F : functor-Precategory J C)
-  (let F₀ = obj-functor-Precategory J C F)
-  (let F₁ = hom-functor-Precategory J C F)
-  where
-
-  coproduct-obj-J₀ :
-    coproduct-set-obj-Precategory C Js F₀
-  coproduct-obj-J₀ =
-    i Js F₀
-
-  obj-coproduct-obj-J₀ = obj-coproduct-set-obj-Precategory C Js F₀ coproduct-obj-J₀
-
-  J₁ : Set l
-  J₁ =
-    Σ-Set
-      ( Js)
-      ( λ x →
-        Σ-Set
-          ( Js)
-          ( λ y → hom-set-Precategory J x y))
-
-  J₁t = type-Set J₁
-
-  J₁m : J₁t → obj-Precategory C
-  J₁m (x , (y , m)) = F₀ x
-
-  coproduct-obj-J₁ :
-    coproduct-set-obj-Precategory C J₁ J₁m
-  coproduct-obj-J₁ = i J₁ J₁m
-
-  obj-coproduct-obj-J₁ = obj-coproduct-set-obj-Precategory C J₁ J₁m coproduct-obj-J₁
-
-  iota1 :
-    (j : J₁t) → hom-Precategory C (J₁m j) obj-coproduct-obj-J₁
-  iota1 = pr1 (pr2 (i J₁ J₁m))
-
-  iota0 :
-    (j : obj-Precategory J) → hom-Precategory C (F₀ j) obj-coproduct-obj-J₀
-  iota0 = pr1 (pr2 (i Js F₀))
-
-  iota :
-    (j : J₁t) →
-    hom-Precategory C (J₁m j) obj-coproduct-obj-J₀
-  iota (x , (y , f)) = iota0 x
-
-  iiota : hom-Precategory C obj-coproduct-obj-J₁ obj-coproduct-obj-J₀
-  iiota = mor-from-coproduct-set-obj-Precategory C J₁ J₁m coproduct-obj-J₁ obj-coproduct-obj-J₀ iota
-
-  iota' :
-    (j : J₁t) →
-    hom-Precategory C (J₁m j) obj-coproduct-obj-J₀
-  iota' (x , (y , f)) =
-    comp-hom-Precategory C
-      (iota0 y)
-      (F₁ f) 
-
-  iiota' : hom-Precategory C obj-coproduct-obj-J₁ obj-coproduct-obj-J₀
-  iiota' = mor-from-coproduct-set-obj-Precategory C J₁ J₁m coproduct-obj-J₁ obj-coproduct-obj-J₀ iota'
-
-  candidate : coequalizer-obj-Precategory C iiota iiota'
-  candidate = q iiota iiota'
-
-  co : obj-Precategory C
-  co = pr1 candidate
-
-  cm : hom-Precategory C obj-coproduct-obj-J₀ co
-  cm = pr1 (pr2 candidate)
-
-  cocone-hom :
-    (j : obj-Precategory J) →
-    (hom-Precategory C (F₀ j) co)
-  cocone-hom j =
-    comp-hom-Precategory C
-      cm
-      (iota0 j)
-        
-  abstract
-    cocone-coh :
-      {j j' : obj-Precategory J} (f : hom-Precategory J j j') →
-      comp-hom-Precategory C (cocone-hom j') (F₁ f) ＝
-      cocone-hom j
-    cocone-coh {j} {j'} f =
-      ( inv
-        ( ( ap (comp-hom-Precategory C cm) (compute-mor-from-coproduct-set-obj-Precategory C J₁ J₁m coproduct-obj-J₁ obj-coproduct-obj-J₀ iota' _)) ∙
-          ( inv (associative-comp-hom-Precategory C _ _ _)))) ∙
-      ( inv
-        ( ( inv (associative-comp-hom-Precategory C _ _ _)) ∙
-          ( ap
-            ( precomp-hom-Precategory C (iota1 (j , j' , f)) _)
-            ( coh-coequalizer-obj-Precategory C iiota iiota' candidate)) ∙
-          ( associative-comp-hom-Precategory C _ _ _))) ∙
-      ( ap (comp-hom-Precategory C cm) (compute-mor-from-coproduct-set-obj-Precategory C J₁ J₁m coproduct-obj-J₁ obj-coproduct-obj-J₀ iota _))
-
-  cocone : cocone-Precategory J C F
-  cocone = make-cocone-Precategory J C F
-    co
-    cocone-hom
-    (λ f → inv (cocone-coh f))
-
-  module _
-    (d : cocone-Precategory J C F)
-    (let dob = pr1 d)
-    (let dh = component-cocone-Precategory J C F d)
-    (let dn = naturality-cocone-Precategory J C F d)
-    where
-
-    dmor : hom-Precategory C obj-coproduct-obj-J₀ dob
-    dmor =
-      mor-from-coproduct-set-obj-Precategory C Js F₀ coproduct-obj-J₀ dob dh
-
-    dmor-coeq-pre :
-      (f : J₁t) →
-      comp-hom-Precategory C dmor (iota f) ＝
-      comp-hom-Precategory C dmor (iota' f)
-    dmor-coeq-pre (j , j' , f) =
-      ( compute-mor-from-coproduct-set-obj-Precategory C Js F₀ coproduct-obj-J₀ dob dh j) ∙
-      ( dn f) ∙
-      ( ap (precomp-hom-Precategory C (F₁ f) _)
-        ( inv
-          ( compute-mor-from-coproduct-set-obj-Precategory C Js F₀
-              coproduct-obj-J₀ dob dh j'))) ∙
-      ( associative-comp-hom-Precategory C _ _ _)
-
-    dmor-coeq :
-      comp-hom-Precategory C dmor iiota ＝
-      comp-hom-Precategory C dmor iiota'
-    dmor-coeq =
-      ( inv (postcomp-mor-from-coproduct-set-obj-Precategory C J₁ J₁m
-              coproduct-obj-J₁ obj-coproduct-obj-J₀ iota dmor)) ∙
-      ( ap (mor-from-coproduct-set-obj-Precategory C J₁ J₁m coproduct-obj-J₁ dob) (eq-htpy dmor-coeq-pre)) ∙
-      ( postcomp-mor-from-coproduct-set-obj-Precategory C J₁ J₁m coproduct-obj-J₁ obj-coproduct-obj-J₀ iota' dmor)
-
-    themor : hom-Precategory C co dob
-    themor = mor-from-coequalizer-obj-Precategory C iiota iiota' candidate dmor dmor-coeq
-
-    abstract
-      themor-factor :
-        (a : obj-Precategory J) →
-        comp-hom-Precategory C themor (cocone-hom a) ＝
-        dh a
-      themor-factor a =
-        ( inv (associative-comp-hom-Precategory C _ _ _)) ∙
-        ( ap
-          ( precomp-hom-Precategory C (iota0 a) _)
-          ( compute-mor-from-coequalizer-obj-Precategory C iiota iiota' candidate dmor dmor-coeq)) ∙
-        ( pr2 (pr1 (pr2 (pr2 (i Js F₀)) dob dh)) a)
-
-    module _
-      (another : hom-Precategory C co dob)
-      (anothercoh : (a : obj-Precategory J) →
-        comp-hom-Precategory C another (cocone-hom a) ＝
-        dh a)
-      where
-
-      abstract
-        theeq : themor ＝ another
-        theeq = is-unique-mor-from-coequalizer-obj-Precategory C iiota iiota'
-          candidate dmor dmor-coeq another
-          ( inv
-            ( is-unique-mor-from-coproduct-set-obj-Precategory C Js F₀
-              coproduct-obj-J₀ dob dh _
-              ( λ a →
-                ( associative-comp-hom-Precategory C _ _ _) ∙
-                ( anothercoh a))))
-
- 
-  module _
-    (d : obj-Precategory C)
-    (let themap = cocone-map-Precategory J C F cocone d)
-    where
-    
-    theinverse :
-      natural-transformation-Precategory J C
-        ( F)
-        ( constant-functor-Precategory J C d) →
-      hom-Precategory C co d
-    theinverse N = themor (d , N)    
-
-    H : theinverse ∘ themap ~ id
-    H x = theeq _ x refl-htpy
-
-    G : themap ∘ theinverse ~ id 
-    G x = eq-htpy-hom-family-natural-transformation-Precategory J C F
-           (constant-functor-Precategory J C d) _ _
-      ( themor-factor (d , x))
-
-  iscolimit : is-colimiting-cocone-Precategory J C F cocone
-  iscolimit d = is-equiv-is-invertible (theinverse d) (G d) (H d)
+has-all-indexed-coproduct-obj-Precategory C l =
+  (A : UU l)
+  (f : A → obj-Precategory C) →
+  indexed-coproduct-obj-Precategory C f
 ```
