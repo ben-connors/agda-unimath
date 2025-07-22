@@ -130,6 +130,105 @@ module _
   pr2 is-coproduct-prop-Precategory = is-prop-is-coproduct-obj-Precategory
 ```
 
+```agda
+module _
+  {l1 l2 : Level} (C : Precategory l1 l2)
+  where
+
+  module _
+    {l : Level}
+    {A : UU l}
+    (f : A → obj-Precategory C)
+    where
+
+    is-indexed-coproduct-obj-Precategory :
+      (w : obj-Precategory C)
+      (i : (a : A) → hom-Precategory C (f a) w) →
+      UU (l1 ⊔ l2 ⊔ l)
+    is-indexed-coproduct-obj-Precategory w i =
+      (w' : obj-Precategory C)
+      (j : (a : A) → hom-Precategory C (f a) w') →
+      uniquely-exists-structure
+        ( hom-Precategory C w w')
+        ( λ h →
+          (a : A) → comp-hom-Precategory C h (i a) ＝ j a)
+
+    indexed-coproduct-obj-Precategory : UU (l1 ⊔ l2 ⊔ l)
+    indexed-coproduct-obj-Precategory =
+      Σ ( obj-Precategory C)
+        ( λ w →
+          Σ ( (a : A) → hom-Precategory C (f a) w)
+            ( λ i →
+              is-indexed-coproduct-obj-Precategory w i))
+
+    module _
+      (c : indexed-coproduct-obj-Precategory)
+      where
+
+      obj-indexed-coproduct-obj-Precategory : obj-Precategory C
+      obj-indexed-coproduct-obj-Precategory = pr1 c
+
+      iota-indexed-coproduct-obj-Precategory :
+        (a : A) → hom-Precategory C (f a) obj-indexed-coproduct-obj-Precategory
+      iota-indexed-coproduct-obj-Precategory = pr1 (pr2 c)
+
+      module _
+        (w' : obj-Precategory C)
+        (j : (a : A) → hom-Precategory C (f a) w')
+        where
+
+        mor-from-indexed-coproduct-obj-Precategory :
+          hom-Precategory C obj-indexed-coproduct-obj-Precategory w'
+        mor-from-indexed-coproduct-obj-Precategory =
+          pr1 (pr1 (pr2 (pr2 c) w' j))
+
+        compute-mor-from-indexed-coproduct-obj-Precategory :
+          (a : A) →
+          comp-hom-Precategory C
+            ( mor-from-indexed-coproduct-obj-Precategory)
+            ( iota-indexed-coproduct-obj-Precategory a) ＝
+          j a
+        compute-mor-from-indexed-coproduct-obj-Precategory =
+          pr2 (pr1 (pr2 (pr2 c) w' j))
+
+        is-unique-mor-from-indexed-coproduct-obj-Precategory :
+          (j' : hom-Precategory C obj-indexed-coproduct-obj-Precategory w')
+          (α : (a : A) → comp-hom-Precategory C j' (iota-indexed-coproduct-obj-Precategory a) ＝ j a) →
+          mor-from-indexed-coproduct-obj-Precategory ＝ j'
+        is-unique-mor-from-indexed-coproduct-obj-Precategory j' α =
+          ap pr1 (pr2 (pr2 (pr2 c) w' j) (j' , α))
+
+      module _
+        (w' : obj-Precategory C)
+        (j : (a : A) → hom-Precategory C (f a) w')
+        {w'' : obj-Precategory C}
+        (h : hom-Precategory C w' w'')
+        where
+
+        postcomp-mor-from-indexed-coproduct-obj-Precategory :
+          mor-from-indexed-coproduct-obj-Precategory
+            ( w'')
+            ( λ a → comp-hom-Precategory C h (j a)) ＝
+          comp-hom-Precategory C
+            ( h)
+            ( mor-from-indexed-coproduct-obj-Precategory w' j)
+        postcomp-mor-from-indexed-coproduct-obj-Precategory =
+          is-unique-mor-from-indexed-coproduct-obj-Precategory _ _ _
+            ( λ a →
+              ( associative-comp-hom-Precategory C _ _ _) ∙
+              ( ap (comp-hom-Precategory C h )
+                ( compute-mor-from-indexed-coproduct-obj-Precategory w' j a)))
+
+has-all-indexed-coproduct-obj-Precategory :
+  {l1 l2 : Level} (C : Precategory l1 l2)
+  (l : Level) →
+  UU (l1 ⊔ l2 ⊔ lsuc l)
+has-all-indexed-coproduct-obj-Precategory C l =
+  (A : UU l)
+  (f : A → obj-Precategory C) →
+  indexed-coproduct-obj-Precategory C f
+```
+
 ## Properties
 
 ### Coproducts of morphisms

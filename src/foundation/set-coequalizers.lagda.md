@@ -12,13 +12,18 @@ open import foundation.binary-relations
 open import foundation.dependent-pair-types
 open import foundation.effective-maps-equivalence-relations
 open import foundation.equivalence-classes
+open import foundation.function-extensionality
 open import foundation.equivalence-relations
 open import foundation.existential-quantification
+open import foundation.sets
+open import foundation.equality-dependent-pair-types
 open import foundation.freely-generated-equivalence-relations
 open import foundation.propositional-truncations
 open import foundation.raising-universe-levels
 open import foundation.reflecting-maps-equivalence-relations
 open import foundation.set-quotients
+open import foundation.universal-property-set-quotients
+open import foundation.contractible-types
 open import foundation.uniqueness-set-quotients
 open import foundation.universal-property-set-quotients
 open import foundation.universe-levels
@@ -217,6 +222,44 @@ module _
       ( type-Set C)
   equiv-descent-coequalizer-Set =
     equiv-tot (equiv-reflecting-descent-coequalizer-Set A B f g C)
+
+module _
+  {l : Level} (A B : Set l) (f g : type-Set A → type-Set B)
+  (C : Set l) (h : type-Set B → type-Set C)
+  (H : htpy-descent-coequalizer-Set A B f g C h)
+  where
+
+  descents-coequalizer-Set : UU l
+  descents-coequalizer-Set =
+    Σ ( type-coequalizer-Set A B f g → type-Set C)
+      ( λ q →
+        q ∘ (map-coequalizer-Set A B f g) ~ h)
+
+  is-contr-descents-coequalizer-Set : is-contr descents-coequalizer-Set
+  is-contr-descents-coequalizer-Set =
+    universal-property-set-quotient-is-set-quotient
+      ( equivalence-relation-coequalizer-Set A B f g)
+      ( coequalizer-Set A B f g)
+      ( reflecting-map-quotient-map
+        ( equivalence-relation-coequalizer-Set A B f g))
+      ( is-set-quotient-set-quotient
+        ( equivalence-relation-coequalizer-Set A B f g))
+      ( C)
+      ( h , (reflecting-descent-coequalizer-Set A B f g C h H))
+
+  strict-descents-coequalizer-Set : UU l
+  strict-descents-coequalizer-Set =
+    Σ ( type-coequalizer-Set A B f g → type-Set C)
+      ( λ q →
+        q ∘ (map-coequalizer-Set A B f g) ＝ h)
+
+  is-contr-strict-descents-coequalizer-Set : is-contr strict-descents-coequalizer-Set
+  is-contr-strict-descents-coequalizer-Set =
+    is-contr-equiv
+      ( descents-coequalizer-Set)
+      ( equiv-tot (λ x → equiv-funext))
+      ( is-contr-descents-coequalizer-Set)
+
 ```
 
 ## See also

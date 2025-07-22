@@ -10,6 +10,7 @@ module foundation.category-of-sets where
 open import category-theory.categories
 open import category-theory.complete-precategories
 open import category-theory.cocomplete-precategories
+open import category-theory.colimit-formula-precategories
 open import category-theory.cones-precategories
 open import category-theory.constant-functors
 open import category-theory.functors-precategories
@@ -19,6 +20,7 @@ open import category-theory.large-precategories
 open import category-theory.limits-precategories
 open import category-theory.colimits-precategories
 open import category-theory.coequalizers-precategories
+open import category-theory.coproducts-in-precategories
 open import category-theory.natural-transformations-functors-precategories
 open import category-theory.precategories
 open import category-theory.right-extensions-precategories
@@ -40,6 +42,7 @@ open import foundation.propositions
 open import foundation.retractions
 open import foundation.sections
 open import foundation.sets
+open import foundation.set-coequalizers
 open import foundation.set-truncations
 open import foundation.strictly-involutive-identity-types
 open import foundation.unit-type
@@ -322,10 +325,31 @@ pr2 (pr2 (has-all-indexed-coproduct-obj-Set-Precategory l1 l2 A f)) =
 has-all-coequalizer-obj-Set-Precategory :
   {l : Level} →
   has-all-coequalizer-obj-Precategory (Set-Precategory l)
-pr1 (has-all-coequalizer-obj-Set-Precategory f g) = ?
-pr2 (has-all-coequalizer-obj-Set-Precategory f g) = ?
+pr1 (has-all-coequalizer-obj-Set-Precategory {l} {A} {B} f g) =
+  coequalizer-Set A B f g
+pr1 (pr2 (has-all-coequalizer-obj-Set-Precategory {l} {A} {B} f g)) =
+  map-coequalizer-Set A B f g
+pr1 (pr2 (pr2 (has-all-coequalizer-obj-Set-Precategory {l} {A} {B} f g))) =
+  eq-htpy (htpy-coequalizer-Set A B f g)
+pr2 (pr2 (pr2 (has-all-coequalizer-obj-Set-Precategory {l} {A} {B} f g))) {C} q' H =
+  is-contr-strict-descents-coequalizer-Set A B f g C q' (htpy-eq H)
 ```
 
+### The small precategory of sets is cocomplete
+
+```agda
+is-cocomplete-Set-Precategory :
+  (l1 l2 : Level) →
+  is-cocomplete-Precategory l1 l2 (Set-Precategory (l1 ⊔ l2))
+is-cocomplete-Set-Precategory l1 l2 C F =
+  colimit-formula-Precategory (Set-Precategory (l1 ⊔ l2))
+    ( λ {A} {B} f g →
+      has-all-coequalizer-obj-Set-Precategory {l1 ⊔ l2} {A} {B} f g)
+    ( has-all-indexed-coproduct-obj-Set-Precategory l1 l2)
+    ( has-all-indexed-coproduct-obj-Set-Precategory (l1 ⊔ l2) l1)
+    ( C)
+    ( F)
+```
 
 ## Comments
 
