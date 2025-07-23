@@ -17,8 +17,10 @@ open import category-theory.precategories
 open import category-theory.terminal-category
 
 open import foundation.dependent-pair-types
+open import foundation.action-on-identifications-functions
 open import foundation.equivalences
 open import foundation.function-extensionality
+open import foundation.embeddings
 open import foundation.function-types
 open import foundation.functoriality-dependent-function-types
 open import foundation.functoriality-dependent-pair-types
@@ -87,6 +89,15 @@ module _
   vertex-colimit-Precategory τ =
     vertex-cocone-Precategory C D F (cocone-colimit-Precategory τ)
 
+  component-colimit-Precategory :
+    (τ : colimit-Precategory) →
+    (c : obj-Precategory C) →
+    hom-Precategory D
+      ( obj-functor-Precategory C D F c)
+      ( vertex-colimit-Precategory τ)
+  component-colimit-Precategory τ =
+    component-cocone-Precategory C D F (cocone-colimit-Precategory τ)
+
   is-colimit-colimit-Precategory :
     (τ : colimit-Precategory) →
     is-colimit-cocone-Precategory (cocone-colimit-Precategory τ)
@@ -103,6 +114,46 @@ module _
       ( is-colimit-colimit-Precategory τ
         ( vertex-cocone-Precategory C D F φ))
       ( natural-transformation-cocone-Precategory C D F φ)
+
+  compute-hom-cocone-colimit-Precategory :
+    (τ : colimit-Precategory) →
+    (φ : cocone-Precategory C D F) →
+    (c : obj-Precategory C) →
+    comp-hom-Precategory D
+      ( hom-cocone-colimit-Precategory τ φ)
+      ( component-colimit-Precategory τ c) ＝
+    component-cocone-Precategory C D F φ c
+  compute-hom-cocone-colimit-Precategory τ φ c =
+    ap (λ x → pr1 x c)
+      ( is-section-map-inv-is-equiv
+        ( is-colimit-colimit-Precategory τ (pr1 φ))
+        ( pr2 φ))
+
+  eq-htpy-hom-cocone-colimit-Precategory :
+    (τ : colimit-Precategory) →
+    {d : obj-Precategory D}
+    (f g : hom-Precategory D (vertex-colimit-Precategory τ) d) →
+    (e : (c : obj-Precategory C) →
+      comp-hom-Precategory D
+        ( f)
+        ( component-cocone-Precategory C D F
+          ( cocone-colimit-Precategory τ) c) ＝
+      comp-hom-Precategory D
+        ( g)
+        ( component-cocone-Precategory C D F
+          ( cocone-colimit-Precategory τ) c)) →
+    f ＝ g
+  eq-htpy-hom-cocone-colimit-Precategory τ {d} f g e =
+    map-equiv
+      ( inv-equiv-ap-is-emb
+        ( is-emb-is-equiv
+          ( is-colimit-colimit-Precategory τ d)))
+      ( eq-htpy-hom-family-natural-transformation-Precategory C D
+        ( F)
+        ( constant-functor-Precategory C D d)
+        ( cocone-map-Precategory C D F (cocone-colimit-Precategory τ) d f)
+        ( cocone-map-Precategory C D F (cocone-colimit-Precategory τ) d g)
+        ( e))
 ```
 
 ### Colimits through left kan extensions

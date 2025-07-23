@@ -33,11 +33,17 @@ colimits of `F` is inhabited.
 ## Definition
 
 ```agda
+has-all-colimits-of-shape-Precategory : {l1 l2 l3 l4 : Level}
+  (C : Precategory l1 l2)
+  (J : Precategory l3 l4) →
+  UU (l1 ⊔ l2 ⊔ l3 ⊔ l4)
+has-all-colimits-of-shape-Precategory C J =
+  (F : functor-Precategory J C) → colimit-Precategory J C F
+
 is-cocomplete-Precategory :
   (l1 l2 : Level) {l3 l4 : Level}
   (D : Precategory l3 l4) →
   UU (lsuc l1 ⊔ lsuc l2 ⊔ l3 ⊔ l4)
 is-cocomplete-Precategory l1 l2 D =
-  (C : Precategory l1 l2) (F : functor-Precategory C D) →
-  colimit-Precategory C D F
+  (C : Precategory l1 l2) → has-all-colimits-of-shape-Precategory D C
 ```

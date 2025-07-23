@@ -309,4 +309,14 @@ module _
     hom-family-natural-transformation-Precategory C D F G φ c
   pr1 (pr2 (pr2 (ev-functor-Precategory c))) φ Ψ = refl
   pr2 (pr2 (pr2 (ev-functor-Precategory c))) F = refl
+
+  ev-trans-Precategory :
+    (c c' : obj-Precategory C) (f : hom-Precategory C c c') →
+    natural-transformation-Precategory (functor-precategory-Precategory C D) D
+      ( ev-functor-Precategory c)
+      ( ev-functor-Precategory c')
+  pr1 (ev-trans-Precategory c c' f) F =
+    hom-functor-Precategory C D F f
+  pr2 (ev-trans-Precategory c c' f) {F} {G} u =
+    inv (pr2 u f)
 ```
