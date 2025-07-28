@@ -9,32 +9,31 @@ module category-theory.density-factorization-systems-precategories where
 ```agda
 open import category-theory.arrow-precategories
 open import category-theory.categories
-open import category-theory.precategories
-open import category-theory.factorization-systems-categories
-open import category-theory.left-kan-extensions-precategories
-open import category-theory.density-comonads-on-precategories
-open import category-theory.copointed-endofunctors-precategories
-open import category-theory.comonads-on-precategories
-open import category-theory.density-comonads-on-precategories
-open import category-theory.id-dom-comonad-precategories
-open import category-theory.opposite-precategories
 open import category-theory.commuting-squares-of-morphisms-in-precategories
+open import category-theory.comonads-on-precategories
+open import category-theory.copointed-endofunctors-precategories
+open import category-theory.density-comonads-on-precategories
+open import category-theory.factorization-systems-precategories
 open import category-theory.functors-categories
-open import category-theory.isomorphisms-in-categories
-open import category-theory.maps-categories
-
 open import category-theory.functors-precategories
+open import category-theory.id-dom-comonad-precategories
+open import category-theory.isomorphisms-in-categories
 open import category-theory.isomorphisms-in-precategories
+open import category-theory.left-kan-extensions-precategories
+open import category-theory.maps-categories
 open import category-theory.maps-precategories
 open import category-theory.natural-isomorphisms-functors-categories
-open import category-theory.natural-transformations-functors-categories
-open import category-theory.natural-transformations-maps-categories
-open import category-theory.pointed-endofunctors-categories
-open import category-theory.representing-arrow-category
 open import category-theory.natural-isomorphisms-functors-precategories
+open import category-theory.natural-transformations-functors-categories
 open import category-theory.natural-transformations-functors-precategories
+open import category-theory.natural-transformations-maps-categories
 open import category-theory.natural-transformations-maps-precategories
+open import category-theory.opposite-precategories
+open import category-theory.pointed-endofunctors-categories
+open import category-theory.precategories
 open import category-theory.pushouts-in-precategories
+open import category-theory.representing-arrow-category
+
 open import foundation.action-on-identifications-functions
 open import foundation.dependent-pair-types
 open import foundation.equality-cartesian-product-types
@@ -130,7 +129,7 @@ module _
       ext-middle-fact-density-Precategory) ,
     ( is-fact-density-Precategory ,
       ( is-ext-left-fact-density-Precategory ,
-        is-ext-right-fact-density-Precategory ))
+        is-ext-right-fact-density-Precategory))
 
   left-funct-density-Precategory :
     functor-Precategory C1 C1

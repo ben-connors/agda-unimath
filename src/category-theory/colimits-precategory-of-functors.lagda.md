@@ -7,9 +7,9 @@ module category-theory.colimits-precategory-of-functors where
 <details><summary>Imports</summary>
 
 ```agda
+open import category-theory.cocomplete-precategories
 open import category-theory.cocones-precategories
 open import category-theory.colimits-precategories
-open import category-theory.cocomplete-precategories
 open import category-theory.constant-functors
 open import category-theory.functors-precategories
 open import category-theory.natural-transformations-functors-precategories
@@ -17,13 +17,12 @@ open import category-theory.precategories
 open import category-theory.precategory-of-functors
 
 open import foundation.action-on-identifications-functions
-open import foundation.sets
-open import foundation.homotopies
-
 open import foundation.dependent-pair-types
 open import foundation.equivalences
 open import foundation.function-types
+open import foundation.homotopies
 open import foundation.identity-types
+open import foundation.sets
 open import foundation.transport-along-identifications
 open import foundation.universe-levels
 ```
@@ -32,7 +31,10 @@ open import foundation.universe-levels
 
 ## Idea
 
-Given a pair of precategories `I, C` and a functor `F : J → Cᴵ` where `Cᴵ` is the precategory of functors from `I` to `C`, if `C` has all limits of shape `J` then the functor `F` has a colimit in `Cᴵ` which is given at `i : I` by the colimit of the composite
+Given a pair of precategories `I, C` and a functor `F : J → Cᴵ` where `Cᴵ` is
+the precategory of functors from `I` to `C`, if `C` has all limits of shape `J`
+then the functor `F` has a colimit in `Cᴵ` which is given at `i : I` by the
+colimit of the composite
 
 ```text
      F      evᵢ
@@ -204,7 +206,7 @@ module _
         ( constant-functor-Precategory J Cᴵ otherv)
         ( ev-functor-Precategory I C i)
         ( natural-transformation-cocone-Precategory J Cᴵ F other)
-    
+
     hom-colim-functor-Precategory :
       hom-Precategory Cᴵ vertex-colim-functor-Precategory otherv
     pr1 hom-colim-functor-Precategory i =
@@ -273,7 +275,7 @@ module _
       where
 
       abstract
-        unique-hom-colim-functor-Precategory : 
+        unique-hom-colim-functor-Precategory :
           hom-colim-functor-Precategory ＝
           othermor
         unique-hom-colim-functor-Precategory =
@@ -295,12 +297,12 @@ module _
     (other : obj-Precategory Cᴵ)
     where
 
-    cocone-map-colim-functor-Precategory : 
+    cocone-map-colim-functor-Precategory :
       hom-Precategory Cᴵ vertex-colim-functor-Precategory other →
       natural-transformation-Precategory J Cᴵ
         ( F)
         ( constant-functor-Precategory J Cᴵ other)
-    cocone-map-colim-functor-Precategory = 
+    cocone-map-colim-functor-Precategory =
       cocone-map-Precategory J Cᴵ F cocone-colim-functor-Precategory other
 
     inv-cocone-map-colim-functor-Precategory :

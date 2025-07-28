@@ -19,6 +19,7 @@ open import category-theory.adjunctions-precategories public
 open import category-theory.algebras-monads-on-precategories public
 open import category-theory.anafunctors-categories public
 open import category-theory.anafunctors-precategories public
+open import category-theory.arrow-precategories public
 open import category-theory.augmented-simplex-category public
 open import category-theory.categories public
 open import category-theory.category-of-functors public
@@ -26,9 +27,13 @@ open import category-theory.category-of-functors-from-small-to-large-categories 
 open import category-theory.category-of-maps-categories public
 open import category-theory.category-of-maps-from-small-to-large-categories public
 open import category-theory.coalgebras-comonads-on-precategories public
+open import category-theory.cocomplete-precategories public
 open import category-theory.cocones-precategories public
 open import category-theory.codensity-monads-on-precategories public
+open import category-theory.coequalizers-precategories public
+open import category-theory.colimit-formula-precategories public
 open import category-theory.colimits-precategories public
+open import category-theory.colimits-precategory-of-functors public
 open import category-theory.commuting-squares-of-morphisms-in-large-precategories public
 open import category-theory.commuting-squares-of-morphisms-in-precategories public
 open import category-theory.commuting-squares-of-morphisms-in-set-magmoids public
@@ -47,6 +52,7 @@ open import category-theory.cores-categories public
 open import category-theory.cores-precategories public
 open import category-theory.coslice-precategories public
 open import category-theory.density-comonads-on-precategories public
+open import category-theory.density-factorization-systems-precategories public
 open import category-theory.dependent-composition-operations-over-precategories public
 open import category-theory.dependent-products-of-categories public
 open import category-theory.dependent-products-of-large-categories public
@@ -67,6 +73,7 @@ open import category-theory.essentially-injective-functors-precategories public
 open import category-theory.essentially-surjective-functors-precategories public
 open import category-theory.exponential-objects-precategories public
 open import category-theory.extensions-of-functors-precategories public
+open import category-theory.factorization-systems-precategories public
 open import category-theory.faithful-functors-precategories public
 open import category-theory.faithful-maps-precategories public
 open import category-theory.full-functors-precategories public
@@ -90,6 +97,7 @@ open import category-theory.functors-set-magmoids public
 open import category-theory.gaunt-categories public
 open import category-theory.groupoids public
 open import category-theory.homotopies-natural-transformations-large-precategories public
+open import category-theory.id-dom-comonad-precategories public
 open import category-theory.indiscrete-precategories public
 open import category-theory.initial-category public
 open import category-theory.initial-objects-large-categories public

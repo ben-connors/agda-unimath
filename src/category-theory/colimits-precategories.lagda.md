@@ -16,11 +16,11 @@ open import category-theory.natural-transformations-functors-precategories
 open import category-theory.precategories
 open import category-theory.terminal-category
 
-open import foundation.dependent-pair-types
 open import foundation.action-on-identifications-functions
+open import foundation.dependent-pair-types
+open import foundation.embeddings
 open import foundation.equivalences
 open import foundation.function-extensionality
-open import foundation.embeddings
 open import foundation.function-types
 open import foundation.functoriality-dependent-function-types
 open import foundation.functoriality-dependent-pair-types

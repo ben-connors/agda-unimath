@@ -9,35 +9,32 @@ module foundation.set-coequalizers where
 ```agda
 open import foundation.action-on-identifications-functions
 open import foundation.binary-relations
+open import foundation.contractible-types
 open import foundation.dependent-pair-types
 open import foundation.effective-maps-equivalence-relations
+open import foundation.equality-dependent-pair-types
 open import foundation.equivalence-classes
-open import foundation.function-extensionality
 open import foundation.equivalence-relations
 open import foundation.existential-quantification
-open import foundation.sets
-open import foundation.equality-dependent-pair-types
 open import foundation.freely-generated-equivalence-relations
+open import foundation.function-extensionality
 open import foundation.propositional-truncations
 open import foundation.raising-universe-levels
 open import foundation.reflecting-maps-equivalence-relations
 open import foundation.set-quotients
-open import foundation.universal-property-set-quotients
-open import foundation.contractible-types
+open import foundation.sets
 open import foundation.uniqueness-set-quotients
 open import foundation.universal-property-set-quotients
 open import foundation.universe-levels
 
 open import foundation-core.cartesian-product-types
 open import foundation-core.coproduct-types
-open import foundation-core.equality-dependent-pair-types
 open import foundation-core.equivalences
 open import foundation-core.function-types
 open import foundation-core.functoriality-dependent-pair-types
 open import foundation-core.homotopies
 open import foundation-core.identity-types
 open import foundation-core.propositions
-open import foundation-core.sets
 open import foundation-core.transport-along-identifications
 ```
 
@@ -253,13 +250,13 @@ module _
       ( λ q →
         q ∘ (map-coequalizer-Set A B f g) ＝ h)
 
-  is-contr-strict-descents-coequalizer-Set : is-contr strict-descents-coequalizer-Set
+  is-contr-strict-descents-coequalizer-Set :
+    is-contr strict-descents-coequalizer-Set
   is-contr-strict-descents-coequalizer-Set =
     is-contr-equiv
       ( descents-coequalizer-Set)
       ( equiv-tot (λ x → equiv-funext))
       ( is-contr-descents-coequalizer-Set)
-
 ```
 
 ## See also

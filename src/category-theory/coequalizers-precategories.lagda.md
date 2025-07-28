@@ -35,13 +35,16 @@ open import foundation.universe-levels
 
 ## Idea
 
-A *coequalizer* of two morphisms `f, g : x → y` in a [precategory](category-theory.precategories.md) consists of:
+A _coequalizer_ of two morphisms `f, g : x → y` in a
+[precategory](category-theory.precategories.md) consists of:
 
 - an object `w`; and
 - a morphism `c : y → w` with `c ∘ f ＝ c ∘ g` such that
-  - for any morphism `c' : y → w'` with `c' ∘ f ＝ c' ∘ g` there is a unique morphism `e : w → w'` with `e ∘ c ＝ c'`.
+  - for any morphism `c' : y → w'` with `c' ∘ f ＝ c' ∘ g` there is a unique
+    morphism `e : w → w'` with `e ∘ c ＝ c'`.
 
-We say that `C` *has all coequalizers* if for every parallel pair of morphisms there is a choice of coequalizer.
+We say that `C` _has all coequalizers_ if for every parallel pair of morphisms
+there is a choice of coequalizer.
 
 ## Definitions
 
@@ -115,8 +118,8 @@ module _
 
       compute-mor-from-coequalizer-obj-Precategory :
         comp-hom-Precategory C
-          ( mor-from-coequalizer-obj-Precategory )
-          ( mor-coequalizer-obj-Precategory ) ＝
+          ( mor-from-coequalizer-obj-Precategory)
+          ( mor-coequalizer-obj-Precategory) ＝
         q
       compute-mor-from-coequalizer-obj-Precategory =
         pr2 (pr1 (pr2 (pr2 (pr2 c)) q α))

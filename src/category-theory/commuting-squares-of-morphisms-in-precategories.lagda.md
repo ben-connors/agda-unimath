@@ -11,9 +11,9 @@ open import category-theory.commuting-squares-of-morphisms-in-set-magmoids
 open import category-theory.precategories
 
 open import foundation.action-on-identifications-functions
-open import foundation.identity-types
 open import foundation.cartesian-product-types
 open import foundation.dependent-pair-types
+open import foundation.identity-types
 open import foundation.propositions
 open import foundation.universe-levels
 ```

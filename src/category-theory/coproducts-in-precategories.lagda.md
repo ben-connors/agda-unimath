@@ -216,7 +216,7 @@ module _
           is-unique-mor-from-indexed-coproduct-obj-Precategory _ _ _
             ( λ a →
               ( associative-comp-hom-Precategory C _ _ _) ∙
-              ( ap (comp-hom-Precategory C h )
+              ( ap (comp-hom-Precategory C h)
                 ( compute-mor-from-indexed-coproduct-obj-Precategory w' j a)))
 
 has-all-indexed-coproduct-obj-Precategory :

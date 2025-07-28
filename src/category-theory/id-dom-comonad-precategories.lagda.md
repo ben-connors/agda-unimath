@@ -9,30 +9,30 @@ module category-theory.id-dom-comonad-precategories where
 ```agda
 open import category-theory.arrow-precategories
 open import category-theory.categories
-open import category-theory.precategories
-open import category-theory.factorization-systems-categories
-open import category-theory.left-kan-extensions-precategories
-open import category-theory.density-comonads-on-precategories
-open import category-theory.copointed-endofunctors-precategories
-open import category-theory.comonads-on-precategories
-open import category-theory.opposite-precategories
 open import category-theory.commuting-squares-of-morphisms-in-precategories
+open import category-theory.comonads-on-precategories
+open import category-theory.copointed-endofunctors-precategories
+open import category-theory.density-comonads-on-precategories
+open import category-theory.factorization-systems-precategories
 open import category-theory.functors-categories
-open import category-theory.isomorphisms-in-categories
-open import category-theory.maps-categories
-
 open import category-theory.functors-precategories
+open import category-theory.isomorphisms-in-categories
 open import category-theory.isomorphisms-in-precategories
+open import category-theory.left-kan-extensions-precategories
+open import category-theory.maps-categories
 open import category-theory.maps-precategories
 open import category-theory.natural-isomorphisms-functors-categories
-open import category-theory.natural-transformations-functors-categories
-open import category-theory.natural-transformations-maps-categories
-open import category-theory.pointed-endofunctors-categories
-open import category-theory.representing-arrow-category
 open import category-theory.natural-isomorphisms-functors-precategories
+open import category-theory.natural-transformations-functors-categories
 open import category-theory.natural-transformations-functors-precategories
+open import category-theory.natural-transformations-maps-categories
 open import category-theory.natural-transformations-maps-precategories
+open import category-theory.opposite-precategories
+open import category-theory.pointed-endofunctors-categories
+open import category-theory.precategories
 open import category-theory.pushouts-in-precategories
+open import category-theory.representing-arrow-category
+
 open import foundation.action-on-identifications-functions
 open import foundation.dependent-pair-types
 open import foundation.equality-cartesian-product-types
@@ -54,11 +54,22 @@ open import foundation-core.transport-along-identifications
 
 ## Idea
 
-Every comonad on an arrow category factors through one which is the identity on the domain
+Every comonad on an arrow category factors through one which is the identity on
+the domain
 
-We first show this for copointed functors: given an arbitrary copointed functor `(L : C1 → C1, ε : L ⇒ id)`, we get a second copointed functor `(M, α)` and `β : L ⇒ M` such that `ε = α ∘ β`, each component of `β` is a pushout square, and `dom ∘ L = id` judgementally on objects.
+We first show this for copointed functors: given an arbitrary copointed functor
+`(L : C1 → C1, ε : L ⇒ id)`, we get a second copointed functor `(M, α)` and
+`β : L ⇒ M` such that `ε = α ∘ β`, each component of `β` is a pushout square,
+and `dom ∘ L = id` judgementally on objects.
 
-Care must be taken here: the size of terms blows up extremely fast. Most things are defined as morphisms out of the pushout, and the proof that the defining pair of morphisms gives a commutative square is typically quite large. Commutativity proofs are typically packaged in private modules (since Agda has only one `abstract` scope per module) to hide them from everything else. Further, much of the functor `M` is defined abstractly: instead of defining `M`'s action on objects publicly as a pushout, we define this in an abstract block and record the fact that it is a pushout square.
+Care must be taken here: the size of terms blows up extremely fast. Most things
+are defined as morphisms out of the pushout, and the proof that the defining
+pair of morphisms gives a commutative square is typically quite large.
+Commutativity proofs are typically packaged in private modules (since Agda has
+only one `abstract` scope per module) to hide them from everything else.
+Further, much of the functor `M` is defined abstractly: instead of defining
+`M`'s action on objects publicly as a pushout, we define this in an abstract
+block and record the fact that it is a pushout square.
 
 ```agda
 module _
@@ -82,17 +93,18 @@ module _
 
   private module FunctorPushout where
     abstract
-      cod-obj-id-dom-comonad-Precategory : obj-Precategory C1 → obj-Precategory C
-      cod-obj-id-dom-comonad-Precategory f = 
+      cod-obj-id-dom-comonad-Precategory :
+        obj-Precategory C1 → obj-Precategory C
+      cod-obj-id-dom-comonad-Precategory f =
         object-pushout-obj-Precategory C _ _ _ (Lmor f) (εtop f) (tp f)
-  
+
       mor-obj-id-dom-comonad-Precategory : (f : obj-Precategory C1) →
         hom-Precategory C
           ( dom-obj-arrow-Precategory C f)
           ( cod-obj-id-dom-comonad-Precategory f)
-      mor-obj-id-dom-comonad-Precategory f = 
+      mor-obj-id-dom-comonad-Precategory f =
         inr-pushout-obj-Precategory C _ _ _ (Lmor f) (εtop f) (tp f)
-  
+
       bottom-hom-family-left-id-dom-comonad-Precategory :
         (f : obj-Precategory C1) →
         hom-Precategory C
@@ -100,7 +112,7 @@ module _
           ( cod-obj-id-dom-comonad-Precategory f)
       bottom-hom-family-left-id-dom-comonad-Precategory f =
         inl-pushout-obj-Precategory C _ _ _ (Lmor f) (εtop f) (tp f)
-  
+
       comm-hom-family-left-id-dom-comonad-Precategory :
         (f : obj-Precategory C1) →
         comp-hom-Precategory C
@@ -111,14 +123,14 @@ module _
           ( εtop f)
       comm-hom-family-left-id-dom-comonad-Precategory f =
         comm-pushout-obj-Precategory C _ _ _ (Lmor f) (εtop f) (tp f)
-  
+
       is-pushout-id-dom-comonad-Precategory :
         (f : obj-Precategory C1) →
         is-pushout-obj-Precategory C _ _ _ (Lmor f) (εtop f)
           ( cod-obj-id-dom-comonad-Precategory f)
           ( bottom-hom-family-left-id-dom-comonad-Precategory f)
           ( mor-obj-id-dom-comonad-Precategory f)
-          ( comm-hom-family-left-id-dom-comonad-Precategory f )
+          ( comm-hom-family-left-id-dom-comonad-Precategory f)
       is-pushout-id-dom-comonad-Precategory f =
         pr2 (pr2 (pr2 (pr2 (tp f))))
   open FunctorPushout public
@@ -131,7 +143,7 @@ module _
     bottom-hom-family-left-id-dom-comonad-Precategory f ,
     mor-obj-id-dom-comonad-Precategory f ,
     comm-hom-family-left-id-dom-comonad-Precategory f ,
-    is-pushout-id-dom-comonad-Precategory f 
+    is-pushout-id-dom-comonad-Precategory f
 
   obj-id-dom-comonad-Precategory : obj-Precategory C1 → obj-Precategory C1
   pr1 (pr1 (obj-id-dom-comonad-Precategory f)) =
@@ -168,7 +180,7 @@ module _
         ( ap
           ( precomp-hom-Precategory C (dom-hom-arrow-Precategory C (L₁ u)) _)
           ( comm-pushout-obj-Precategory C _ _ _ (Lmor g) (εtop g) (pushout-id-dom-comonad-Precategory g))) ∙
-        ( associative-comp-hom-Precategory C _ _ _ ) ∙
+        ( associative-comp-hom-Precategory C _ _ _) ∙
         ( ap
           ( postcomp-hom-Precategory C
             ( mor-obj-arrow-Precategory C
@@ -177,7 +189,7 @@ module _
           ( ap (dom-hom-arrow-Precategory C)
             ( inv (pr2 ε u)))) ∙
         ( inv (associative-comp-hom-Precategory C _ _ _))
-  
+
       bottom-hom-id-dom-comonad-Precategory :
         (f g : obj-Precategory C1)
         (u : hom-Precategory C1 f g) →
@@ -195,7 +207,7 @@ module _
             ( mor-obj-arrow-Precategory C (obj-id-dom-comonad-Precategory g))
             ( dom-hom-arrow-Precategory C u))
           ( comm-bottom-hom-id-dom-comonad-Precategory f g u)
-  
+
       eq-bottom-hom-id-dom-comonad-Precategory :
         (f g : obj-Precategory C1)
         (u : hom-Precategory C1 f g) →
@@ -211,7 +223,7 @@ module _
             ( dom-hom-arrow-Precategory C u))
           ( comm-bottom-hom-id-dom-comonad-Precategory f g u)
       eq-bottom-hom-id-dom-comonad-Precategory f g u = refl
-  
+
       comm-hom-id-dom-comonad-Precategory :
         (f g : obj-Precategory C1)
         (u : hom-Precategory C1 f g) →
@@ -224,7 +236,7 @@ module _
       comm-hom-id-dom-comonad-Precategory f g u =
         comm-morphism-from-inr-pushout-obj-Precategory
           C _ _ _ _ _ (pushout-id-dom-comonad-Precategory f) _ _ _ _
-  
+
       preserves-id-bottom-hom-id-dom-comonad-Precategory :
         (f : obj-Precategory C1) →
         bottom-hom-id-dom-comonad-Precategory f f (id-hom-Precategory C1) ＝
@@ -242,8 +254,8 @@ module _
                   ( preserves-id-functor-Precategory C1 C1 L f)) ∙
                 ( right-unit-law-comp-hom-Precategory C _))))
           ( ( left-unit-law-comp-hom-Precategory C _) ∙
-            ( inv (right-unit-law-comp-hom-Precategory C _) ))
-  
+            ( inv (right-unit-law-comp-hom-Precategory C _)))
+
       preserves-comp-bottom-hom-id-dom-comonad-Precategory :
         (f g h : obj-Precategory C1) →
         (v : hom-Precategory C1 g h) →
@@ -340,7 +352,7 @@ module _
   pr1 (pr2 (pr2 functor-id-dom-comonad-Precategory)) {x} {y} {z} =
     preserves-comp-id-dom-comonad-Precategory x y z
   pr2 (pr2 (pr2 functor-id-dom-comonad-Precategory)) =
-    preserves-id-id-dom-comonad-Precategory 
+    preserves-id-id-dom-comonad-Precategory
 
   hom-family-right-id-dom-comonad-Precategory :
     (f : obj-Precategory C1) →
@@ -381,7 +393,7 @@ module _
             ( comm-morphism-from-inl-pushout-obj-Precategory
                 C _ _ _ (Lmor f) (εtop f)
                 ( pushout-id-dom-comonad-Precategory f) _ _ _ _))
-  
+
       naturality-right-id-dom-comonad-Precategory :
         is-natural-transformation-Precategory C1 C1
           ( functor-id-dom-comonad-Precategory)
@@ -394,7 +406,7 @@ module _
           ( ( inv left) ∙
             ( right))
           where
-    
+
           pushout-map :
             hom-Precategory C
               ( cod-obj-arrow-Precategory C (obj-id-dom-comonad-Precategory f))
@@ -413,7 +425,7 @@ module _
                   ( postcomp-hom-Precategory C (cod-hom-arrow-Precategory C u) _)
                   ( pr2 (pr1 ε f))) ∙
                 ( inv (associative-comp-hom-Precategory C _ _ _)))
-    
+
           left :
             pushout-map ＝
             comp-hom-Precategory C
@@ -488,9 +500,9 @@ module _
         eq-hom-arrow-Precategory C _ _ _ _
           ( left-unit-law-comp-hom-Precategory C _)
           ( comm-morphism-from-inl-pushout-obj-Precategory
-            C _ _ _ (Lmor f) (εtop f) (pushout-id-dom-comonad-Precategory f) _ _ _ _ )
+            C _ _ _ (Lmor f) (εtop f) (pushout-id-dom-comonad-Precategory f) _ _ _ _)
   open FactorNaturality public
-        
+
   right-id-dom-comonad-Precategory :
     natural-transformation-Precategory C1 C1
       ( functor-id-dom-comonad-Precategory)
@@ -524,10 +536,10 @@ module _
       ( factor-hom-family-id-dom-comonad-Precategory)
 ```
 
-Given the rest of the comonad structure, we can construct a comonad on this factorization.
+Given the rest of the comonad structure, we can construct a comonad on this
+factorization.
 
 ```agda
-
   module _
     (let LL = comp-functor-Precategory C1 C1 C1 L L)
     (let M = functor-id-dom-comonad-Precategory)
@@ -552,7 +564,7 @@ Given the rest of the comonad structure, we can construct a comonad on this fact
     (let Mα = left-whisker-natural-transformation-Precategory C1 C1 C1 M (id-functor-Precategory C1) M α)
     (let αM = right-whisker-natural-transformation-Precategory C1 C1 C1 M (id-functor-Precategory C1) α M)
     where
-    
+
     private module ComulPushoutComm where
       abstract
         δ₀-pushout-comm :
@@ -620,7 +632,7 @@ Given the rest of the comonad structure, we can construct a comonad on this fact
             ( ν₀ f)
         compute-comul-id-dom-comonad-Precategory f =
           eq-hom-arrow-Precategory C _ _ _ _
-            ( ( left-unit-law-comp-hom-Precategory C _ ) ∙
+            ( ( left-unit-law-comp-hom-Precategory C _) ∙
               ( inv
                 ( ( associative-comp-hom-Precategory C _ _ _) ∙
                   ( ap
@@ -629,7 +641,7 @@ Given the rest of the comonad structure, we can construct a comonad on this fact
                   ( right-unit-law-comp-hom-Precategory C _))))
             ( ( comm-morphism-from-inl-pushout-obj-Precategory C _ _ _ _ _ (pushout-id-dom-comonad-Precategory f) _ _ _ (δ₀-pushout-comm f)) ∙
               ( inv (associative-comp-hom-Precategory C _ _ _)))
-  
+
         compute-comul-id-dom-comonad-Precategory' : (f : obj-Precategory C1) →
           comp-hom-Precategory C (cha (δ₀ f)) (pr2 (M₀ f)) ＝
           pr2 (M₀ (M₀ f))
@@ -639,7 +651,7 @@ Given the rest of the comonad structure, we can construct a comonad on this fact
 
     private module NaturalityComul where
       abstract
-        nδ : 
+        nδ :
           is-natural-transformation-Precategory C1 C1 M MM δ₀
         nδ {f} {g} u =
           eq-hom-arrow-Precategory C _ _ _ _
@@ -671,7 +683,7 @@ Given the rest of the comonad structure, we can construct a comonad on this fact
                     ( compute-comul-id-dom-comonad-Precategory' g)) ∙
                   ( inv (pr2 (M₁ (M₀ f) (M₀ g) (M₁ f g u)))))))
           where
-       
+
           right :
             comp-hom-Precategory C1
               ( comp-hom-Precategory C1
@@ -689,7 +701,7 @@ Given the rest of the comonad structure, we can construct a comonad on this fact
             ( associative-comp-hom-Precategory C1 (δ₀ g) (M₁ f g u) (β₀ f)) ∙
             ( ap
               ( comp-hom-Precategory C1 (δ₀ g))
-              ( pr2 β u)) ∙ 
+              ( pr2 β u)) ∙
             ( inv (associative-comp-hom-Precategory C1 (δ₀ g) (β₀ g) (L₁ u))) ∙
             ( ap
               ( precomp-hom-Precategory C1 (L₁ u) _)
@@ -731,7 +743,7 @@ Given the rest of the comonad structure, we can construct a comonad on this fact
             ( associative-comp-hom-Precategory C1
               ( M₁ (M₀ f) (M₀ g) (M₁ f g u))
               ( comp-hom-Precategory C1 (pr1 Mβ f) (β₀ (L₀ f)))
-              ( ν₀ f)) ∙ 
+              ( ν₀ f)) ∙
             ( ap
               ( comp-hom-Precategory C1 (M₁ (M₀ f) (M₀ g) (M₁ f g u)))
               ( associative-comp-hom-Precategory C1
@@ -764,7 +776,7 @@ Given the rest of the comonad structure, we can construct a comonad on this fact
               (ap cha left)
               right)
           where
-    
+
           right :
             comp-hom-Precategory C
               ( comp-hom-Precategory C
@@ -795,7 +807,7 @@ Given the rest of the comonad structure, we can construct a comonad on this fact
                     (εtop f) (pushout-id-dom-comonad-Precategory f) _ _ _ (δ₀-pushout-comm f))) ∙
                 ( comm-morphism-from-inr-pushout-obj-Precategory C _ _ _
                    (Lmor (M₀ f)) (εtop (M₀ f)) (pushout-id-dom-comonad-Precategory (M₀ f)) _ _ _ _)))
-    
+
           left :
             comp-hom-Precategory C1
               ( comp-hom-Precategory C1
@@ -895,7 +907,7 @@ Given the rest of the comonad structure, we can construct a comonad on this fact
             ( is-id-morphism-from-pushout-obj-Precategory C _ _ _ (Lmor f)
               (εtop f) (pushout-id-dom-comonad-Precategory f) _ (ap cha right) left)
           where
-    
+
           left :
             comp-hom-Precategory C
               ( comp-hom-Precategory C
@@ -910,7 +922,7 @@ Given the rest of the comonad structure, we can construct a comonad on this fact
                  (εtop f) (pushout-id-dom-comonad-Precategory f) _ _ _ _)) ∙
             ( square-hom-arrow-Precategory C (M₁ _ _ (pr1 α f))) ∙
             ( right-unit-law-comp-hom-Precategory C _)
-    
+
           right :
             comp-hom-Precategory C1
               ( comp-hom-Precategory C1
@@ -925,7 +937,7 @@ Given the rest of the comonad structure, we can construct a comonad on this fact
                 ( associative-comp-hom-Precategory C1 _ _ _))) ∙
             ( inv (associative-comp-hom-Precategory C1 (M₁ _ _ (pr1 α f)) (M₁ _ _ (β₀ f)) _)) ∙
             ( ap
-              ( precomp-hom-Precategory C1 
+              ( precomp-hom-Precategory C1
                 ( comp-hom-Precategory C1
                   ( β₀ (L₀ f))
                   ( ν₀ f))
@@ -938,7 +950,7 @@ Given the rest of the comonad structure, we can construct a comonad on this fact
             ( associative-comp-hom-Precategory C1 (β₀ f) (L₁ (pr1 ε f)) (ν₀ f)) ∙
             ( ap (λ x → comp-hom-Precategory C1 (β₀ f) (pr1 x f)) Lleft) ∙
             ( right-unit-law-comp-hom-Precategory C1 _)
-    
+
         left-counit-law-id-dom-comonad-Precategory :
           comp-natural-transformation-Precategory C1 C1 M MM M Mα comul-id-dom-comonad-Precategory ＝
           id-natural-transformation-Precategory C1 C1 M
@@ -974,7 +986,7 @@ Given the rest of the comonad structure, we can construct a comonad on this fact
                  ( Lmor (M₀ f))
                  ( εtop (M₀ f))
                  ( pushout-id-dom-comonad-Precategory (M₀ f)) _ _ _ _)
-                
+
             right :
               comp-hom-Precategory C1
                 ( comp-hom-Precategory C1
@@ -1028,3 +1040,4 @@ Given the rest of the comonad structure, we can construct a comonad on this fact
       associativity-law-id-dom-comonad-Precategory ,
       left-counit-law-id-dom-comonad-Precategory ,
       right-counit-law-id-dom-comonad-Precategory
+```

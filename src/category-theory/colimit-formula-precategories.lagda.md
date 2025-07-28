@@ -8,7 +8,9 @@ module category-theory.colimit-formula-precategories where
 
 ```agda
 open import category-theory.cocones-precategories
+open import category-theory.coequalizers-precategories
 open import category-theory.colimits-precategories
+open import category-theory.commuting-triangles-of-morphisms-in-precategories
 open import category-theory.constant-functors
 open import category-theory.coproducts-in-precategories
 open import category-theory.functors-precategories
@@ -17,25 +19,22 @@ open import category-theory.left-kan-extensions-precategories
 open import category-theory.natural-transformations-functors-precategories
 open import category-theory.precategories
 open import category-theory.terminal-category
-open import category-theory.coequalizers-precategories
 
 open import foundation.action-on-identifications-functions
-open import foundation.uniqueness-quantification
-open import foundation.set-truncations
-open import foundation.sets
-open import category-theory.commuting-triangles-of-morphisms-in-precategories
-open import foundation.homotopies
-
 open import foundation.dependent-pair-types
 open import foundation.equivalences
 open import foundation.function-extensionality
 open import foundation.function-types
 open import foundation.functoriality-dependent-function-types
 open import foundation.functoriality-dependent-pair-types
+open import foundation.homotopies
 open import foundation.identity-types
 open import foundation.logical-equivalences
 open import foundation.propositions
+open import foundation.set-truncations
+open import foundation.sets
 open import foundation.transport-along-identifications
+open import foundation.uniqueness-quantification
 open import foundation.unit-type
 open import foundation.universe-levels
 ```
@@ -44,12 +43,17 @@ open import foundation.universe-levels
 
 ## Idea
 
-We can construct colimits of functors when the codomain category has coproducts and coequalizers. Specifically, we require the existence of two coproducts for a functor `F : J → C`:
+We can construct colimits of functors when the codomain category has coproducts
+and coequalizers. Specifically, we require the existence of two coproducts for a
+functor `F : J → C`:
 
 1. `⨆_{j : Ob J} Fj`; and
 2. `⨆_{f : i → j ∈ J} Fi`.
 
-For simplicity, we ask that `C` is instead closed under set-indexed coproducts, in which case the colimit exists whenever the objects of `J` form a set. In univalent categories this limits us to domains which are [gaunt categories](category-theory.gaunt-categories.md).
+For simplicity, we ask that `C` is instead closed under set-indexed coproducts,
+in which case the colimit exists whenever the objects of `J` form a set. In
+univalent categories this limits us to domains which are
+[gaunt categories](category-theory.gaunt-categories.md).
 
 ```agda
 module _
@@ -69,7 +73,8 @@ module _
   coproduct-obj-J₀ =
     i1 Js F₀
 
-  obj-coproduct-obj-J₀ = obj-indexed-coproduct-obj-Precategory C F₀ coproduct-obj-J₀
+  obj-coproduct-obj-J₀ =
+    obj-indexed-coproduct-obj-Precategory C F₀ coproduct-obj-J₀
 
   J₁ : UU (l3 ⊔ l4)
   J₁ =
@@ -85,7 +90,8 @@ module _
     indexed-coproduct-obj-Precategory C J₁m
   coproduct-obj-J₁ = i2 J₁ J₁m
 
-  obj-coproduct-obj-J₁ = obj-indexed-coproduct-obj-Precategory C J₁m coproduct-obj-J₁
+  obj-coproduct-obj-J₁ =
+    obj-indexed-coproduct-obj-Precategory C J₁m coproduct-obj-J₁
 
   iota1 :
     (j : J₁) → hom-Precategory C (J₁m j) obj-coproduct-obj-J₁
@@ -101,7 +107,8 @@ module _
   iota (x , (y , f)) = iota0 x
 
   iiota : hom-Precategory C obj-coproduct-obj-J₁ obj-coproduct-obj-J₀
-  iiota = mor-from-indexed-coproduct-obj-Precategory C J₁m coproduct-obj-J₁ obj-coproduct-obj-J₀ iota
+  iiota =
+    mor-from-indexed-coproduct-obj-Precategory C J₁m coproduct-obj-J₁ obj-coproduct-obj-J₀ iota
 
   iota' :
     (j : J₁) →
@@ -109,10 +116,11 @@ module _
   iota' (x , (y , f)) =
     comp-hom-Precategory C
       (iota0 y)
-      (F₁ f) 
+      (F₁ f)
 
   iiota' : hom-Precategory C obj-coproduct-obj-J₁ obj-coproduct-obj-J₀
-  iiota' = mor-from-indexed-coproduct-obj-Precategory C J₁m coproduct-obj-J₁ obj-coproduct-obj-J₀ iota'
+  iiota' =
+    mor-from-indexed-coproduct-obj-Precategory C J₁m coproduct-obj-J₁ obj-coproduct-obj-J₀ iota'
 
   candidate : coequalizer-obj-Precategory C iiota iiota'
   candidate = q iiota iiota'
@@ -130,7 +138,7 @@ module _
     comp-hom-Precategory C
       cm
       (iota0 j)
-        
+
   abstract
     cocone-coh :
       {j j' : obj-Precategory J} (f : hom-Precategory J j j') →
@@ -188,7 +196,8 @@ module _
       ( postcomp-mor-from-indexed-coproduct-obj-Precategory C J₁m coproduct-obj-J₁ obj-coproduct-obj-J₀ iota' dmor)
 
     themor : hom-Precategory C co dob
-    themor = mor-from-coequalizer-obj-Precategory C iiota iiota' candidate dmor dmor-coeq
+    themor =
+      mor-from-coequalizer-obj-Precategory C iiota iiota' candidate dmor dmor-coeq
 
     abstract
       themor-factor :
@@ -220,29 +229,30 @@ module _
                 ( associative-comp-hom-Precategory C _ _ _) ∙
                 ( anothercoh a))))
 
- 
   module _
     (d : obj-Precategory C)
     (let themap = cocone-map-Precategory J C F cocone-colimit-formula-Precategory d)
     where
-    
+
     theinverse :
       natural-transformation-Precategory J C
         ( F)
         ( constant-functor-Precategory J C d) →
       hom-Precategory C co d
-    theinverse N = themor (d , N)    
+    theinverse N = themor (d , N)
 
     H : theinverse ∘ themap ~ id
     H x = theeq _ x refl-htpy
 
-    G : themap ∘ theinverse ~ id 
+    G : themap ∘ theinverse ~ id
     G x = eq-htpy-hom-family-natural-transformation-Precategory J C F
            (constant-functor-Precategory J C d) _ _
       ( themor-factor (d , x))
 
-  is-colimit-cocone-colimit-formula-Precategory : is-colimit-cocone-Precategory J C F cocone-colimit-formula-Precategory
-  is-colimit-cocone-colimit-formula-Precategory d = is-equiv-is-invertible (theinverse d) (G d) (H d)
+  is-colimit-cocone-colimit-formula-Precategory :
+    is-colimit-cocone-Precategory J C F cocone-colimit-formula-Precategory
+  is-colimit-cocone-colimit-formula-Precategory d =
+    is-equiv-is-invertible (theinverse d) (G d) (H d)
 
   colimit-formula-Precategory : colimit-Precategory J C F
   pr1 colimit-formula-Precategory =

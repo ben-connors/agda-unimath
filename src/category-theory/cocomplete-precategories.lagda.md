@@ -8,10 +8,10 @@ module category-theory.cocomplete-precategories where
 
 ```agda
 open import category-theory.cocones-precategories
-open import category-theory.functors-precategories
 open import category-theory.colimits-precategories
-open import category-theory.precategories
+open import category-theory.functors-precategories
 open import category-theory.initial-objects-precategories
+open import category-theory.precategories
 
 open import foundation.universe-levels
 ```
@@ -22,11 +22,11 @@ open import foundation.universe-levels
 
 A {{#concept "cocomplete precategory" Agda=is-cocomplete-Precategory}} is a
 [precategory](category-theory.precategories.md) that has all
-[colimits](category-theory.colimits-precategories.md) for diagrams from a specified
-universe.
+[colimits](category-theory.colimits-precategories.md) for diagrams from a
+specified universe.
 
-More precisely, we say that a precategory `D` is `(l1 , l2)`-cocomplete if for any
-`C : Precategory l1 l2` and any
+More precisely, we say that a precategory `D` is `(l1 , l2)`-cocomplete if for
+any `C : Precategory l1 l2` and any
 [functor](category-theory.functors-precategories.md) `F : C → D` the type of
 colimits of `F` is inhabited.
 

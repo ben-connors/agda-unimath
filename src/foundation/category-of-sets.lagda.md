@@ -8,19 +8,19 @@ module foundation.category-of-sets where
 
 ```agda
 open import category-theory.categories
-open import category-theory.complete-precategories
 open import category-theory.cocomplete-precategories
+open import category-theory.coequalizers-precategories
 open import category-theory.colimit-formula-precategories
+open import category-theory.colimits-precategories
+open import category-theory.complete-precategories
 open import category-theory.cones-precategories
 open import category-theory.constant-functors
+open import category-theory.coproducts-in-precategories
 open import category-theory.functors-precategories
 open import category-theory.isomorphisms-in-large-precategories
 open import category-theory.large-categories
 open import category-theory.large-precategories
 open import category-theory.limits-precategories
-open import category-theory.colimits-precategories
-open import category-theory.coequalizers-precategories
-open import category-theory.coproducts-in-precategories
 open import category-theory.natural-transformations-functors-precategories
 open import category-theory.precategories
 open import category-theory.right-extensions-precategories
@@ -37,13 +37,13 @@ open import foundation.fundamental-theorem-of-identity-types
 open import foundation.identity-types
 open import foundation.isomorphisms-of-sets
 open import foundation.multivariable-homotopies
-open import foundation.raising-universe-levels
 open import foundation.propositions
+open import foundation.raising-universe-levels
 open import foundation.retractions
 open import foundation.sections
-open import foundation.sets
 open import foundation.set-coequalizers
 open import foundation.set-truncations
+open import foundation.sets
 open import foundation.strictly-involutive-identity-types
 open import foundation.unit-type
 open import foundation.universe-levels
@@ -270,7 +270,7 @@ is-complete-Set-Precategory l1 l2 C F = limit-Set-Precategory C F
 ### The small precategory of sets has all coproducts
 
 ```agda
-module _ 
+module _
   (l1 l2 : Level)
   {A : UU l1}
   (f : A → obj-Precategory (Set-Precategory (l1 ⊔ l2)))
@@ -308,7 +308,7 @@ module _
         ( is-prop-Π
           ( λ a → is-set-hom-Precategory (Set-Precategory (l1 ⊔ l2)) (f a) w' _ _)))
 
-has-all-indexed-coproduct-obj-Set-Precategory  :
+has-all-indexed-coproduct-obj-Set-Precategory :
   (l1 l2 : Level) →
   has-all-indexed-coproduct-obj-Precategory (Set-Precategory (l1 ⊔ l2)) l1
 pr1 (has-all-indexed-coproduct-obj-Set-Precategory l1 l2 A f) =
