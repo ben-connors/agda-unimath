@@ -1,7 +1,7 @@
-# The density factorization system on a category
+# The one-step factorization system on a precategory
 
 ```agda
-module category-theory.density-factorization-systems-precategories where
+module category-theory.one-step-factorization-systems-precategories where
 ```
 
 <details><summary>Imports</summary>
@@ -74,76 +74,76 @@ module _
   (let cha = cod-hom-arrow-Precategory C)
   where
 
-  middle-fact-density-Precategory :
+  middle-fact-one-step-fact-Precategory :
     obj-Precategory C1 → obj-Precategory C
-  middle-fact-density-Precategory x =
+  middle-fact-one-step-fact-Precategory x =
     cod-obj-arrow-Precategory C (L₀ x)
 
-  left-fact-density-Precategory :
-    left-fact-Precategory C middle-fact-density-Precategory
-  left-fact-density-Precategory f = mor-obj-arrow-Precategory C (L₀ f)
+  left-fact-one-step-fact-Precategory :
+    left-fact-Precategory C middle-fact-one-step-fact-Precategory
+  left-fact-one-step-fact-Precategory f = mor-obj-arrow-Precategory C (L₀ f)
 
-  right-fact-density-Precategory :
-    right-fact-Precategory C middle-fact-density-Precategory
-  right-fact-density-Precategory f =
+  right-fact-one-step-fact-Precategory :
+    right-fact-Precategory C middle-fact-one-step-fact-Precategory
+  right-fact-one-step-fact-Precategory f =
     cod-hom-arrow-Precategory C (pr1 ε f)
 
-  is-fact-density-Precategory :
+  is-fact-one-step-fact-Precategory :
     is-fact-Precategory C
-      ( middle-fact-density-Precategory)
-      ( left-fact-density-Precategory)
-      ( right-fact-density-Precategory)
-  is-fact-density-Precategory f =
+      ( middle-fact-one-step-fact-Precategory)
+      ( left-fact-one-step-fact-Precategory)
+      ( right-fact-one-step-fact-Precategory)
+  is-fact-one-step-fact-Precategory f =
     ( square-hom-arrow-Precategory C (pr1 ε f)) ∙
     ( right-unit-law-comp-hom-Precategory C (pr2 f))
 
-  ext-middle-fact-density-Precategory :
-    ext-middle-fact-Precategory C middle-fact-density-Precategory
-  pr1 ext-middle-fact-density-Precategory u =
+  ext-middle-fact-one-step-fact-Precategory :
+    ext-middle-fact-Precategory C middle-fact-one-step-fact-Precategory
+  pr1 ext-middle-fact-one-step-fact-Precategory u =
     cod-hom-arrow-Precategory C (L₁ u)
-  pr2 ext-middle-fact-density-Precategory =
+  pr2 ext-middle-fact-one-step-fact-Precategory =
     is-functor-functor-Precategory C1 C
       (comp-functor-Precategory C1 C1 C (cod-functor-arrow-Precategory C) L)
 
-  is-ext-left-fact-density-Precategory :
+  is-ext-left-fact-one-step-fact-Precategory :
     is-ext-left-fact-Precategory C
-      ( middle-fact-density-Precategory)
-      ( ext-middle-fact-density-Precategory)
-      ( left-fact-density-Precategory)
-  is-ext-left-fact-density-Precategory u =
+      ( middle-fact-one-step-fact-Precategory)
+      ( ext-middle-fact-one-step-fact-Precategory)
+      ( left-fact-one-step-fact-Precategory)
+  is-ext-left-fact-one-step-fact-Precategory u =
     square-hom-arrow-Precategory C (L₁ u)
 
-  is-ext-right-fact-density-Precategory :
+  is-ext-right-fact-one-step-fact-Precategory :
     is-ext-right-fact-Precategory C
-      ( middle-fact-density-Precategory)
-      ( ext-middle-fact-density-Precategory)
-      ( right-fact-density-Precategory)
-  is-ext-right-fact-density-Precategory u =
+      ( middle-fact-one-step-fact-Precategory)
+      ( ext-middle-fact-one-step-fact-Precategory)
+      ( right-fact-one-step-fact-Precategory)
+  is-ext-right-fact-one-step-fact-Precategory u =
     ap cha (pr2 ε u)
 
-  funct-fact-density-Precategory :
+  funct-fact-one-step-fact-Precategory :
     funct-fact-Precategory C
-  funct-fact-density-Precategory =
-    middle-fact-density-Precategory ,
-    ( ( left-fact-density-Precategory , right-fact-density-Precategory) ,
-      ext-middle-fact-density-Precategory) ,
-    ( is-fact-density-Precategory ,
-      ( is-ext-left-fact-density-Precategory ,
-        is-ext-right-fact-density-Precategory))
+  funct-fact-one-step-fact-Precategory =
+    middle-fact-one-step-fact-Precategory ,
+    ( ( left-fact-one-step-fact-Precategory , right-fact-one-step-fact-Precategory) ,
+      ext-middle-fact-one-step-fact-Precategory) ,
+    ( is-fact-one-step-fact-Precategory ,
+      ( is-ext-left-fact-one-step-fact-Precategory ,
+        is-ext-right-fact-one-step-fact-Precategory))
 
-  left-funct-density-Precategory :
+  left-funct-one-step-fact-Precategory :
     functor-Precategory C1 C1
-  left-funct-density-Precategory =
+  left-funct-one-step-fact-Precategory =
     functor-is-ext-left-fact-Precategory C
-      middle-fact-density-Precategory
-      ext-middle-fact-density-Precategory
-      left-fact-density-Precategory
-      is-ext-left-fact-density-Precategory
+      middle-fact-one-step-fact-Precategory
+      ext-middle-fact-one-step-fact-Precategory
+      left-fact-one-step-fact-Precategory
+      is-ext-left-fact-one-step-fact-Precategory
 
-  eq-left-fact-density-Precategory :
-    left-funct-density-Precategory ＝ L
-  eq-left-fact-density-Precategory =
-    eq-htpy-functor-Precategory C1 C1 left-funct-density-Precategory L
+  eq-left-fact-one-step-fact-Precategory :
+    left-funct-one-step-fact-Precategory ＝ L
+  eq-left-fact-one-step-fact-Precategory =
+    eq-htpy-functor-Precategory C1 C1 left-funct-one-step-fact-Precategory L
       ( refl-htpy ,
         λ u →
           ( right-unit-law-comp-hom-Precategory C1 _) ∙

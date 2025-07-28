@@ -354,7 +354,8 @@ natural copointing and pointing, respectively. In this case, the (retracts of)
         ( unit-funct-fact-Precategory F))
 ```
 
-Given a left- and right-algebraic functorial factorization, any lifting diagram of an `L`-coalgebra against an `R`-algebra has a canonical solution.
+Given a left- and right-algebraic functorial factorization, any lifting diagram
+of an `L`-coalgebra against an `R`-algebra has a canonical solution.
 
 ```agda
   module _
@@ -491,7 +492,9 @@ Given a left- and right-algebraic functorial factorization, any lifting diagram 
         ( right-unit-law-comp-hom-Precategory C v)
 ```
 
-We have a natural transformation `LR ⇒ RL` induced by the codomain comultiplication on the domain and the domain multiplication on the codomain part:
+We have a natural transformation `LR ⇒ RL` induced by the codomain
+comultiplication on the domain and the domain multiplication on the codomain
+part:
 
 ```agda
     dist-morphism-algebraic-funct-fact-Precategory :
@@ -525,7 +528,8 @@ We have a natural transformation `LR ⇒ RL` induced by the codomain comultiplic
           ( u))
 ```
 
-An algebraic functorial factorization system is an algebraic weak factorization system if the `dist-morphism` above is a distributive law:
+An algebraic functorial factorization system is an algebraic weak factorization
+system if the `dist-morphism` above is a distributive law:
 
 ```agda
   is-algebraic-wfs-Precategory :
@@ -536,7 +540,7 @@ An algebraic functorial factorization system is an algebraic weak factorization 
   is-algebraic-wfs-Precategory F LF RF =
     (f : obj-Precategory C1) →
     comp-hom-Precategory C
-      ( cod-hom-arrow-Precategory C (pr1 (pr1 LF) f)) 
+      ( cod-hom-arrow-Precategory C (pr1 (pr1 LF) f))
       ( dom-hom-arrow-Precategory C (pr1 (pr1 RF) f)) ＝
     comp-hom-Precategory C
       ( comp-hom-Precategory C

@@ -7,31 +7,30 @@ module category-theory.coequalizers-precategories where
 <details><summary>Imports</summary>
 
 ```agda
+open import category-theory.commuting-triangles-of-morphisms-in-precategories
 open import category-theory.constant-functors
 open import category-theory.precategories
 
 open import foundation.action-on-identifications-functions
-open import foundation.uniqueness-quantification
-open import foundation.set-truncations
-open import foundation.sets
-open import category-theory.commuting-triangles-of-morphisms-in-precategories
-open import foundation.homotopies
-
 open import foundation.dependent-pair-types
 open import foundation.equivalences
 open import foundation.function-extensionality
 open import foundation.function-types
 open import foundation.functoriality-dependent-function-types
 open import foundation.functoriality-dependent-pair-types
+open import foundation.homotopies
 open import foundation.identity-types
 open import foundation.logical-equivalences
 open import foundation.propositions
+open import foundation.set-truncations
+open import foundation.sets
 open import foundation.transport-along-identifications
+open import foundation.uniqueness-quantification
 open import foundation.unit-type
 open import foundation.universe-levels
 ```
 
-</detail>
+</details>
 
 ## Idea
 

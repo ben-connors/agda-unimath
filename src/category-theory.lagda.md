@@ -52,7 +52,6 @@ open import category-theory.cores-categories public
 open import category-theory.cores-precategories public
 open import category-theory.coslice-precategories public
 open import category-theory.density-comonads-on-precategories public
-open import category-theory.density-factorization-systems-precategories public
 open import category-theory.dependent-composition-operations-over-precategories public
 open import category-theory.dependent-products-of-categories public
 open import category-theory.dependent-products-of-large-categories public
@@ -146,6 +145,7 @@ open import category-theory.natural-transformations-maps-from-small-to-large-pre
 open import category-theory.natural-transformations-maps-precategories public
 open import category-theory.nonunital-precategories public
 open import category-theory.one-object-precategories public
+open import category-theory.one-step-factorization-systems-precategories public
 open import category-theory.opposite-categories public
 open import category-theory.opposite-large-precategories public
 open import category-theory.opposite-precategories public
